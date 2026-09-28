@@ -1,0 +1,1202 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Тренажёр сербского глагола: спряжение, сборка фраз из плиток, трансформации и энклитики.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%232A45A8%22/%3E%3Ctext x=%2216%22 y=%2223%22 font-family=%22Georgia,serif%22 font-size=%2220%22 font-weight=%22700%22 fill=%22white%22 text-anchor=%22middle%22%3E%D0%A1%3C/text%3E%3C/svg%3E">
+<title>Srpska matrica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@500;600&family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap">
+<style>
+:root{
+  --paper:#F1F3F6; --panel:#FFFFFF; --ink:#172131; --muted:#5E6A7D; --line:#D6DDE6; --grid:#E6EAF0;
+  --accent:#2A45A8; --accent-ink:#FFFFFF; --accent-soft:#E3E8F8;
+  --ok:#23703F; --ok-soft:#E1F1E6; --bad:#B8342A; --bad-soft:#FBE6E3;
+  --tile:#FFFFFF; --tile-edge:#B8C2D0; --shadow:rgba(23,33,49,.16);
+  --serif:"Source Serif 4","PT Serif",Georgia,serif;
+  --sans:"Source Sans 3","PT Sans",system-ui,sans-serif;
+  --mono:"Source Code Pro",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F141C; --panel:#161D28; --ink:#E5E9F0; --muted:#97A3B6; --line:#2B3546; --grid:#1F2735;
+    --accent:#8FA5FF; --accent-ink:#0F141C; --accent-soft:#1E2848;
+    --ok:#66C48F; --ok-soft:#14301F; --bad:#F2806F; --bad-soft:#3A1D1A;
+    --tile:#1C2431; --tile-edge:#3B475B; --shadow:rgba(0,0,0,.5);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F141C; --panel:#161D28; --ink:#E5E9F0; --muted:#97A3B6; --line:#2B3546; --grid:#1F2735;
+  --accent:#8FA5FF; --accent-ink:#0F141C; --accent-soft:#1E2848;
+  --ok:#66C48F; --ok-soft:#14301F; --bad:#F2806F; --bad-soft:#3A1D1A;
+  --tile:#1C2431; --tile-edge:#3B475B; --shadow:rgba(0,0,0,.5);
+  color-scheme:dark;
+}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 var(--sans)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{max-width:1180px;margin:0 auto;padding-inline:24px;padding-block:20px 48px}
+
+/* Шапка: название, уроки, шестерёнка. На телефоне уроки уходят второй строкой. */
+.top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"brand lessons gear";align-items:center;gap:14px 20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.brand{grid-area:brand}
+.brand .name{display:block;font:700 30px/1.05 var(--serif);letter-spacing:-.01em}
+.brand .alt{display:block;margin-top:6px;font:500 13px/1.3 var(--mono);color:var(--muted)}
+.lessons{grid-area:lessons;justify-self:end;display:flex;gap:8px}
+.lessons button{display:grid;gap:2px;text-align:left;padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel);cursor:pointer}
+.lessons button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.lessons .ln{font:600 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.lessons .lt{font-weight:600;line-height:1.2}
+.gear{grid-area:gear;display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--muted);cursor:pointer}
+.gear svg{width:22px;height:22px}
+
+/* Меню настроек — нативный popover: закрывается касанием вне меню. */
+.menu{box-sizing:border-box;position:fixed;inset:auto;top:calc(env(safe-area-inset-top, 0px) + 76px);right:max(16px, calc((100vw - 1180px) / 2 + 24px));margin:0;width:min(340px, calc(100vw - 32px));padding:16px 18px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);box-shadow:0 14px 36px var(--shadow)}
+.menu::backdrop{background:transparent}
+.menu-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.menu-head h2{margin:0;font:600 12px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.x{width:44px;height:44px;border:0;border-radius:8px;background:none;color:var(--muted);font-size:22px;line-height:1;cursor:pointer}
+.menu .row + .row{margin-top:14px}
+.menu .sync{margin:16px 0 0;font-size:13px;color:var(--muted)}
+
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;margin-top:22px;align-items:start}
+
+.modes{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:auto;scrollbar-width:none}
+.modes::-webkit-scrollbar{display:none}
+.modes button{flex:none;white-space:nowrap;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:10px 14px;font-weight:600;color:var(--muted);cursor:pointer}
+.modes button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.focusbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:12px;font-size:14px;color:var(--muted)}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:26px 30px 28px;display:flex;flex-direction:column;gap:20px;min-height:400px}
+.lead{margin:0;color:var(--muted);font-size:15px}
+.meta{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 12px/1 var(--mono);letter-spacing:.02em;padding:6px 8px;border-radius:6px;background:var(--grid);color:var(--muted)}
+.chip.to{background:var(--accent-soft);color:var(--accent)}
+.prompt{margin:0;font:600 clamp(23px, 5.6vw, 30px)/1.25 var(--serif);text-wrap:balance}
+.trn{font:500 clamp(17px, 4.2vw, 20px)/1.3 var(--sans);color:var(--muted)}
+
+.answer{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-height:64px;padding-block:6px 12px;border-bottom:2px solid var(--line)}
+.answer.ok{border-bottom-color:var(--ok)}
+.answer.bad{border-bottom-color:var(--bad)}
+.placeholder{color:var(--muted);font-style:italic}
+.punct{font:600 24px/1 var(--serif);color:var(--muted)}
+.pool{display:flex;flex-wrap:wrap;gap:10px}
+.tile{min-height:48px;font:600 clamp(18px, 4.6vw, 21px)/1 var(--serif);padding:12px 16px;background:var(--tile);border:1px solid var(--tile-edge);border-bottom-width:3px;border-radius:7px;cursor:pointer;transition:transform .08s,border-color .12s}
+.tile:active:not(:disabled){transform:translateY(1px)}
+.tile:disabled{cursor:default}
+.tile.placed{background:var(--accent-soft);border-color:var(--accent)}
+.tile.ghost{color:transparent;background:transparent;border-style:dashed;border-color:var(--line);cursor:default}
+.answer.ok .tile.placed{background:var(--ok-soft);border-color:var(--ok)}
+.answer.bad .tile.placed{background:var(--bad-soft);border-color:var(--bad)}
+
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.btn{min-height:46px;font-weight:600;padding:10px 18px;border-radius:8px;border:1px solid var(--line);background:var(--panel);cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.link{display:inline-flex;align-items:center;min-height:44px;background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:14px;text-align:left}
+
+.fb{border-radius:10px;padding:14px 16px;display:grid;gap:6px}
+.fb.ok{background:var(--ok-soft)}
+.fb.bad{background:var(--bad-soft)}
+.verdict{font:700 18px/1.2 var(--serif)}
+.fb.ok .verdict{color:var(--ok)}
+.fb.bad .verdict{color:var(--bad)}
+.sent{font:600 19px/1.35 var(--serif)}
+.fb s{color:var(--bad);text-decoration-thickness:2px}
+.why{margin:0}
+
+.paradigm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto repeat(3,auto);grid-auto-flow:column;gap:10px 16px}
+.colh{font:600 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ccell{display:grid;gap:4px;min-width:0}
+.ccell .who{font:500 12px/1.2 var(--mono);color:var(--muted)}
+.ccell .tile{width:100%;text-align:left}
+.cslot{display:block;width:100%;height:48px;border:1.5px dashed var(--tile-edge);border-radius:7px}
+.cslot.next{border-color:var(--accent);background:var(--accent-soft)}
+.ccell.ok .tile.placed{background:var(--ok-soft);border-color:var(--ok)}
+.ccell.bad .tile.placed{background:var(--bad-soft);border-color:var(--bad);text-decoration:line-through;text-decoration-thickness:2px}
+.cnotes{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:8px;font-size:14px}
+.cnotes li{display:grid;gap:2px}
+.cnotes .who{font:500 12px/1.2 var(--mono);color:var(--muted)}
+
+.slots{display:flex;flex-wrap:wrap;align-items:center;gap:8px 4px;min-height:64px}
+.w{font:600 clamp(22px, 5.4vw, 26px)/1.2 var(--serif)}
+.slot{display:grid;place-items:center;width:42px;height:48px;border:1.5px dashed var(--tile-edge);border-radius:6px;background:none;cursor:pointer}
+.slot::before{content:"+";font:600 16px/1 var(--mono);color:var(--muted)}
+.ins{font:600 clamp(22px, 5.4vw, 26px)/1.2 var(--serif);padding:2px 8px;border-radius:6px}
+.ins.ok{background:var(--ok-soft);color:var(--ok)}
+.ins.bad{background:var(--bad-soft);color:var(--bad)}
+.gap{width:4px}
+
+.ask{display:grid;gap:10px;padding:14px 16px;border-radius:10px;background:var(--accent-soft)}
+.ask p{margin:0}
+
+.side{display:flex;flex-direction:column;gap:14px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.panel h2,.panel summary{margin:0 0 12px;font:600 12px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.panel summary{margin:0;cursor:pointer;padding-block:4px}
+details[open] summary{margin-bottom:12px}
+.hint{margin:10px 0 0;font-size:13px;color:var(--muted)}
+.heat{width:100%;border-collapse:separate;border-spacing:4px;table-layout:fixed}
+.heat th{font:500 11px/1.2 var(--mono);color:var(--muted);text-align:center}
+.heat th[scope="row"]{text-align:right;padding-right:4px;width:84px}
+.cell{display:grid;place-items:center;width:100%;aspect-ratio:1.35;border:0;border-radius:6px;background:color-mix(in srgb,var(--accent) var(--p,0%),var(--grid));font:600 13px/1 var(--mono);font-variant-numeric:tabular-nums;cursor:pointer}
+.cell.dk{color:var(--accent-ink)}
+.cell.sel{outline:2px solid var(--ink);outline-offset:1px}
+.cell.locked{background:repeating-linear-gradient(45deg,var(--grid) 0 4px,transparent 4px 8px);color:var(--muted);font:500 10px/1 var(--mono);cursor:default}
+.weak{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.weak button{width:100%;min-height:40px;display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;font-size:14px}
+.weak .cnt{font:600 13px var(--mono);color:var(--bad)}
+.weak .empty{font-size:14px;color:var(--muted)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{min-height:40px;border:0;background:none;padding:6px 12px;font-size:14px;color:var(--muted);cursor:pointer}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.sheet{font-size:14px}
+.sheet p{margin:0 0 8px}
+.sheet .muted{color:var(--muted)}
+.conj{border-collapse:collapse;margin:4px 0 10px;font:500 14px var(--serif)}
+.conj th,.conj td{padding:3px 10px 3px 0;text-align:left}
+.conj thead th{font:500 11px var(--mono);color:var(--muted)}
+.conj tbody th{font:500 12px var(--mono);color:var(--muted)}
+.confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+
+/* Наведение — только там, где есть мышь: на телефоне подсветка «залипает» после касания. */
+@media (hover: hover){
+  .lessons button:hover,.gear:hover,.btn:hover:not(:disabled){border-color:var(--accent)}
+  .modes button:hover{color:var(--ink)}
+  .tile:hover:not(:disabled){transform:translateY(-1px);border-color:var(--accent)}
+  .slot:hover{border-color:var(--accent);background:var(--accent-soft)}
+  .weak button:hover{background:var(--grid)}
+}
+
+@media (max-width:920px){.layout{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:700px){
+  .top{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand gear" "lessons lessons"}
+  .lessons{justify-self:stretch;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .lessons button{padding:8px 10px}
+  .lessons .lt{font-size:13px}
+  .menu{top:calc(env(safe-area-inset-top, 0px) + 64px)}
+}
+@media (max-width:560px){
+  .app{padding-inline:16px;padding-block:14px 32px}
+  .brand .name{font-size:24px}
+  .brand .alt{font-size:12px}
+  .brand .alt .sub{display:none}
+  .lessons button{padding:6px 8px}
+  .lessons .ln{font-size:10px}
+  .layout{margin-top:14px;gap:18px}
+  .card{padding:18px 16px 20px;gap:16px;min-height:0}
+  /* Вкладки сеткой 2×2: полоса с прокруткой прятала «Энклитики» за краем экрана. */
+  .modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;border-bottom:0;overflow:visible}
+  .modes button{margin:0;padding:10px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel);text-align:center;white-space:normal}
+  .modes button[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+  .actions .btn{flex:1 1 auto}
+  .paradigm{gap:8px 10px}
+  .tile{padding:10px 12px;min-height:44px}
+  .cslot{height:44px}
+  .heat th[scope="row"]{width:72px}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="app" id="app" lang="ru">
+  <header class="top">
+    <div class="brand">
+      <span class="name" lang="sr-Latn">Srpska matrica</span>
+      <span class="alt"><span lang="sr-Cyrl">Српска матрица</span><span class="sub"> · тренажёр сербского глагола</span></span>
+    </div>
+    <nav class="lessons" id="lessons" aria-label="Урок"></nav>
+    <button type="button" class="gear" popovertarget="settings" aria-label="Настройки" title="Настройки">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </header>
+
+  <div id="settings" class="menu" popover>
+    <div class="menu-head"><h2>Настройки</h2><button type="button" class="x" popovertarget="settings" popovertargetaction="hide" aria-label="Закрыть">×</button></div>
+    <div class="row"><span>Род для «я»</span><span class="seg"><button type="button" data-gender="m">мужской</button><button type="button" data-gender="f">женский</button></span></div>
+    <div class="row"><span>Письмо</span><span class="seg"><button type="button" data-script="lat">latinica</button><button type="button" data-script="cyr">ћирилица</button></span></div>
+    <div class="row" id="resetrow"><button type="button" class="link" id="reset">Сбросить прогресс</button></div>
+    <p class="sync" id="sync"></p>
+  </div>
+
+  <main class="layout">
+    <section>
+      <div class="modes" id="modes" role="tablist" aria-label="Упражнение"></div>
+      <div id="focusbar"></div>
+      <article class="card" id="card"></article>
+      <p class="sr" id="live" aria-live="polite"></p>
+    </section>
+    <aside class="side">
+      <section class="panel">
+        <h2>Матрица</h2>
+        <div id="heat"></div>
+        <p class="hint">Процент — насколько клетка закреплена. Нажмите на клетку, чтобы тренировать только её.</p>
+      </section>
+      <section class="panel">
+        <h2>Слабые места</h2>
+        <ol class="weak" id="weak"></ol>
+      </section>
+      <details class="panel" open>
+        <summary>Шпаргалка урока</summary>
+        <div class="sheet" id="sheet"></div>
+      </details>
+    </aside>
+  </main>
+</div>
+
+<script id="engine">
+/* ENGINE:BEGIN — чистые данные и логика, без DOM */
+const P = ['ja','ti','on','ona','mi','vi','oni'];
+const CONJ = [0,1,2,2,3,4,5];               // лицо → индекс в таблице спряжения (on и ona совпадают)
+const GROUP = ['ja','ti','on','on','mi','vi','oni'];
+const GROUPS = ['ja','ti','on','mi','vi','oni'];
+const AUX = ['sam','si','je','je','smo','ste','su'];
+const NAUX = ['nisam','nisi','nije','nije','nismo','niste','nisu'];
+const FUT = ['ću','ćeš','će','će','ćemo','ćete','će'];
+const NFUT = ['neću','nećeš','neće','neće','nećemo','nećete','neće'];
+const CLITICS = new Set([...AUX, ...FUT]);
+const THIRD = new Set([2,3,6]);
+const RU_P = ['я','ты','он','она','мы','вы','они'];
+const RU_BUD = ['буду','будешь','будет','будет','будем','будете','будут'];
+const RU_GEN = ['меня','тебя','него','неё','нас','вас','них'];
+const RU_NET = ['меня','тебя','его','её','нас','вас','их'];   // «Меня нет дома»
+const TENSES = ['past','pres','fut'];
+const FORMS = ['aff','q','neg'];
+const T_RU = {past:'прошедшее', pres:'настоящее', fut:'будущее'};
+const F_RU = {aff:'утверждение', q:'вопрос', neg:'отрицание'};
+const F_SHORT = {aff:'утв.', q:'вопр.', neg:'отр.'};
+const GROUP_RU = {ja:'я', ti:'ты', on:'он, она', mi:'мы', vi:'вы', oni:'они'};
+
+const rnd = n => Math.floor(Math.random() * n);
+const pick = a => a[rnd(a.length)];
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rnd(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const wpick = (items, wf) => { const ws = items.map(wf); let r = Math.random() * ws.reduce((x, y) => x + y, 0); for (let i = 0; i < items.length; i++) { r -= ws[i]; if (r <= 0) return items[i]; } return items[items.length - 1]; };
+const cap = s => s ? s[0].toUpperCase() + s.slice(1) : s;
+const eqT = (a, b) => a.length === b.length && a.every((x, i) => x.toLowerCase() === b[i].toLowerCase());
+
+const w = s => s.split(' ');
+const comp = (sr, ru, x) => Object.assign({sr, ru}, x);
+const KOD = comp('kod kuće', 'дома'), BG = comp('u Beogradu', 'в Белграде');
+
+// ponytail: формы хранятся таблицей, а не выводятся правилами — проверяемо глазами.
+// Комплементы: null = можно без дополнения; если null нет — дополнение обязательно.
+const VERBS = [
+  {id:'raditi', l:1, inf:'raditi', pres:w('radim radiš radi radimo radite rade'), part:w('radio radila radili'),
+   ru:{inf:'работать', pres:w('работаю работаешь работает работаем работаете работают'), past:w('работал работала работали')}, comps:[null, KOD]},
+  {id:'govoriti', l:1, inf:'govoriti', pres:w('govorim govoriš govori govorimo govorite govore'), part:w('govorio govorila govorili'),
+   ru:{inf:'говорить', pres:w('говорю говоришь говорит говорим говорите говорят'), past:w('говорил говорила говорили')}, comps:[comp('srpski','по-сербски'), comp('ruski','по-русски')]},
+  {id:'učiti', l:1, inf:'učiti', pres:w('učim učiš uči učimo učite uče'), part:w('učio učila učili'),
+   ru:{inf:'учить', pres:w('учу учишь учит учим учите учат'), past:w('учил учила учили')}, comps:[comp('srpski','сербский')]},
+  {id:'živeti', l:1, inf:'živeti', pres:w('živim živiš živi živimo živite žive'), part:w('živeo živela živeli'),
+   ru:{inf:'жить', pres:w('живу живёшь живёт живём живёте живут'), past:w('жил жила жили')}, comps:[BG, comp('ovde','здесь')]},
+  {id:'voleti', l:1, inf:'voleti', pres:w('volim voliš voli volimo volite vole'), part:w('voleo volela voleli'),
+   ru:{inf:'любить', pres:w('люблю любишь любит любим любите любят'), past:w('любил любила любили')}, comps:[comp('Beograd','Белград')]},
+  {id:'znati', l:1, inf:'znati', pres:w('znam znaš zna znamo znate znaju'), part:w('znao znala znali'),
+   ru:{inf:'знать', pres:w('знаю знаешь знает знаем знаете знают'), past:w('знал знала знали')}, comps:[null, comp('srpski','сербский')]},
+  {id:'čitati', l:1, inf:'čitati', pres:w('čitam čitaš čita čitamo čitate čitaju'), part:w('čitao čitala čitali'),
+   ru:{inf:'читать', pres:w('читаю читаешь читает читаем читаете читают'), past:w('читал читала читали')}, comps:[null, comp('knjigu','книгу')]},
+  {id:'pisati', l:1, inf:'pisati', pres:w('pišem pišeš piše pišemo pišete pišu'), part:w('pisao pisala pisali'),
+   ru:{inf:'писать', pres:w('пишу пишешь пишет пишем пишете пишут'), past:w('писал писала писали')}, comps:[null, comp('pismo','письмо')]},
+  {id:'ići', l:1, inf:'ići', pres:w('idem ideš ide idemo idete idu'), part:w('išao išla išli'),
+   ru:{pres:w('иду идёшь идёт идём идёте идут'), past:w('шёл шла шли'), pastNeg:w('ходил ходила ходили'), fut:w('пойду пойдёшь пойдёт пойдём пойдёте пойдут')}, comps:[comp('kući','домой')]},
+  {id:'razumeti', l:1, inf:'razumeti', pres:w('razumem razumeš razume razumemo razumete razumeju'), part:w('razumeo razumela razumeli'),
+   ru:{inf:'понимать', pres:w('понимаю понимаешь понимает понимаем понимаете понимают'), past:w('понимал понимала понимали')}, comps:[null, comp('srpski','по-сербски')]},
+  {id:'biti', l:3, inf:'biti', pres:w('sam si je smo ste su'), presNeg:w('nisam nisi nije nismo niste nisu'), presClitic:true, part:w('bio bila bili'),
+   ru:{pres:null, past:w('был была были'), fut:w('буду будешь будет будем будете будут')}, comps:[KOD, BG]},
+  {id:'imati', l:3, inf:'imati', pres:w('imam imaš ima imamo imate imaju'), presNeg:w('nemam nemaš nema nemamo nemate nemaju'), part:w('imao imala imali'),
+   ruSpecial:'imati', comps:[comp('psa','собака',{gen:'собаки', g:'f'}), comp('vremena','время',{gen:'времени', g:'n'})]},
+  {id:'hteti', l:3, inf:'hteti', pres:w('hoću hoćeš hoće hoćemo hoćete hoće'), presNeg:w('neću nećeš neće nećemo nećete neće'), part:w('hteo htela hteli'), noFut:true,
+   ru:{pres:w('хочу хочешь хочет хотим хотите хотят'), past:w('хотел хотела хотели')}, comps:[comp('kafu','кофе',{gen:'кофе'}), comp('pivo','пиво',{gen:'пива'})]},
+];
+
+const LESSONS = [
+  {n:1, title:'Настоящее время', tenses:['pres']},
+  {n:2, title:'Прошедшее и будущее', tenses:['past','pres','fut']},
+  {n:3, title:'Biti, imati, hteti', sr:true, tenses:['past','pres','fut']},
+];
+
+// Энклитика ставится после первого элемента: at — номер места (0 = перед первым словом).
+// {м|ж} выбирается по настройке «Я говорю о себе».
+const CLIT = [
+  {id:'c1', l:2, w:['Juče','mnogo','radi{o|la}'], k:'sam', at:1, ru:'Вчера я много работал{|а}.'},
+  {id:'c2', l:2, w:['Sutra','raditi','kod','kuće'], k:'ću', at:1, ru:'Завтра я буду работать дома.'},
+  {id:'c3', l:2, w:['Gde','živeo'], k:'si', at:1, q:true, ru:'Где ты жил?'},
+  {id:'c4', l:2, w:['Šta','radio'], k:'si', at:1, q:true, ru:'Что ты делал?'},
+  {id:'c5', l:2, w:['Ona','živela','u','Beogradu'], k:'je', at:1, ru:'Она жила в Белграде.'},
+  {id:'c6', l:2, w:['Mi','učili','srpski'], k:'smo', at:1, ru:'Мы учили сербский.'},
+  {id:'c7', l:2, w:['Da','li','razumeo'], k:'si', at:2, q:true, ru:'Ты понял?'},
+  {id:'c8', l:2, w:['Sutra','ići','kući'], k:'ćemo', at:1, ru:'Завтра мы пойдём домой.'},
+  {id:'c9', l:2, w:['Radi{o|la}','kod','kuće'], k:'sam', at:1, ru:'Я работал{|а} дома.'},
+  {id:'c10', l:2, w:['Gde','raditi'], k:'ćete', at:1, q:true, ru:'Где вы будете работать?'},
+  {id:'c11', l:2, w:['Oni','govorili','ruski'], k:'su', at:1, ru:'Они говорили по-русски.'},
+  {id:'c12', l:2, w:['Da','li','pisati','pismo'], k:'ćeš', at:2, q:true, ru:'Ты будешь писать письмо?'},
+  {id:'c13', l:2, w:['Ovde','žive{o|la}'], k:'sam', at:1, ru:'Здесь я жил{|а}.'},
+  {id:'c14', l:2, w:['Kod','kuće','radi{o|la}'], k:'sam', at:2, ru:'Дома я работал{|а}.'},
+  {id:'c15', l:2, w:['U','Beogradu','živeli'], k:'smo', at:2, ru:'В Белграде мы жили.'},
+  {id:'c16', l:3, w:['Juče','bi{o|la}','kod','kuće'], k:'sam', at:1, ru:'Вчера я был{|а} дома.'},
+  {id:'c17', l:3, w:['Sutra','biti','u','Beogradu'], k:'ću', at:1, ru:'Завтра я буду в Белграде.'},
+  {id:'c18', l:3, w:['Mi','kod','kuće'], k:'smo', at:1, ru:'Мы дома.'},
+  {id:'c19', l:3, w:['Da','li','imao','vremena'], k:'si', at:2, q:true, ru:'У тебя было время?'},
+  {id:'c20', l:3, w:['Oni','hteli','pivo'], k:'su', at:1, ru:'Они хотели пиво.'},
+  {id:'c21', l:3, w:['Gde','bio'], k:'si', at:1, q:true, ru:'Где ты был?'},
+  {id:'c22', l:3, w:['Sutra','imati','vremena'], k:'ćemo', at:1, ru:'Завтра у нас будет время.'},
+];
+
+// ---------- Раздел «Спряжение»: форма по лицам, без фраз ----------
+const TR = {'ići':'идти, ехать', biti:'быть', imati:'иметь', hteti:'хотеть'};
+// Типичные ошибки в настоящем времени — формы, которых нет. ponytail: вручную, чтобы каждую можно было проверить глазами.
+const PRES_ERR = {
+  raditi: [['radu', '«oni» у глаголов на «-im» оканчивается на «-e»: «rade».'], ['radiju', '«oni» у глаголов на «-im» оканчивается на «-e»: «rade».']],
+  govoriti: [['govoru', '«oni» у глаголов на «-im» оканчивается на «-e»: «govore».'], ['govoriju', '«oni» у глаголов на «-im» оканчивается на «-e»: «govore».']],
+  'učiti': [['uču', '«oni» у глаголов на «-im» оканчивается на «-e»: «uče».'], ['učiju', '«oni» у глаголов на «-im» оканчивается на «-e»: «uče».']],
+  'živeti': [['živem', '«živeti» спрягается на «-im», хотя инфинитив на «-eti»: «živim».'], ['živeju', '«oni» от «živeti» — «žive».']],
+  voleti: [['volem', '«voleti» спрягается на «-im»: «volim».'], ['voleju', '«oni» от «voleti» — «vole».']],
+  znati: [['znu', '«oni» у глаголов на «-am» оканчивается на «-aju»: «znaju».'], ['znaje', '«oni» у глаголов на «-am» оканчивается на «-aju»: «znaju».']],
+  'čitati': [['čitu', '«oni» у глаголов на «-am» оканчивается на «-aju»: «čitaju».'], ['čitaje', '«oni» у глаголов на «-am» оканчивается на «-aju»: «čitaju».']],
+  pisati: [['pisam', '«pisati» спрягается на «-em», и «s» переходит в «š»: «pišem».'], ['pišaju', '«oni» от «pisati» — «pišu».']],
+  'ići': [['ićem', '«ići» спрягается от основы «id-»: «idem».'], ['ideju', '«oni» от «ići» — «idu».']],
+  razumeti: [['razumim', '«razumeti» спрягается на «-em»: «razumem».'], ['razumu', '«oni» от «razumeti» — «razumeju».']],
+  imati: [['imem', '«imati» спрягается на «-am»: «imam».'], ['imu', '«oni» от «imati» — «imaju».']],
+  hteti: [['htem', 'В настоящем времени «hteti» — «hoću, hoćeš, hoće…».'], ['hoćem', '«ja» от «hteti» — «hoću», без «-m».']],
+};
+const CONJ_ROWS = [0, 1, 2, 4, 5, 6];   // ja, ti, on, mi, vi, oni
+function conjTable(v, t, f, userG, lesson) {
+  const rows = CONJ_ROWS.map(p => {
+    const g = gFor(p, userG), fo = forms(v, {t, f, p, g});
+    const form = t === 'pres' ? (f === 'neg' ? fo.NV.join(' ') : fo.V)
+      : t === 'past' ? (f === 'neg' ? `${fo.NA} ${fo.L}` : `${fo.L} ${fo.A}`)
+      : (f === 'neg' ? `${fo.NF} ${fo.I}` : fo.FM.join(' '));
+    return {p, g, form};
+  });
+  const have = new Set(rows.map(r => r.form.toLowerCase())), out = [];
+  // row — строка, для которой придумана ошибка; объяснение показывается, только если плитку положили туда.
+  const add = (x, why, row = 0) => { const k = x.toLowerCase(); if (!have.has(k) && !out.some(d => d.t.toLowerCase() === k)) out.push({t:x, why, row}); };
+  const ja = rows[0], fo = forms(v, {t, f, p:0, g:ja.g}), other = v.part[1 - ja.g], otherG = ja.g ? 'мужской' : 'женский';
+  if (t === 'pres' && f === 'aff') { for (const [x, why] of PRES_ERR[v.id] || []) add(x, why, /«oni»/.test(why) ? 5 : 0); add(`ne ${fo.V}`, v.presNeg ? `Такой формы нет: отрицание пишется слитно — «${fo.NV[0]}». А здесь нужно утверждение.` : `«ne ${fo.V}» — это отрицание.`); }
+  if (t === 'pres' && f === 'neg') add(`ne ${fo.V}`, `Отрицание пишется слитно: не «ne ${fo.V}», а «${fo.NV[0]}».`);
+  if (t === 'past' && f === 'aff') {
+    add(`${fo.A} ${fo.L}`, `«${fo.A}» — энклитика: с неё фраза не начинается. Правильно: «${fo.L} ${fo.A}».`);
+    add(`${other} ${fo.A}`, `«${other}» — ${otherG} род.`);
+    add(`${v.part[0]} smo`, `С «smo» нужна форма множественного числа: «${v.part[2]} smo».`, 3);
+  }
+  if (t === 'past' && f === 'neg') { add(`ne ${fo.A} ${fo.L}`, `Отрицание пишется слитно: «${fo.NA}», а не «ne ${fo.A}».`); add(`${fo.NA} ${other}`, `«${other}» — ${otherG} род.`); }
+  if (t === 'fut' && f === 'aff') {
+    if (fo.FM.length === 1) {
+      add(`${v.inf} ${fo.F}`, `Когда глагол стоит первым, будущее пишется одним словом: «${fo.FM[0]}».`);
+      if (!v.inf.endsWith('eti')) add(`${v.inf.slice(0, -1)} ${fo.F}`, `«${v.inf.slice(0, -1)} ${fo.F}» — так пишут по-хорватски. По-сербски — «${fo.FM[0]}».`);
+    } else add(`${v.inf.slice(0, -2)}${fo.F}`, `У глаголов на «-ći» будущее пишется раздельно: «${fo.FM.join(' ')}».`);
+  }
+  if (t === 'fut' && f === 'neg') { add(`ne ${fo.F} ${fo.I}`, `Отрицание пишется слитно: «${fo.NF}», а не «ne ${fo.F}».`); add(`${fo.NF} ${fo.L}`, `После «${fo.NF}» нужен инфинитив: «${fo.NF} ${fo.I}».`); }
+  if (lesson >= 2) { if (t === 'pres') add(`${fo.L} ${fo.A}`, `«${fo.L} ${fo.A}» — это прошедшее время.`); else add(fo.V, `«${fo.V}» — это настоящее время.`); }
+  return {rows, distract: shuffle(out).slice(0, 3)};
+}
+
+// Род причастия: 0 — м, 1 — ж, 2 — мн. «ti» получает случайный род, русская фраза его показывает.
+function gFor(p, userG) { return p === 0 ? userG : p === 1 ? rnd(2) : p === 2 ? 0 : p === 3 ? 1 : 2; }
+// «У тебя была собака?» не показывает род — принимаем оба.
+function ambiguousG(v, cell) { return cell.p === 1 && cell.t === 'past' && v.ruSpecial === 'imati'; }
+
+function forms(v, cell) {
+  const i = cell.p, k = CONJ[i], V = v.pres[k];
+  return {
+    P: P[i], V, NV: v.presNeg ? [v.presNeg[k]] : ['ne', V],
+    A: AUX[i], NA: NAUX[i], F: FUT[i], NF: NFUT[i], L: v.part[cell.g], I: v.inf,
+    FM: v.inf.endsWith('ći') ? [v.inf, FUT[i]] : [v.inf.slice(0, -2) + FUT[i]],   // radiću, но ići ću
+  };
+}
+
+// Два порядка: без местоимения и с ним. Энклитика всегда на втором месте.
+function cores(v, cell) {
+  const f = forms(v, cell), p = f.P, m = cell.f;
+  if (cell.t === 'pres') {
+    if (m === 'aff') return {noP:[f.V], withP:[p, f.V]};
+    if (m === 'q') return {noP:['da li', f.V], withP: v.presClitic ? ['da li', f.V, p] : ['da li', p, f.V]};
+    return {noP:f.NV, withP:[p, ...f.NV]};
+  }
+  if (cell.t === 'past') {
+    if (m === 'aff') return {noP:[f.L, f.A], withP:[p, f.A, f.L]};
+    if (m === 'q') return {noP:['da li', f.A, f.L], withP:['da li', f.A, p, f.L]};
+    return {noP:[f.NA, f.L], withP:[p, f.NA, f.L]};
+  }
+  if (m === 'aff') return {noP:f.FM, withP:[p, f.F, f.I]};
+  if (m === 'q') return {noP:['da li', f.F, f.I], withP:['da li', f.F, p, f.I]};
+  return {noP:[f.NF, f.I], withP:[p, f.NF, f.I]};
+}
+
+// Типичные верные порядки — для самопроверки (проверка ответа идёт по правилам, см. orderError).
+function variantsFor(v, cell) {
+  const {noP, withP} = cores(v, cell), C = cell.c && cell.c.sr, out = [];
+  const add = t => { if (!CLITICS.has(t[0])) out.push(t); };
+  if (!C) { add(noP); add(withP); }
+  else {
+    add([...noP, C]); add([...withP, C]);
+    if (cell.f !== 'q') add([C, ...withP.slice(1)]);   // Kod kuće sam bio. Srpski ne govorim.
+  }
+  return out;
+}
+
+// Основной вариант: «я/ты/мы/вы» без местоимения, «он/она/они» — с ним.
+function canonicalFor(v, cell) {
+  const {noP, withP} = cores(v, cell), C = cell.c && cell.c.sr;
+  let t = THIRD.has(cell.p) ? withP : noP;
+  t = C ? [...t, C] : t.slice();
+  if (CLITICS.has(t[0])) t = [C, ...withP.slice(1)];   // sam kod kuće → Kod kuće sam
+  return t;
+}
+
+// Наборы слов верного ответа (местоимение необязательно). Порядок внутри набора свободный — его проверяет orderError.
+function basesFor(v, cell, genderFree) {
+  const gs = (genderFree || ambiguousG(v, cell)) && cell.g !== 2 ? [0, 1] : [cell.g];
+  const C = cell.c && cell.c.sr, p = P[cell.p], out = [];
+  for (const g of gs) {
+    const {noP, withP} = cores(v, Object.assign({}, cell, {g}));
+    for (const b of [noP, withP, withP.filter(x => x !== p)]) out.push(C ? [...b, C] : b.slice());
+  }
+  const seen = new Set();
+  return out.filter(b => { const k = b.map(x => x.toLowerCase()).sort().join('|'); if (seen.has(k)) return false; seen.add(k); return true; });
+}
+
+function ruFor(v, cell) {
+  const i = cell.p, k = CONJ[i], t = cell.t, m = cell.f, co = cell.c;
+  let s;
+  if (v.ruSpecial === 'imati') {
+    const u = 'у ' + RU_GEN[i], was = co.g === 'f' ? 'была' : co.g === 'n' ? 'было' : 'был';
+    if (t === 'pres') s = m === 'neg' ? `${u} нет ${co.gen}` : `${u} есть ${co.ru}`;
+    else if (t === 'past') s = m === 'neg' ? `${u} не было ${co.gen}` : `${u} ${was} ${co.ru}`;
+    else s = m === 'neg' ? `${u} не будет ${co.gen}` : `${u} будет ${co.ru}`;
+  } else if (v.id === 'biti' && t === 'pres' && m === 'neg') {
+    s = `${RU_NET[i]} нет ${co.ru}`;   // не «Я не дома»
+  } else {
+    let verb;
+    if (t === 'pres') verb = v.ru.pres ? v.ru.pres[k] : '';
+    else if (t === 'past') verb = (m === 'neg' && v.ru.pastNeg ? v.ru.pastNeg : v.ru.past)[cell.g];   // «не ходил», а не «не шёл»
+    else verb = v.ru.fut ? v.ru.fut[k] : RU_BUD[i] + ' ' + v.ru.inf;
+    if (m === 'neg') verb = ('не ' + verb).trim();
+    s = [RU_P[i], verb, co ? (m === 'neg' && co.gen ? co.gen : co.ru) : ''].filter(Boolean).join(' ');   // не хотел пива
+  }
+  return cap(s) + (m === 'q' ? '?' : '.');
+}
+
+// Слово, которое меняется по лицам в этой клетке.
+function personToken(v, cell, j) {
+  const f = forms(v, Object.assign({}, cell, {p:j})), m = cell.f;
+  if (cell.t === 'pres') return m === 'neg' ? f.NV[f.NV.length - 1] : f.V;
+  if (cell.t === 'past') return m === 'neg' ? f.NA : f.A;
+  if (m === 'aff') return THIRD.has(cell.p) ? f.F : f.FM[f.FM.length - 1];
+  return m === 'neg' ? f.NF : f.F;
+}
+
+// Лишние плитки = типичные ошибки русскоязычных. why — что объяснить, если её выбрали.
+function distractorsFor(v, cell, canon, lesson, genderFree) {
+  const have = new Set(canon.map(x => x.toLowerCase())), req = [], opt = [];
+  const add = (list, t, why) => {
+    const k = t.toLowerCase();
+    if (have.has(k) || req.concat(opt).some(d => d.t.toLowerCase() === k)) return false;
+    list.push({t, why}); return true;
+  };
+  const f = forms(v, cell), t = cell.t, m = cell.f;
+  if (m === 'neg') {
+    const calque = (x, right) => {
+      add(req, 'ne', `Здесь отрицание пишется слитно: не «ne ${x}», а «${right}».`);
+      add(req, x, `Здесь нужна отрицательная форма «${right}», а не «${x}».`);
+    };
+    if (t === 'past') calque(f.A, f.NA);
+    else if (t === 'fut') calque(f.F, f.NF);
+    else if (v.presNeg) calque(f.V, f.NV[0]);
+  }
+  if (t === 'fut' && m === 'aff' && !THIRD.has(cell.p) && f.FM.length === 1) { add(req, f.F, null); add(req, f.I, null); }
+  const mine = personToken(v, cell, cell.p);
+  let persons = 0;
+  for (const j of shuffle([0,1,2,4,5,6])) {
+    const x = personToken(v, cell, j);
+    if (x === mine) continue;
+    const who = P.filter((_, q) => personToken(v, cell, q) === x).join(' / ');
+    if (add(opt, x, `«${x}» — это форма для «${who}».`) && ++persons === 2) break;
+  }
+  if (t === 'past' && !genderFree && !ambiguousG(v, cell)) {
+    if (cell.g === 2) add(opt, v.part[0], `«${v.part[0]}» — единственное число, а здесь множественное.`);
+    else add(opt, v.part[1 - cell.g], `«${v.part[1 - cell.g]}» — ${cell.g === 0 ? 'женский' : 'мужской'} род.`);
+  }
+  if (lesson >= 2) {
+    if (t === 'pres') add(opt, v.part[cell.g], `«${v.part[cell.g]}» — это прошедшее время.`);
+    else add(opt, f.V, `«${f.V}» — это настоящее время.`);
+  }
+  if (m === 'neg') add(opt, 'da li', '«da li» делает вопрос, а здесь отрицание.');
+  else add(opt, 'ne', m === 'q' ? '«ne» добавляет отрицание, а нужен просто вопрос.' : '«ne» — это отрицание.');
+  const max = canon.length >= 4 ? 3 : 4;
+  return req.concat(shuffle(opt).slice(0, Math.max(0, max - req.length)));
+}
+
+// Порядок слов в сербском свободный, но с жёсткими правилами. null — порядок верный.
+function orderError(low, v, cell) {
+  const f = forms(v, cell), lc = x => x.toLowerCase();
+  if (low.indexOf('da li') > 0) return '«da li» ставится в начало вопроса.';
+  const ci = low.findIndex(x => CLITICS.has(x));
+  if (ci === 0) return `«${low[0]}» — энклитика: с неё фраза не начинается, её место второе.`;
+  if (ci > 1) return `Энклитика «${low[ci]}» стоит на втором месте — сразу после первого слова.`;
+  if (f.FM.length === 1) {   // у глаголов на -ći будущее всегда раздельное
+    if (low.indexOf(lc(f.FM[0])) > 0) return `«${f.FM[0]}» одним словом бывает только в начале фразы. После другого слова — раздельно: «${f.F} ${f.I}».`;
+    if (low[0] === lc(f.I) && FUT.includes(low[1])) return `Когда глагол стоит первым, будущее пишется одним словом: «${f.FM[0]}».`;
+  }
+  const n = low.indexOf('ne');
+  if (n !== -1 && low[n + 1] !== lc(f.V)) return '«ne» ставится прямо перед глаголом.';
+  const neg = low.findIndex(x => NAUX.includes(x) || NFUT.includes(x));
+  const nonfin = low.findIndex(x => x === lc(v.inf) || v.part.includes(x));
+  if (neg !== -1 && nonfin !== -1 && neg > nonfin) return `«${low[neg]}» стоит перед глаголом.`;
+  return null;
+}
+
+// Чем набор слов ответа отличается от набора base: чего не хватает и что лишнее.
+function wordDiff(base, ans) {
+  const rest = base.slice(), extra = [];
+  for (const x of ans) { const i = rest.findIndex(y => y.toLowerCase() === x.toLowerCase()); if (i >= 0) rest.splice(i, 1); else extra.push(x); }
+  return {missing: rest, extra, score: rest.length + extra.length};
+}
+const sameWords = (ex, ans) => ex.bases.some(b => wordDiff(b, ans).score === 0);
+function isCorrect(ex, ans) { return sameWords(ex, ans) && !orderError(ans.map(x => x.toLowerCase()), ex.v, ex.cell); }
+
+// Почему ответ неверен. Сообщения с «…» — сербские слова, интерфейс покажет их в выбранном письме.
+function diagnose(ex, ans) {
+  const low = ans.map(x => x.toLowerCase());
+  if (sameWords(ex, ans)) { const e = orderError(low, ex.v, ex.cell); return e ? {ok:false, why:e} : {ok:true}; }
+  const q = xs => xs.map(x => '«' + x + '»').join(', ');
+  const can = wordDiff(ex.canon, ans);
+  if (can.missing.length === 0) return {ok:false, why:`Лишние слова: ${q(can.extra)}.`};   // «nisam ne radio» → лишнее «ne»
+  for (const d of ex.distract) if (d.why && low.includes(d.t.toLowerCase())) return {ok:false, why:d.why};
+  const c = ex.bases.map(b => wordDiff(b, ans)).sort((a, b) => a.score - b.score)[0];
+  if (c.missing.length && c.extra.length) return {ok:false, why:`Не хватает: ${q(c.missing)}. Лишнее: ${q(c.extra)}.`};
+  if (c.missing.length) return {ok:false, why:`Не хватает: ${q(c.missing)}.`};
+  return {ok:false, why:`Лишние слова: ${q(c.extra)}.`};
+}
+
+const CYR = {a:'а',b:'б',c:'ц',č:'ч',ć:'ћ',d:'д',đ:'ђ',e:'е',f:'ф',g:'г',h:'х',i:'и',j:'ј',k:'к',l:'л',m:'м',n:'н',o:'о',p:'п',r:'р',s:'с',š:'ш',t:'т',u:'у',v:'в',z:'з',ž:'ж',dž:'џ',lj:'љ',nj:'њ'};
+// ponytail: dž/lj/nj всегда диграфы — в словаре приложения нет слов вроде «nadživeti».
+function toCyr(s) {
+  return s.replace(/dž|lj|nj|[a-zčćđšž]/giu, m => { const r = CYR[m.toLowerCase()]; return !r ? m : m[0] === m[0].toLowerCase() ? r : r.toUpperCase(); });
+}
+
+// Самопроверка движка: откройте страницу с #selftest и смотрите консоль.
+function selfTest() {
+  const errors = []; let n = 0;
+  const validG = (p, g) => (p <= 1 && g < 2) || (p === 2 && g === 0) || (p === 3 && g === 1) || (p >= 4 && g === 2);
+  for (const v of VERBS) for (const t of TENSES) for (const f of FORMS) for (let p = 0; p < 7; p++) for (const c of v.comps) for (const g of [0,1,2]) {
+    if ((t === 'fut' && v.noFut) || !validG(p, g)) continue;
+    const cell = {t, f, p, g, c}, id = `${v.id} ${t}.${f} ${P[p]} g${g} ${c ? c.sr : '-'}`;
+    const ex = {v, cell, canon: canonicalFor(v, cell), bases: basesFor(v, cell, false)}, ru = ruFor(v, cell);
+    n++;
+    if (!isCorrect(ex, ex.canon)) errors.push(id + ': основной вариант не принят');
+    for (const a of variantsFor(v, cell)) if (!isCorrect(ex, a)) errors.push(id + ': не принят верный вариант ' + a.join(' '));
+    for (const d of distractorsFor(v, cell, ex.canon, 3, false)) if (ex.canon.includes(d.t)) errors.push(id + ': лишняя плитка совпадает с ответом: ' + d.t);
+    if (/undefined|null|\s{2}/.test(ru + ' ' + ex.canon.join(' '))) errors.push(id + ': битый текст: ' + ru + ' / ' + ex.canon.join(' '));
+  }
+  for (const it of CLIT) if (!CLITICS.has(it.k) || it.at < 1 || it.at > it.w.length) errors.push(it.id + ': неверный пример энклитики');
+
+  // Регрессии из ревью: свободный порядок слов и честные объяснения ошибок. Слова разделены «|».
+  const V = id => VERBS.find(v => v.id === id), OV = comp('ovde', 'здесь'), KU = comp('kući', 'домой');
+  const mk = (id, t, f, p, g, c) => { const v = V(id), cell = {t, f, p, g, c}; return {v, cell, canon: canonicalFor(v, cell), bases: basesFor(v, cell, false), distract: []}; };
+  const orders = [
+    [true, 'živeti', 'pres', 'aff', 2, 0, OV, 'on|ovde|živi'],
+    [true, 'živeti', 'past', 'aff', 3, 1, OV, 'ona|je|ovde|živela'],
+    [true, 'živeti', 'pres', 'q', 1, 0, OV, 'da li|ovde|živiš'],
+    [true, 'raditi', 'pres', 'q', 2, 0, KOD, 'da li|on|kod kuće|radi'],
+    [true, 'raditi', 'fut', 'aff', 0, 0, KOD, 'ja|ću|kod kuće|raditi'],
+    [true, 'raditi', 'fut', 'aff', 0, 0, KOD, 'kod kuće|ću|raditi'],
+    [true, 'biti', 'past', 'aff', 0, 0, KOD, 'kod kuće|sam|bio'],
+    [false, 'biti', 'pres', 'aff', 0, 0, KOD, 'sam|kod kuće'],
+    [false, 'raditi', 'fut', 'aff', 0, 0, null, 'raditi|ću'],
+    [false, 'raditi', 'fut', 'aff', 0, 0, KOD, 'kod kuće|radiću'],
+    [false, 'raditi', 'past', 'aff', 2, 0, null, 'on|radio|je'],
+    [false, 'raditi', 'fut', 'aff', 2, 0, null, 'on|radiće'],
+    [false, 'raditi', 'pres', 'q', 2, 0, null, 'on|da li|radi'],
+    [false, 'raditi', 'past', 'neg', 0, 0, null, 'radio|nisam'],
+  ];
+  for (const [want, ...o] of orders) if (isCorrect(mk(...o.slice(0, 6)), o[6].split('|')) !== want) errors.push(`регрессия: «${o[6]}» должно быть ${want ? 'верно' : 'неверно'}`);
+  const why = (o, s) => diagnose(mk(...o), s.split('|')).why || '';
+  if (/одним словом/.test(why(['ići', 'fut', 'q', 0, 0, KU], 'ići|ću|kući'))) errors.push('регрессия: «ići ću» в вопросе объясняется слитным написанием');
+  if (/«on»/.test(why(['raditi', 'pres', 'q', 2, 0, null], 'radi'))) errors.push('регрессия: необязательное «on» названо недостающим');
+  if (!/Лишн/.test(why(['raditi', 'fut', 'aff', 0, 0, KOD], 'radiću|ću|raditi|kod kuće'))) errors.push('регрессия: лишние слова не названы лишними');
+  if (!/Лишн.*«ne»/.test(why(['raditi', 'past', 'neg', 0, 0, null], 'nisam|ne|radio'))) errors.push('регрессия: «nisam ne radio» — лишнее «ne»');
+  if (ruFor(V('biti'), {t:'pres', f:'neg', p:0, g:0, c:KOD}) !== 'Меня нет дома.') errors.push('регрессия: «Меня нет дома»');
+  for (const v of VERBS.filter(v => v.presNeg)) { const d = conjTable(v, 'pres', 'aff', 0, 3).distract.find(x => x.t.startsWith('ne ')); if (d && /это отрицание/.test(d.why)) errors.push(`регрессия: «${d.t}» названо отрицанием`); }
+
+  // Спряжение: лишние плитки не совпадают ни с одной верной формой, и их хватает.
+  for (const v of VERBS) for (const t of TENSES) for (const f of ['aff', 'neg']) {
+    if ((t === 'fut' && v.noFut) || (t === 'pres' && f === 'neg' && !v.presNeg)) continue;
+    for (const [g, lesson] of [[0, 1], [1, 3]]) {
+      if (lesson === 1 && (t !== 'pres' || v.l > 1)) continue;
+      const tb = conjTable(v, t, f, g, lesson), id = `спряжение ${v.id} ${t}.${f}`;
+      const fs = tb.rows.map(r => r.form.toLowerCase());
+      if (tb.distract.length < 2) errors.push(id + ': меньше двух лишних плиток');
+      for (const d of tb.distract) if (fs.includes(d.t.toLowerCase())) errors.push(`${id}: лишняя плитка «${d.t}» совпадает с формой`);
+      if (tb.rows.some(r => !r.form || /undefined/.test(r.form))) errors.push(id + ': пустая форма');
+    }
+  }
+  for (const [id, list] of Object.entries(PRES_ERR)) for (const [x] of list) if (VERBS.find(v => v.id === id).pres.includes(x)) errors.push(`PRES_ERR ${id}: «${x}» — настоящая форма`);
+  return {cells:n, errors};
+}
+/* ENGINE:END */
+</script>
+
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+const LS_KEY = 'srpska-matrica/v1';
+const MODES = [
+  {id:'conj', name:'Спряжение', lead:'Разложите формы по лицам. Лишние плитки — типичные ошибки.'},
+  {id:'build', name:'Сборка', lead:'Соберите перевод из слов. Лишние слова — типичные ошибки.'},
+  {id:'transform', name:'Трансформации', lead:'Измените фразу, как сказано в подсказке.'},
+  {id:'clitic', name:'Энклитики', lead:'Поставьте энклитику на её место.'},
+];
+// gender: null — ещё не выбран (до выбора используется мужской род).
+const DEFAULT = () => ({v:1, lesson:1, mode:'conj', gender:null, script:'lat', focus:null, cells:{}, verbs:{}, clit:{},
+  updatedAt:0, settingsAt:0, resetAt:0, owner:null});
+// Всё, что пришло из хранилища, проверяется: битое состояние не должно ронять страницу.
+function normalize(s) {
+  const d = DEFAULT();
+  if (!s || s.v !== 1) return d;
+  const obj = x => x && typeof x === 'object' && !Array.isArray(x) ? x : {};
+  const resetAt = +s.resetAt || 0;
+  const recs = x => {
+    const out = {};
+    for (const [k, r] of Object.entries(obj(x))) if (r && typeof r.box === 'number') {
+      const at = +r.at || 0, rs = 'rs' in r ? +r.rs || 0 : (at >= resetAt ? resetAt : 0);   // записи до появления rs
+      out[k] = {box: Math.max(0, Math.min(4, r.box | 0)), seen: +r.seen || 0, wrong: +r.wrong || 0, at, rs};
+    }
+    return out;
+  };
+  const lesson = [1, 2, 3].includes(s.lesson) ? s.lesson : 1;
+  const focusOk = typeof s.focus === 'string' && /^(past|pres|fut)\.(aff|q|neg)$/.test(s.focus) && LESSONS[lesson - 1].tenses.includes(s.focus.split('.')[0]);
+  return Object.assign(d, {
+    lesson, focus: focusOk ? s.focus : null,
+    mode: MODES.some(m => m.id === s.mode) ? s.mode : 'conj',
+    gender: s.gender === 'm' || s.gender === 'f' ? s.gender : null,
+    script: s.script === 'cyr' ? 'cyr' : 'lat',
+    cells: recs(s.cells), verbs: recs(s.verbs), clit: recs(s.clit),
+    updatedAt: +s.updatedAt || 0, settingsAt: +s.settingsAt || 0, resetAt,
+    owner: typeof s.owner === 'string' ? s.owner : null,
+  });
+}
+const loadLocal = () => { try { return JSON.parse(localStorage.getItem(LS_KEY)); } catch (e) { return null; } };
+const saveLocal = () => { try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch (e) {} };
+
+let S = normalize(loadLocal());
+let cur = null, lastKey = '', confirmReset = false;
+let syncMode = 'local', remoteRef = null, saveTimer = 0, dirty = false, writing = false, retry = 0;
+
+const say = text => { const el = $('#live'); if (el) el.textContent = text; };
+
+// ---------- отображение сербского ----------
+const disp = t => S.script === 'cyr' ? toCyr(t) : t;
+const srLang = () => S.script === 'cyr' ? 'sr-Cyrl' : 'sr-Latn';
+const sr = t => `<span lang="${srLang()}">${esc(disp(t))}</span>`;
+const sentence = (toks, q) => cap(toks.map(disp).join(' ')) + (q ? '?' : '.');
+const whyHTML = s => s.split(/(«[^»]+»)/).map(part => part.startsWith('«') ? '«' + sr(part.slice(1, -1)) + '»' : esc(part)).join('');
+const gsel = s => s.replace(/\{([^|}]*)\|([^}]*)\}/g, (_, m, f) => S.gender === 'f' ? f : m);
+
+// ---------- интервальные повторения по клеткам ----------
+const recW = (rec, unseen = 4) => rec ? [6, 3, 1.5, 0.7, 0.3][rec.box || 0] : unseen;
+const cellKeyOf = c => `${c.t}.${c.f}.${GROUP[c.p]}`;
+const clone = o => o ? JSON.parse(JSON.stringify(o)) : undefined;
+
+function pickCell(ok = () => true) {
+  const L = LESSONS[S.lesson - 1], cands = [];
+  for (const t of L.tenses) for (const f of FORMS) for (const g of GROUPS)
+    if ((!S.focus || S.focus === t + '.' + f) && ok(t, f)) cands.push({t, f, g});
+  const c = wpick(cands, x => recW(S.cells[`${x.t}.${x.f}.${x.g}`]));
+  return {t:c.t, f:c.f, p: c.g === 'on' ? (Math.random() < .5 ? 2 : 3) : P.indexOf(c.g)};
+}
+function pickVerb(t, ok = () => true) {
+  const pool = VERBS.filter(v => v.l <= S.lesson && !(t === 'fut' && v.noFut) && ok(v));
+  return wpick(pool, v => recW(S.verbs[v.id]) * (v.l === S.lesson ? 2 : 1));
+}
+function drawCell() {
+  let v, cell, key, n = 0;
+  do {
+    cell = pickCell(); v = pickVerb(cell.t);
+    cell.g = gFor(cell.p, S.gender === 'f' ? 1 : 0);
+    cell.c = pick(v.comps) || null;
+    key = [v.id, cell.t, cell.f, cell.p, cell.c && cell.c.sr].join('|');
+  } while (key === lastKey && ++n < 6);
+  lastKey = key;
+  return {v, cell};
+}
+function sourceFor(v, cell) {
+  const ts = LESSONS[S.lesson - 1].tenses.filter(t => !(t === 'fut' && v.noFut)), all = [], single = [];
+  for (const t of ts) for (const f of FORMS) {
+    if (t === cell.t && f === cell.f) continue;
+    all.push({t, f});
+    if (t === cell.t || f === cell.f) single.push({t, f});
+  }
+  return Object.assign({}, cell, Math.random() < .7 ? pick(single) : pick(all));
+}
+function makeEx(kind) {
+  const {v, cell} = drawCell();
+  const src = kind === 'transform' ? sourceFor(v, cell) : null;
+  const genderFree = !!src && cell.p === 1 && src.t !== 'past';   // из «Radiš.» род «ti» не виден
+  const canon = canonicalFor(v, cell);
+  const distract = distractorsFor(v, cell, canon, S.lesson, genderFree);
+  const tiles = shuffle(canon.concat(distract.map(d => d.t))).map((t, id) => ({t, id}));
+  return {kind, v, cell, src, canon, bases: basesFor(v, cell, genderFree), distract, tiles, placed:[], done:false};
+}
+function makeClit() {
+  const pool = CLIT.filter(c => c.l <= S.lesson && c.id !== lastKey);
+  const it = wpick(pool, c => recW(S.clit[c.id]));
+  lastKey = it.id;
+  return {kind:'clitic', it, words: it.w.map(gsel), ru: gsel(it.ru), chosen:null, done:false};   // род фиксируется при создании
+}
+// «Спряжение» тренирует только клетки, у которых есть своя таблица: без вопросов (это те же формы)
+// и без отрицания настоящего у обычных глаголов («ne radim» — не отдельная форма).
+const conjOK = (t, f) => f !== 'q' && !(t === 'pres' && f === 'neg' && !VERBS.some(v => v.l <= S.lesson && v.presNeg));
+function makeConj() {
+  if (S.focus && !conjOK(...S.focus.split('.'))) S.focus = null;
+  let c, v, f, n = 0;
+  do {
+    c = pickCell(conjOK); f = c.f;
+    v = pickVerb(c.t, x => !(c.t === 'pres' && f === 'neg') || x.presNeg);
+  } while ([v.id, c.t, f].join('|') === lastKey && ++n < 6);
+  lastKey = [v.id, c.t, f].join('|');
+  const tb = conjTable(v, c.t, f, S.gender === 'f' ? 1 : 0, S.lesson);
+  const tiles = shuffle(tb.rows.map(r => r.form).concat(tb.distract.map(d => d.t))).map((t, id) => ({t, id}));
+  return {kind:'conj', v, t:c.t, f, rows:tb.rows, distract:tb.distract, tiles, fill: tb.rows.map(() => null), done:false};
+}
+function newEx() {
+  if (S.mode === 'conj') cur = makeConj();
+  else if (S.mode === 'clitic') cur = S.lesson >= 2 ? makeClit() : null;
+  else cur = makeEx(S.mode);
+  if (cur) cur.createdAt = Date.now();
+}
+// Второе касание двойного тапа не должно попадать в то, что появилось под пальцем.
+const tooSoon = (t) => t && Date.now() - t < 400;
+
+function bump(bucket, key, ok) {
+  const r = bucket[key] || (bucket[key] = {box:0, seen:0, wrong:0});
+  r.seen++; r.at = Date.now(); r.rs = S.resetAt;   // эпоха сброса, в которой сделан ответ
+  if (ok) r.box = Math.min(4, r.box + 1); else { r.box = 0; r.wrong++; }
+}
+function commit(ex, ok) {
+  if (ex.kind === 'clitic') { ex.snap = {c: clone(S.clit[ex.it.id])}; bump(S.clit, ex.it.id, ok); }
+  else {
+    const k = cellKeyOf(ex.cell);
+    ex.snap = {k, c: clone(S.cells[k]), v: clone(S.verbs[ex.v.id])};
+    bump(S.cells, k, ok); bump(S.verbs, ex.v.id, ok);
+  }
+  persist(); renderSide();
+}
+function override() {
+  const ex = cur; if (!ex || !ex.done || ex.ok || !ex.snap || tooSoon(ex.checkedAt)) return;
+  const put = (bucket, key, val) => { if (val) bucket[key] = val; else delete bucket[key]; };
+  put(S.cells, ex.snap.k, ex.snap.c); put(S.verbs, ex.v.id, ex.snap.v);
+  ex.ok = true; ex.overridden = true;
+  commit(ex, true); renderCard();
+}
+
+// ---------- действия ----------
+function place(id) {
+  const ex = cur; if (!ex || ex.done || !ex.tiles || !ex.tiles[id] || tooSoon(ex.createdAt)) return;
+  if (ex.kind === 'conj') {   // плитка встаёт в первую пустую строку
+    const i = ex.fill.indexOf(null);
+    if (i < 0 || ex.fill.includes(id)) return;
+    ex.fill[i] = id;
+  } else { if (ex.placed.includes(id)) return; ex.placed.push(id); }
+  renderCard();
+}
+function unplace(id) { const ex = cur; if (!ex || ex.done) return; ex.placed = ex.placed.filter(x => x !== id); renderCard(); }
+function unfillRow(i) { const ex = cur; if (!ex || ex.kind !== 'conj' || ex.done) return; ex.fill[i] = null; renderCard(); }
+function clearPlaced() {
+  const ex = cur; if (!ex || ex.done) return;
+  if (ex.kind === 'conj') ex.fill = ex.fill.map(() => null); else if (ex.placed) ex.placed = [];
+  renderCard();
+}
+function checkConj() {
+  const ex = cur; if (ex.fill.includes(null)) return;
+  ex.res = ex.rows.map((r, i) => {
+    const got = ex.tiles[ex.fill[i]].t;
+    if (got.toLowerCase() === r.form.toLowerCase()) return {ok:true};
+    const d = ex.distract.find(x => x.t === got);
+    if (d) return {ok:false, why: d.row === i ? d.why : ''};
+    const who = ex.rows.filter(q => q.form === got).map(q => P[q.p]).join(' / ');
+    return {ok:false, why: `«${got}» — это форма для «${who}».`};
+  });
+  Object.assign(ex, {done:true, checkedAt: Date.now(), ok: ex.res.every(x => x.ok)});
+  say(ex.ok ? 'Верно, все шесть форм.' : `Верно ${ex.res.filter(x => x.ok).length} из ${ex.rows.length}.`);
+  ex.rows.forEach((r, i) => bump(S.cells, `${ex.t}.${ex.f}.${GROUP[r.p]}`, ex.res[i].ok));   // каждая строка — своя клетка матрицы
+  bump(S.verbs, ex.v.id, ex.ok);
+  persist(); renderSide(); renderCard();
+}
+function check() {
+  if (cur && cur.kind === 'conj' && !cur.done) return checkConj();
+  const ex = cur; if (!ex || ex.kind === 'clitic' || ex.done || !ex.placed.length) return;
+  ex.ans = ex.placed.map(id => ex.tiles[id].t);
+  Object.assign(ex, diagnose(ex, ex.ans), {done:true, checkedAt: Date.now()});
+  say((ex.ok ? 'Верно. ' : 'Неверно. Правильно: ') + sentence(ex.canon, ex.cell.f === 'q'));
+  commit(ex, ex.ok);
+  renderCard();
+}
+function chooseSlot(s) {
+  const ex = cur; if (!ex || ex.kind !== 'clitic' || ex.done || s > ex.words.length || tooSoon(ex.createdAt)) return;
+  Object.assign(ex, {chosen:s, done:true, ok: s === ex.it.at, checkedAt: Date.now()});
+  say(ex.ok ? 'Верно.' : 'Неверно.');
+  commit(ex, ex.ok); renderCard();
+}
+function next() {
+  if (cur && tooSoon(cur.checkedAt)) return;   // двойное касание «Проверить» не проскакивает разбор
+  newEx(); renderCard();
+}
+
+function setLesson(n) {
+  if (S.lesson === n) return;
+  S.lesson = n;
+  if (S.focus && !LESSONS[n - 1].tenses.includes(S.focus.split('.')[0])) S.focus = null;
+  persist(true); newEx(); renderAll();
+}
+function setMode(m) { if (S.mode === m) return; S.mode = m; persist(true); newEx(); renderAll(); }
+function toggleFocus(key) {
+  S.focus = key && S.focus !== key ? key : null;
+  if (S.focus && (S.mode === 'clitic' || (S.mode === 'conj' && !conjOK(...S.focus.split('.'))))) S.mode = 'build';
+  persist(true); newEx(); renderAll();
+}
+function setGender(g) { if (S.gender === g) return; S.gender = g; persist(true); newEx(); renderAll(); }
+function setScript(s) { if (S.script === s) return; S.script = s; persist(true); renderAll(); }
+
+// ---------- отрисовка ----------
+function renderAll() { renderLessons(); renderModes(); renderCard(); renderSide(); }
+
+function renderLessons() {
+  $('#lessons').innerHTML = LESSONS.map(L =>
+    `<button type="button" data-lesson="${L.n}" aria-pressed="${S.lesson === L.n}"><span class="ln">Урок ${L.n}</span><span class="lt">${L.sr ? sr(L.title) : esc(L.title)}</span></button>`).join('');
+}
+function renderModes() {
+  $('#modes').innerHTML = MODES.map(m => `<button type="button" role="tab" data-mode="${m.id}" aria-selected="${S.mode === m.id}">${m.name}</button>`).join('');
+  const [t, f] = (S.focus || '').split('.');
+  $('#focusbar').innerHTML = S.focus && S.mode !== 'clitic'
+    ? `<div class="focusbar"><span class="chip to">Только: ${T_RU[t]} · ${F_RU[f]}</span><button type="button" class="link" id="unfocus">Вся матрица</button></div>` : '';
+}
+
+function renderCard() {
+  const card = $('#card'), mode = MODES.find(m => m.id === S.mode);
+  const ask = S.gender === null && S.lesson >= 2
+    ? `<div class="ask"><p>В прошедшем времени сербский различает род: ${sr('radio')} — он, ${sr('radila')} — она. О себе вы говорите…</p><div class="actions"><button type="button" class="btn" data-gender="m">в мужском роде</button><button type="button" class="btn" data-gender="f">в женском роде</button></div></div>`
+    : '';
+  const lead = ask + `<p class="lead">${mode.lead}</p>`;
+  if (S.mode === 'clitic') {
+    if (!cur) { card.innerHTML = lead + `<p class="prompt">Энклитики начинаются с урока 2.</p><p>В настоящем времени их почти нет: они появляются вместе с прошедшим (${sr('radio sam')}) и будущим (${sr('ja ću raditi')}).</p><div class="actions"><button type="button" class="btn primary" id="to-l2">Перейти к уроку 2</button></div>`; return; }
+    return renderClit(card, lead);
+  }
+  if (S.mode === 'conj') return renderConj(card, lead);
+  renderTiles(card, lead);
+}
+
+const poolHTML = (ex, used) => ex.tiles.map(tl => used.has(tl.id)
+  ? `<span class="tile ghost" aria-hidden="true">${esc(disp(tl.t))}</span>`
+  : `<button type="button" class="tile" data-id="${tl.id}" lang="${srLang()}"${ex.done ? ' disabled' : ''}>${esc(disp(tl.t))}</button>`).join('');
+
+function renderTiles(card, lead) {
+  const ex = cur, q = ex.cell.f === 'q';
+  // Род «я» из настроек показываем там, где задание само его не выдаёт.
+  const hidden = ex.cell.p <= 1 && ex.cell.t === 'past' &&
+    ((ex.kind === 'build' && ex.v.ruSpecial === 'imati') || (ex.kind === 'transform' && ex.src.t !== 'past'));
+  const gchip = hidden ? `<span class="chip to">${ex.cell.p ? 'ты' : 'я'} — ${ex.cell.g ? 'женский' : 'мужской'} род</span>` : '';
+  let head;
+  if (ex.kind === 'build') {
+    head = `<div class="meta"><span class="chip">${T_RU[ex.cell.t]}</span><span class="chip">${F_RU[ex.cell.f]}</span>${gchip}</div><p class="prompt" lang="ru">${esc(ruFor(ex.v, ex.cell))}</p>`;
+  } else {
+    const to = [];
+    if (ex.src.t !== ex.cell.t) to.push(T_RU[ex.cell.t]);
+    if (ex.src.f !== ex.cell.f) to.push(F_RU[ex.cell.f]);
+    head = `<div class="meta"><span class="chip">измените на</span>${to.map(x => `<span class="chip to">→ ${x}</span>`).join('')}${gchip}</div><p class="prompt" lang="${srLang()}">${esc(sentence(canonicalFor(ex.v, ex.src), ex.src.f === 'q'))}</p>`;
+  }
+  const ansTiles = ex.placed.length
+    ? ex.placed.map((id, i) => `<button type="button" class="tile placed" data-un="${id}" lang="${srLang()}"${ex.done ? ' disabled' : ''}>${esc(i === 0 ? cap(disp(ex.tiles[id].t)) : disp(ex.tiles[id].t))}</button>`).join('') + (ex.done ? `<span class="punct">${q ? '?' : '.'}</span>` : '')
+    : '<span class="placeholder">Нажимайте слова по порядку</span>';
+  let actions, fb = '';
+  if (!ex.done) actions = `<button type="button" class="btn primary" id="check"${ex.placed.length ? '' : ' disabled'}>Проверить</button><button type="button" class="btn" id="clear"${ex.placed.length ? '' : ' disabled'}>Стереть</button>`;
+  else {
+    actions = `<button type="button" class="btn primary" id="next">Дальше</button>`;
+    const canon = `<span class="sent" lang="${srLang()}">${esc(sentence(ex.canon, q))}</span>`;
+    if (ex.ok) {
+      const same = eqT(ex.ans, ex.canon);
+      fb = `<div class="fb ok"><span class="verdict" lang="${srLang()}">${ex.overridden ? 'Засчитано.' : esc(disp('Tačno!'))}</span>${same ? '' : `<span>Основной вариант: ${canon}</span>`}</div>`;
+    } else {
+      fb = `<div class="fb bad"><span class="verdict" lang="${srLang()}">${esc(disp('Netačno.'))}</span><span><s lang="${srLang()}">${esc(sentence(ex.ans, q))}</s> → ${canon}</span><p class="why">${whyHTML(ex.why)}</p><span><button type="button" class="link" id="override">Мой вариант тоже верный — засчитать</button></span></div>`;
+    }
+  }
+  card.innerHTML = lead + head +
+    `<div class="answer${ex.done ? (ex.ok ? ' ok' : ' bad') : ''}">${ansTiles}</div>${ex.done ? '' : `<div class="pool">${poolHTML(ex, new Set(ex.placed))}</div>`}<div class="actions">${actions}</div>${fb}`;
+}
+
+function renderConj(card, lead) {
+  const ex = cur, next = ex.fill.indexOf(null), used = new Set(ex.fill.filter(x => x !== null));
+  const who = r => esc(disp(r.p === 2 && ex.t !== 'past' ? 'on, ona' : P[r.p])) + (ex.t === 'past' && r.p <= 1 ? (r.g ? ' (ж)' : ' (м)') : '');
+  // Парадигма как в сербских грамматиках: jednina слева (ja, ti, on), množina справа (mi, vi, oni).
+  const cell = (r, i) => {
+    const id = ex.fill[i], res = ex.done ? ex.res[i] : null;
+    const slot = id === null
+      ? `<span class="cslot${i === next ? ' next' : ''}" aria-hidden="true"></span>`
+      : `<button type="button" class="tile placed" data-row="${i}" lang="${srLang()}"${ex.done ? ' disabled' : ''}>${esc(disp(ex.tiles[id].t))}</button>`;
+    return `<div class="ccell${res ? (res.ok ? ' ok' : ' bad') : ''}"><span class="who" lang="${srLang()}">${who(r)}</span>${slot}</div>`;
+  };
+  const cells = ex.rows.map(cell);
+  const grid = `<div class="paradigm"><span class="colh">${sr('jednina')}</span>${cells.slice(0, 3).join('')}<span class="colh">${sr('množina')}</span>${cells.slice(3).join('')}</div>`;
+  const notes = ex.done && !ex.ok ? `<ul class="cnotes">${ex.rows.map((r, i) => ex.res[i].ok ? '' :
+    `<li><span class="who" lang="${srLang()}">${who(r)}</span> <span class="sent" lang="${srLang()}">${esc(disp(r.form))}</span>${ex.res[i].why ? `<span>${whyHTML(ex.res[i].why)}</span>` : ''}</li>`).join('')}</ul>` : '';
+  const actions = ex.done
+    ? `<button type="button" class="btn primary" id="next">Дальше</button>`
+    : `<button type="button" class="btn primary" id="check"${next < 0 ? '' : ' disabled'}>Проверить</button><button type="button" class="btn" id="clear"${used.size ? '' : ' disabled'}>Стереть</button>`;
+  const right = ex.done ? ex.res.filter(x => x.ok).length : 0;
+  const fb = !ex.done ? '' : ex.ok
+    ? `<div class="fb ok"><span class="verdict" lang="${srLang()}">${esc(disp('Tačno!'))}</span><span>Все шесть форм верны.</span></div>`
+    : `<div class="fb bad"><span class="verdict" lang="${srLang()}">${esc(disp('Netačno.'))}</span><span>Верно ${right} из ${ex.rows.length}. Правильные формы:</span>${notes}</div>`;
+  card.innerHTML = lead + `<div class="meta"><span class="chip">${T_RU[ex.t]}</span><span class="chip">${F_RU[ex.f]}</span></div>` +
+    `<p class="prompt"><span lang="${srLang()}">${esc(disp(ex.v.inf))}</span> <span class="trn" lang="ru">— ${esc(TR[ex.v.id] || ex.v.ru.inf)}</span></p>` +
+    grid + (ex.done ? '' : `<div class="pool">${poolHTML(ex, used)}</div>`) + `<div class="actions">${actions}</div>${fb}`;
+}
+
+function renderClit(card, lead) {
+  const ex = cur, it = ex.it, k = it.k;
+  let row = '';
+  const slot = i => {
+    if (!ex.done) return `<button type="button" class="slot" data-slot="${i}" aria-label="Поставить сюда"></button>`;
+    return i === ex.chosen ? `<span class="ins ${ex.ok ? 'ok' : 'bad'}" lang="${srLang()}">${esc(disp(k))}</span>` : '<span class="gap"></span>';
+  };
+  ex.words.forEach((wd, i) => { row += slot(i) + `<span class="w" lang="${srLang()}">${esc(disp(wd))}</span>`; });
+  row += slot(ex.words.length) + `<span class="w punct">${it.q ? '?' : '.'}</span>`;
+  const build = s => { const t = ex.words.slice(); t[0] = t[0][0].toLowerCase() + t[0].slice(1); t.splice(s, 0, k); return sentence(t, it.q); };
+  let fb = '', actions = '';
+  if (ex.done) {
+    actions = `<button type="button" class="btn primary" id="next">Дальше</button>`;
+    const right = `<span class="sent" lang="${srLang()}">${esc(build(it.at))}</span>`;
+    if (ex.ok) fb = `<div class="fb ok"><span class="verdict" lang="${srLang()}">${esc(disp('Tačno!'))}</span>${right}</div>`;
+    else {
+      const first = ex.words.slice(0, it.at).join(' ');
+      const why = ex.chosen === 0 ? `«${k}» — энклитика: с неё фраза не начинается.`
+        : ex.chosen < it.at ? `«${first}» — одно целое, энклитика встаёт после него.`
+        : `Энклитика стоит на втором месте — сразу после «${first}».`;
+      fb = `<div class="fb bad"><span class="verdict" lang="${srLang()}">${esc(disp('Netačno.'))}</span>${right}<p class="why">${whyHTML(why)}</p></div>`;
+    }
+  }
+  card.innerHTML = lead + `<div class="meta"><span class="chip">куда поставить</span><span class="chip to" lang="${srLang()}">${esc(disp(k))}</span></div><p class="prompt" lang="ru">${esc(ex.ru)}</p><div class="slots">${row}</div><div class="actions">${actions}</div>${fb}`;
+}
+
+function mastery(t, f) { let s = 0; for (const g of GROUPS) { const r = S.cells[`${t}.${f}.${g}`]; s += r ? r.box / 4 : 0; } return s / GROUPS.length; }
+function renderSide() {
+  const L = LESSONS[S.lesson - 1];
+  let h = `<table class="heat"><thead><tr><th></th>${FORMS.map(f => `<th scope="col">${F_SHORT[f]}</th>`).join('')}</tr></thead><tbody>`;
+  for (const t of TENSES) {
+    h += `<tr><th scope="row">${T_RU[t]}</th>`;
+    for (const f of FORMS) {
+      if (!L.tenses.includes(t)) { h += `<td><span class="cell locked">урок 2</span></td>`; continue; }
+      const m = mastery(t, f), p = Math.round(m * 100), sel = S.focus === `${t}.${f}`;
+      h += `<td><button type="button" class="cell${m > .55 ? ' dk' : ''}${sel ? ' sel' : ''}" style="--p:${p}%" data-focus="${t}.${f}" aria-pressed="${sel}" aria-label="${T_RU[t]}, ${F_RU[f]}: ${p}%">${p}</button></td>`;
+    }
+    h += '</tr>';
+  }
+  $('#heat').innerHTML = h + '</tbody></table>';
+
+  const rows = Object.entries(S.cells)
+    .filter(([k, r]) => r.wrong > 0 && L.tenses.includes(k.split('.')[0]))
+    .sort((a, b) => a[1].box - b[1].box || b[1].wrong - a[1].wrong).slice(0, 4);
+  $('#weak').innerHTML = rows.length
+    ? rows.map(([k, r]) => { const [t, f, g] = k.split('.'); return `<li><button type="button" data-focus="${t}.${f}"><span>${T_RU[t]} · ${F_RU[f]} · ${GROUP_RU[g]}</span><span class="cnt" title="ошибок">${r.wrong}</span></button></li>`; }).join('')
+    : '<li class="empty">Ошибок пока нет. Клетки, где вы ошибаетесь, появятся здесь и будут выпадать чаще.</li>';
+
+  document.querySelectorAll('[data-gender]').forEach(b => b.setAttribute('aria-pressed', b.dataset.gender === S.gender));
+  document.querySelectorAll('[data-script]').forEach(b => b.setAttribute('aria-pressed', b.dataset.script === S.script));
+  $('#resetrow').innerHTML = confirmReset
+    ? '<span class="confirm">Удалить весь прогресс? <button type="button" class="btn" id="reset-yes">Да, сбросить</button><button type="button" class="link" id="reset-no">Отмена</button></span>'
+    : '<button type="button" class="link" id="reset">Сбросить прогресс</button>';
+  $('#sheet').innerHTML = sheetHTML();
+  $('#sync').textContent = syncMode === 'cloud' ? 'Прогресс сохраняется в вашем аккаунте и доступен на других устройствах.' : 'Прогресс хранится в этом браузере.';
+}
+
+function sheetHTML() {
+  if (S.lesson === 1) {
+    const rows = [['ja','čitam','radim','pišem'],['ti','čitaš','radiš','pišeš'],['on, ona','čita','radi','piše'],['mi','čitamo','radimo','pišemo'],['vi','čitate','radite','pišete'],['oni','čitaju','rade','pišu']];
+    return `<p>Отбросьте <b>${sr('-m')}</b> у формы «${sr('ja')}» — получится основа. Форма «${sr('oni')}» запоминается отдельно.</p>
+      <table class="conj"><thead><tr><th></th><th>${sr('-am')}</th><th>${sr('-im')}</th><th>${sr('-em')}</th></tr></thead><tbody>${rows.map(r => `<tr><th>${sr(r[0])}</th>${r.slice(1).map(x => `<td>${sr(x)}</td>`).join('')}</tr>`).join('')}</tbody></table>
+      <p>Вопрос: ${sr('da li')} + глагол. Отрицание: ${sr('ne')} + глагол, раздельно.</p>
+      <p class="muted">Глаголы: ${VERBS.filter(v => v.l === 1).map(v => sr(v.inf)).join(', ')}. Готовые фразы: ${sr('kod kuće')} — дома, ${sr('u Beogradu')} — в Белграде, ${sr('kući')} — домой.</p>`;
+  }
+  if (S.lesson === 2) return `<p><b>Прошедшее</b>: форма на ${sr('-o / -la / -li')} + ${sr('sam, si, je, smo, ste, su')}.</p>
+      <p>${sr('Radio sam.')} · ${sr('Da li si radio?')} · ${sr('Nisam radio.')}</p>
+      <p><b>Будущее</b>: ${sr('radiću')} одним словом, если глагол стоит первым. После другого слова — раздельно: ${sr('On će raditi')}. Глаголы на ${sr('-ći')} всегда раздельно: ${sr('ići ću')}.</p>
+      <p>${sr('Da li ćeš raditi?')} · ${sr('Neću raditi.')}</p>
+      <p><b>Энклитики</b> ${sr('sam, si, je, ću, ćeš…')} стоят вторыми и никогда не начинают фразу.</p>
+      <p class="muted">Новые слова: ${sr('juče')} — вчера, ${sr('sutra')} — завтра.</p>`;
+  return `<p><b>${sr('biti')}</b>: ${sr('sam, si, je, smo, ste, su')} — энклитики. ${sr('Kod kuće sam')} или ${sr('Ja sam kod kuće')}, но не «${sr('Sam kod kuće')}».</p>
+      <p>Отрицание слитно: ${sr('nisam, nisi, nije, nismo, niste, nisu')}.</p>
+      <p><b>${sr('imati')}</b> → ${sr('nemam, nemaš, nema…')} ${sr('Imam psa')} — у меня есть собака.</p>
+      <p><b>${sr('hteti')}</b>: ${sr('hoću, hoćeš, hoće…')} → ${sr('neću')} — и «не хочу», и «не буду».</p>
+      <p class="muted">Готовые фразы: ${sr('psa')} — собаку, ${sr('vremena')} — времени, ${sr('kafu')} — кофе, ${sr('pivo')} — пиво.</p>`;
+}
+
+// ---------- события ----------
+let menuClosedAt = 0;
+$('#settings').addEventListener('beforetoggle', e => { if (e.newState === 'closed') menuClosedAt = Date.now(); });
+document.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || b.disabled) return;
+  if (tooSoon(menuClosedAt) && !b.closest('#settings, .gear')) return;
+  const d = b.dataset;
+  if (d.focus && b.closest('.side')) {   // матрица под карточкой: на телефоне показываем, что упражнение сменилось
+    toggleFocus(d.focus);
+    const top = $('#card').getBoundingClientRect().top;
+    if (top < 0 || top > innerHeight * 0.6) $('#card').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start'});
+    return;
+  }
+  if (d.lesson) return setLesson(+d.lesson);
+  if (d.mode) return setMode(d.mode);
+  if (d.row !== undefined) return unfillRow(+d.row);
+  if (d.id !== undefined) return place(+d.id);
+  if (d.un !== undefined) return unplace(+d.un);
+  if (d.slot !== undefined) return chooseSlot(+d.slot);
+  if (d.focus) return toggleFocus(d.focus);
+  if (d.gender) return setGender(d.gender);
+  if (d.script) return setScript(d.script);
+  switch (b.id) {
+    case 'check': return check();
+    case 'clear': return clearPlaced();
+    case 'next': return next();
+    case 'override': return override();
+    case 'unfocus': return toggleFocus(null);
+    case 'to-l2': return setLesson(2);
+    case 'reset': confirmReset = true; return renderSide();
+    case 'reset-no': confirmReset = false; return renderSide();
+    case 'reset-yes': {
+      // resetAt отсекает старые записи и на других устройствах — иначе слияние вернуло бы их обратно.
+      S = Object.assign(DEFAULT(), settingsOf(S), {owner: S.owner, resetAt: Date.now()});
+      confirmReset = false; persist(); newEx(); return renderAll();
+    }
+  }
+});
+
+// ---------- сохранение: браузер сразу, аккаунт и другие вкладки — слиянием ----------
+const settingsOf = s => ({lesson:s.lesson, mode:s.mode, gender:s.gender, script:s.script, focus:s.focus, settingsAt:s.settingsAt});
+const visible = s => [s.lesson, s.mode, s.gender, s.script, s.focus].join('|');
+// Сравнение по содержимому, а не по часам: у разных устройств часы расходятся. Порядок ключей не важен.
+const statsKey = s => JSON.stringify([s.cells, s.verbs, s.clit].map(o => Object.keys(o).sort().map(k => [k, o[k].box, o[k].seen, o[k].wrong, o[k].rs]))) + s.resetAt;
+const sameState = (a, b) => statsKey(a) === statsKey(b) && visible(a) === visible(b) && a.settingsAt === b.settingsAt;
+function persist(settings) {
+  const now = Date.now();
+  S.updatedAt = now;
+  if (settings) S.settingsAt = now;
+  saveLocal(); dirty = true; scheduleRemote(3000);
+}
+// Слияние двух копий прогресса. По каждой клетке берём запись, где больше ответов; настройки — более свежие.
+// Сброс — это «эпоха» resetAt: запись, созданная в старой эпохе (rs меньше), отбрасывается, какие бы ни были часы.
+// ponytail: ответы, данные параллельно в одну и ту же клетку на двух устройствах, сольются в одну запись
+// (выиграет та, где их больше) — нужен CRDT со счётчиками по устройствам, если это станет заметно.
+function mergeState(a, b) {
+  const resetAt = Math.max(a.resetAt, b.resetAt);
+  const bucket = (x, y) => {
+    const out = {};
+    for (const k of new Set([...Object.keys(x), ...Object.keys(y)])) {
+      const r = !x[k] ? y[k] : !y[k] ? x[k] : y[k].seen > x[k].seen ? y[k] : x[k];
+      if (r.rs >= resetAt) out[k] = r;
+    }
+    return out;
+  };
+  return Object.assign({}, a, settingsOf(b.settingsAt > a.settingsAt ? b : a), {
+    cells: bucket(a.cells, b.cells), verbs: bucket(a.verbs, b.verbs), clit: bucket(a.clit, b.clit), resetAt,
+    updatedAt: Math.max(a.updatedAt, b.updatedAt),
+  });
+}
+// Принять слитое состояние. Если сменились урок, режим, род или фокус — текущее упражнение больше не годится.
+function adopt(next) {
+  const was = S;
+  S = next;
+  if ([was.lesson, was.mode, was.gender, was.focus].join('|') !== [S.lesson, S.mode, S.gender, S.focus].join('|')) { newEx(); renderAll(); }
+  else if (was.script !== S.script) renderAll();
+  else renderSide();
+}
+
+function scheduleRemote(ms) { if (!remoteRef) return; clearTimeout(saveTimer); saveTimer = setTimeout(() => { saveTimer = 0; flushNow(); }, ms); }
+const FATAL = ['invalid_argument', 'revoked', 'not_granted', 'capability_disabled', 'capability_removed', 'quota_exceeded', 'transform_error'];
+function goLocal() { remoteRef = null; syncMode = 'local'; renderSide(); }
+// Одна запись за раз: прочитать документ, влить чужие ответы, записать — только если есть что добавить.
+async function flushNow() {
+  if (!remoteRef || !dirty || writing) return;
+  const ref = remoteRef;
+  writing = true; dirty = false;
+  try {
+    const snap = await ref.get();
+    const raw = snap.exists ? snap.data() : null;
+    if (raw && raw.v !== 1) return goLocal();   // документ более новой версии приложения — не перезаписываем
+    const r = raw ? normalize(raw) : null;
+    if (r) { adopt(mergeState(S, r)); saveLocal(); }
+    if (r && sameState(S, r)) return;
+    await ref.set(JSON.parse(JSON.stringify(S)));
+    retry = 0;
+  } catch (err) {
+    dirty = true;
+    if (err && FATAL.includes(err.code)) goLocal();
+    else { retry = Math.min(retry + 1, 5); scheduleRemote(2000 * 2 ** retry); }   // неизвестный код = временный сбой
+  } finally {
+    writing = false;
+    if (dirty && remoteRef && !saveTimer) scheduleRemote(3000);
+  }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && dirty) { clearTimeout(saveTimer); saveTimer = 0; flushNow(); }
+});
+// Другая вкладка этого браузера сохранила прогресс — вливаем его, чтобы вкладки не затирали друг друга.
+window.addEventListener('storage', e => {
+  if (e.key !== LS_KEY || !e.newValue) return;
+  let other; try { other = normalize(JSON.parse(e.newValue)); } catch (err) { return; }
+  const merged = mergeState(S, other);
+  if (sameState(merged, S)) return;
+  adopt(merged);
+  if (!sameState(S, other)) saveLocal();   // у нас было то, чего нет у соседки, — пусть она тоже узнает
+});
+
+function subscribe(ref) {
+  ref.onSnapshot(s => {   // ответы и настройки с другого устройства, пока страница открыта
+    if (!s.exists || s.metadata.hasPendingWrites) return;
+    const raw = s.data();
+    if (!raw || raw.v !== 1) return;
+    const r = normalize(raw), merged = mergeState(S, r);
+    if (!sameState(merged, S)) { adopt(merged); saveLocal(); }
+    if (!sameState(S, r)) { dirty = true; scheduleRemote(3000); }   // в облаке нет наших ответов — дописать
+  }, err => {
+    if (err && err.code === 'unavailable') setTimeout(() => { if (remoteRef === ref) subscribe(ref); }, 5000);
+    else goLocal();
+  });
+}
+
+async function initRemote(attempt = 0) {
+  if (!window.claude || typeof window.claude.use !== 'function') return;
+  try {
+    const [user, db] = await Promise.all([window.claude.use('user'), window.claude.use('db')]);
+    if (!user || !db) return;
+    const uid = await user.id();
+    if (!uid) return;
+    const ref = db.doc('data/users/' + uid + '/progress');
+    const snap = await ref.get();
+    const raw = snap.exists ? snap.data() : null;
+    if (raw && raw.v !== 1) return;   // документ более новой версии приложения — работаем локально, его не трогаем
+    const switched = !!S.owner && S.owner !== uid;
+    let next = switched ? DEFAULT() : S;   // в этом браузере лежит прогресс другого аккаунта
+    next = Object.assign({}, next, {owner: uid});
+    if (raw) next = mergeState(next, normalize(raw));   // слияние, а не замена: касания до загрузки облака ничего не стирают
+    adopt(next);
+    if (switched) { newEx(); renderAll(); }   // экран прежнего аккаунта не должен остаться на месте
+    saveLocal();
+    remoteRef = ref; syncMode = 'cloud'; renderSide();
+    dirty = !raw || !sameState(S, normalize(raw));
+    if (dirty) scheduleRemote(0);
+    subscribe(ref);
+  } catch (err) {
+    if (err && FATAL.includes(err.code)) return goLocal();
+    if (attempt < 5) setTimeout(() => initRemote(attempt + 1), 2000 * 2 ** attempt);   // временный сбой при запуске — повторить
+  }
+}
+
+if (location.hash === '#selftest') { const r = selfTest(); console.log('selfTest:', r.cells, 'клеток,', r.errors.length, 'ошибок'); r.errors.forEach(x => console.warn(x)); }
+newEx(); renderAll(); initRemote();
+})();
+</script>
+</html>
