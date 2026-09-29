@@ -39,7 +39,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 var(--sans)
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.app{max-width:1180px;margin:0 auto;padding-inline:24px;padding-block:20px 48px}
+.app{max-width:1180px;margin:0 auto;padding-inline:max(24px, env(safe-area-inset-left, 0px)) max(24px, env(safe-area-inset-right, 0px));padding-block:20px 48px}
 
 /* Шапка: название, уроки, шестерёнка. На телефоне уроки уходят второй строкой. */
 .top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"brand lessons gear";align-items:center;gap:14px 20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
@@ -48,7 +48,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;touch-
 .brand .alt{display:block;margin-top:6px;font:500 13px/1.3 var(--mono);color:var(--muted)}
 .lessons{grid-area:lessons;justify-self:end;display:flex;gap:8px}
 .lessons button{display:grid;gap:2px;text-align:left;padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel);cursor:pointer}
-.lessons button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.lessons button[aria-current="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .lessons .ln{font:600 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
 .lessons .lt{font-weight:600;line-height:1.2}
 .gear{grid-area:gear;display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--muted);cursor:pointer}
@@ -57,6 +57,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;touch-
 /* Меню настроек — нативный popover: закрывается касанием вне меню. */
 .menu{box-sizing:border-box;position:fixed;inset:auto;top:calc(env(safe-area-inset-top, 0px) + 76px);right:max(16px, calc((100vw - 1180px) / 2 + 24px));margin:0;width:min(340px, calc(100vw - 32px));padding:16px 18px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink);box-shadow:0 14px 36px var(--shadow)}
 .menu::backdrop{background:transparent}
+.menu[hidden]{display:none}
 .menu-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .menu-head h2{margin:0;font:600 12px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .x{width:44px;height:44px;border:0;border-radius:8px;background:none;color:var(--muted);font-size:22px;line-height:1;cursor:pointer}
@@ -73,6 +74,8 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;touch-
 
 .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:26px 30px 28px;display:flex;flex-direction:column;gap:20px;min-height:400px}
 .lead{margin:0;color:var(--muted);font-size:15px}
+.leadrow{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.leadrow .link{flex:none;margin-top:-12px}
 .meta{display:flex;flex-wrap:wrap;gap:6px}
 .chip{font:500 12px/1 var(--mono);letter-spacing:.02em;padding:6px 8px;border-radius:6px;background:var(--grid);color:var(--muted)}
 .chip.to{background:var(--accent-soft);color:var(--accent)}
@@ -85,7 +88,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;touch-
 .placeholder{color:var(--muted);font-style:italic}
 .punct{font:600 24px/1 var(--serif);color:var(--muted)}
 .pool{display:flex;flex-wrap:wrap;gap:10px}
-.tile{min-height:48px;font:600 clamp(18px, 4.6vw, 21px)/1 var(--serif);padding:12px 16px;background:var(--tile);border:1px solid var(--tile-edge);border-bottom-width:3px;border-radius:7px;cursor:pointer;transition:transform .08s,border-color .12s}
+.tile{box-sizing:border-box;min-height:48px;font:600 clamp(18px, 4.6vw, 21px)/1 var(--serif);padding:12px 16px;background:var(--tile);border:1px solid var(--tile-edge);border-bottom-width:3px;border-radius:7px;cursor:pointer;transition:transform .08s,border-color .12s}
 .tile:active:not(:disabled){transform:translateY(1px)}
 .tile:disabled{cursor:default}
 .tile.placed{background:var(--accent-soft);border-color:var(--accent)}
@@ -99,7 +102,16 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;touch-
 .btn:disabled{opacity:.45;cursor:default}
 .link{display:inline-flex;align-items:center;min-height:44px;background:none;border:0;padding:0;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-size:14px;text-align:left}
 
-.fb{border-radius:10px;padding:14px 16px;display:grid;gap:6px}
+.fb{border-radius:10px;padding:14px 16px;display:grid;gap:6px;scroll-margin-bottom:110px}
+.fb:focus{outline:none}
+.vru{font:500 14px var(--sans);color:var(--muted);margin-left:6px}
+.gloss{margin:-8px 0 0;color:var(--muted);font-size:15px}
+.intro{display:grid;gap:10px;padding:14px 16px;border-radius:10px;border:1px solid var(--accent)}
+.intro p{margin:0}
+.btn.sm{min-height:40px;padding:6px 12px;font-size:14px}
+.cslot.target{border-style:solid;border-color:var(--accent);background:var(--accent-soft)}
+button.cslot{cursor:pointer;padding:0;background:none}
+.num{background:var(--panel);color:var(--ink);padding:2px 5px;border-radius:4px}
 .fb.ok{background:var(--ok-soft)}
 .fb.bad{background:var(--bad-soft)}
 .verdict{font:700 18px/1.2 var(--serif)}
@@ -122,9 +134,9 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;touch-
 .cnotes li{display:grid;gap:2px}
 .cnotes .who{font:500 12px/1.2 var(--mono);color:var(--muted)}
 
-.slots{display:flex;flex-wrap:wrap;align-items:center;gap:8px 4px;min-height:64px}
+.slots{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-height:64px}
 .w{font:600 clamp(22px, 5.4vw, 26px)/1.2 var(--serif)}
-.slot{display:grid;place-items:center;width:42px;height:48px;border:1.5px dashed var(--tile-edge);border-radius:6px;background:none;cursor:pointer}
+.slot{display:grid;place-items:center;width:44px;height:48px;border:1.5px dashed var(--tile-edge);border-radius:6px;background:none;cursor:pointer}
 .slot::before{content:"+";font:600 16px/1 var(--mono);color:var(--muted)}
 .ins{font:600 clamp(22px, 5.4vw, 26px)/1.2 var(--serif);padding:2px 8px;border-radius:6px}
 .ins.ok{background:var(--ok-soft);color:var(--ok)}
@@ -135,7 +147,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;touch-
 .pbar-l{margin:0 0 8px;font-size:14px}
 .pbar{height:10px;border-radius:6px;background:var(--grid);overflow:hidden}
 .pbar span{display:block;height:100%;background:var(--accent)}
-.weak .wrow{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:40px;padding:6px 8px;font-size:14px}
+.weak .wrow{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:44px;padding:6px 8px;font-size:14px}
 .program{margin:0;padding-left:22px;display:grid;gap:6px;font-size:14px;color:var(--muted)}
 .program .here{color:var(--ink)}
 .gpick{display:grid;gap:14px}
@@ -150,23 +162,23 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;touch-
 .side{display:flex;flex-direction:column;gap:14px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
 .panel h2,.panel summary{margin:0 0 12px;font:600 12px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.panel summary{margin:0;cursor:pointer;padding-block:4px}
+.panel summary{margin:0;cursor:pointer;padding-block:16px;margin-block:-12px}
 details[open] summary{margin-bottom:12px}
 .hint{margin:10px 0 0;font-size:13px;color:var(--muted)}
 .heat{width:100%;border-collapse:separate;border-spacing:4px;table-layout:fixed}
 .heat th{font:500 11px/1.2 var(--mono);color:var(--muted);text-align:center}
 .heat th[scope="row"]{text-align:right;padding-right:4px;width:84px}
 .cell{display:grid;place-items:center;width:100%;aspect-ratio:1.35;border:0;border-radius:6px;background:color-mix(in srgb,var(--accent) var(--p,0%),var(--grid));font:600 13px/1 var(--mono);font-variant-numeric:tabular-nums;cursor:pointer}
-.cell.dk{color:var(--accent-ink)}
+
 .cell.sel{outline:2px solid var(--ink);outline-offset:1px}
-.cell.locked{background:repeating-linear-gradient(45deg,var(--grid) 0 4px,transparent 4px 8px);color:var(--muted);font:500 10px/1 var(--mono);cursor:default}
+.cell.locked{background:repeating-linear-gradient(45deg,var(--grid) 0 4px,transparent 4px 8px);color:var(--muted);font:500 11px/1.2 var(--mono);cursor:default;text-align:center}
 .weak{list-style:none;margin:0;padding:0;display:grid;gap:4px}
-.weak button{width:100%;min-height:40px;display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;font-size:14px}
+.weak button{width:100%;min-height:44px;display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;font-size:14px}
 .weak .cnt{font:600 13px var(--mono);color:var(--bad)}
 .weak .empty{font-size:14px;color:var(--muted)}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.seg button{min-height:40px;border:0;background:none;padding:6px 12px;font-size:14px;color:var(--muted);cursor:pointer}
+.seg button{min-height:44px;border:0;background:none;padding:6px 12px;font-size:14px;color:var(--muted);cursor:pointer}
 .seg button + button{border-left:1px solid var(--line)}
 .seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
 .sheet{font-size:14px}
@@ -188,28 +200,34 @@ details[open] summary{margin-bottom:12px}
 }
 
 @media (max-width:920px){.layout{grid-template-columns:minmax(0,1fr)}}
-@media (max-width:700px){
+@media (max-width:900px){
   .top{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand gear" "lessons lessons"}
   .lessons{justify-self:stretch;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
   .lessons button{padding:8px 10px}
+}
+@media (max-width:700px){
+  /* Вкладки сеткой в три колонки: полоса с прокруткой прятала часть вкладок за краем. */
+  .modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;border-bottom:0;overflow:visible}
+  .modes button{margin:0;padding:10px 4px;border:1px solid var(--line);border-radius:8px;background:var(--panel);text-align:center;white-space:normal;font-size:14px;hyphens:auto;overflow-wrap:anywhere}
+  .modes button[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
   .lessons .lt{font-size:13px}
   .menu{top:calc(env(safe-area-inset-top, 0px) + 64px)}
 }
 @media (max-width:560px){
-  .app{padding-inline:16px;padding-block:14px 32px}
+  .app{padding-inline:max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px));padding-block:14px 32px}
   .brand .name{font-size:24px}
   .brand .alt{font-size:12px}
-  .brand .alt .sub{display:none}
   .lessons button{padding:6px 8px}
-  .lessons .ln{font-size:10px}
+  .lessons .ln{font-size:11px}
   .layout{margin-top:14px;gap:18px}
   .card{padding:18px 16px 20px;gap:16px;min-height:0}
   /* Вкладки сеткой 2×2: полоса с прокруткой прятала «Энклитики» за краем экрана. */
-  .modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;border-bottom:0;overflow:visible}
-  .modes button{margin:0;padding:10px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel);text-align:center;white-space:normal}
-  .modes button[aria-selected="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
-  .modes button:last-child:nth-child(odd){grid-column:1 / -1}
   .actions .btn{flex:1 1 auto}
+  /* Строка ответа сразу высотой в две строки плиток — ничего не прыгает, когда ответ переносится. */
+  .answer{min-height:108px;align-content:flex-start}
+  /* Кнопки прилипают к низу экрана: «Проверить» и «Дальше» всегда под большим пальцем. */
+  .card > .actions{position:sticky;bottom:0;z-index:2;margin-inline:-16px;margin-bottom:-20px;padding:10px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    background:color-mix(in srgb, var(--panel) 94%, transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid var(--line);border-radius:0 0 12px 12px}
   .paradigm{gap:8px 10px}
   .tile{padding:10px 12px;min-height:44px}
   .cslot{height:44px}
@@ -242,7 +260,7 @@ details[open] summary{margin-bottom:12px}
     <section>
       <div class="modes" id="modes" role="tablist" aria-label="Упражнение"></div>
       <div id="focusbar"></div>
-      <article class="card" id="card"></article>
+      <article class="card" id="card" role="tabpanel"></article>
       <p class="sr" id="live" aria-live="polite"></p>
     </section>
     <aside class="side">
@@ -900,7 +918,7 @@ const MODES = [
   {id:'poss', name:'Чей', lead:'Соберите «чей + слово». По-сербски и «его, её, их» меняются по роду и числу слова.'},
 ];
 // gender: null — ещё не выбран (до выбора используется мужской род).
-const DEFAULT = () => ({v:1, lesson:1, mode:'conj', gender:null, script:'lat', focus:null, cells:{}, verbs:{}, clit:{}, gen:{}, poss:{},
+const DEFAULT = () => ({v:1, lesson:1, mode:'conj', gender:null, script:'lat', focus:null, introSeen:false, cells:{}, verbs:{}, clit:{}, gen:{}, poss:{},
   updatedAt:0, settingsAt:0, resetAt:0, owner:null});
 // Всё, что пришло из хранилища, проверяется: битое состояние не должно ронять страницу.
 function normalize(s) {
@@ -930,12 +948,12 @@ function normalize(s) {
     return out;
   };
   const lesson = [1, 2, 3].includes(s.lesson) ? s.lesson : 1;
-  const focusOk = typeof s.focus === 'string' && /^(past|pres|fut)\.(aff|q|neg)$/.test(s.focus) && LESSONS[lesson - 1].tenses.includes(s.focus.split('.')[0]);
+  const focusOk = typeof s.focus === 'string' && /^(past|pres|fut)\.(aff|q|neg)(\.(ja|ti|on|mi|vi|oni))?$/.test(s.focus) && LESSONS[lesson - 1].tenses.includes(s.focus.split('.')[0]);
   const modeOk = MODES.some(m => m.id === s.mode) && (s.mode !== 'clitic' || LESSONS[lesson - 1].clitics);
   return Object.assign(d, {
     lesson, focus: focusOk ? s.focus : null,
     mode: modeOk ? s.mode : 'conj',
-    gender: s.gender === 'm' || s.gender === 'f' ? s.gender : null,
+    gender: s.gender === 'm' || s.gender === 'f' ? s.gender : null, introSeen: !!s.introSeen,
     script: s.script === 'cyr' ? 'cyr' : 'lat',
     cells: recs(s.cells, 'cells'), verbs: recs(s.verbs, 'verbs'), clit: recs(s.clit, 'clit'), gen: recs(s.gen, 'gen'), poss: recs(s.poss, 'poss'),
     updatedAt: +s.updatedAt || 0, settingsAt: +s.settingsAt || 0, resetAt,
@@ -949,14 +967,23 @@ let S = normalize(loadLocal());
 let cur = null, lastKey = '', confirmReset = false;
 let syncMode = 'local', remoteRef = null, saveTimer = 0, dirty = false, writing = false, retry = 0;
 
-const say = text => { const el = $('#live'); if (el) el.textContent = text; };
+const say = text => { const el = $('#live'); if (!el) return; el.textContent = ''; requestAnimationFrame(() => { el.textContent = text; }); };
+const plain = s => (s || '').replace(/[«»]/g, '');
+// Фокус возвращаем только тем, кто ходит клавиатурой или переключателем: на телефоне он только мешает.
+let kbd = false;
+addEventListener('pointerdown', () => { kbd = false; }, true);
+addEventListener('keydown', e => { if (['Tab', 'Enter', ' '].includes(e.key)) kbd = true; }, true);
+const kfocus = sel => { if (!kbd) return; const el = $(sel); if (el) el.focus({preventScroll: true}); };
+const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+// После проверки показываем разбор: он над кнопкой «Дальше», прокручиваем к нему.
+const revealFb = () => requestAnimationFrame(() => { const el = $('#card .fb'); if (!el) return; el.scrollIntoView({block: 'nearest', behavior: reduced() ? 'auto' : 'smooth'}); if (kbd) el.focus({preventScroll: true}); });
 
 // ---------- отображение сербского ----------
 const disp = t => S.script === 'cyr' ? toCyr(t) : t;
 const srLang = () => S.script === 'cyr' ? 'sr-Cyrl' : 'sr-Latn';
 const sr = t => `<span lang="${srLang()}">${esc(disp(t))}</span>`;
 const sentence = (toks, q) => cap(toks.map(disp).join(' ')) + (q ? '?' : '.');
-const whyHTML = s => s.split(/(«[^»]+»)/).map(part => part.startsWith('«') ? '«' + sr(part.slice(1, -1)) + '»' : esc(part)).join('');
+const whyHTML = s => s.split(/(«[^»]+»)/).map(part => part.startsWith('«') && /[a-zčćđšž]/i.test(part) ? '«' + sr(part.slice(1, -1)) + '»' : esc(part)).join('');
 const gsel = s => s.replace(/\{([^|}]*)\|([^}]*)\}/g, (_, m, f) => S.gender === 'f' ? f : m);
 
 // ---------- интервальные повторения по клеткам ----------
@@ -965,10 +992,11 @@ const lk = k => S.lesson + '.' + k;   // ключ статистики в тек
 const cellKeyOf = c => lk(`${c.t}.${c.f}.${GROUP[c.p]}`);
 const clone = o => o ? JSON.parse(JSON.stringify(o)) : undefined;
 
+const focusMatch = (t, f, g) => { if (!S.focus) return true; const [ft, ff, fg] = S.focus.split('.'); return ft === t && ff === f && (!fg || fg === g); };
 function pickCell(ok = () => true) {
   const L = LESSONS[S.lesson - 1], cands = [];
   for (const t of L.tenses) for (const f of FORMS) for (const g of GROUPS)
-    if ((!S.focus || S.focus === t + '.' + f) && ok(t, f)) cands.push({t, f, g});
+    if (focusMatch(t, f, g) && ok(t, f)) cands.push({t, f, g});
   const c = wpick(cands, x => recW(S.cells[lk(`${x.t}.${x.f}.${x.g}`)]));
   return {t:c.t, f:c.f, p: c.g === 'on' ? (Math.random() < .5 ? 2 : 3) : P.indexOf(c.g)};
 }
@@ -1049,6 +1077,13 @@ function makePoss() {
   const tiles = shuffle(tk.canon.concat(tk.distract.map(d => d.t))).map((t, id) => ({t, id}));
   return {kind:'poss', key:c.k, ru:tk.ru, canon:tk.canon, distract:tk.distract, tiles, placed:[], done:false};
 }
+const exCache = {};
+const cacheKey = () => [S.lesson, S.mode, S.focus || ''].join('|');
+function showEx() { const k = cacheKey(); if (exCache[k] && !exCache[k].done) cur = exCache[k]; else { newEx(); exCache[k] = cur; } }
+// Упражнение зависит от рода «я» (или ответ показывает причастие «ты», выбранное по роду «я»)?
+const needsGender = ex => !!ex && ((ex.kind === 'conj' && ex.t === 'past')
+  || ((ex.kind === 'build' || ex.kind === 'transform') && ex.cell.p === 0 && (ex.cell.t === 'past' || (ex.src && ex.src.t === 'past')))
+  || (ex.kind === 'clitic' && /\{/.test(ex.it.w.join(' ') + ex.it.ru)));
 function newEx() {
   if (S.mode === 'rod') cur = makeGen();
   else if (S.mode === 'poss') cur = makePoss();
@@ -1085,13 +1120,15 @@ function override() {
 // ---------- действия ----------
 function place(id) {
   const ex = cur; if (!ex || ex.done || !ex.tiles || !ex.tiles[id] || tooSoon(ex.createdAt)) return;
-  if (ex.kind === 'conj') {   // плитка встаёт в первую пустую строку
-    const i = ex.fill.indexOf(null);
+  if (ex.kind === 'conj') {   // плитка встаёт в выбранную пустую строку, иначе — в первую пустую
+    const i = ex.target != null && ex.fill[ex.target] === null ? ex.target : ex.fill.indexOf(null);
     if (i < 0 || ex.fill.includes(id)) return;
-    ex.fill[i] = id;
+    ex.fill[i] = id; ex.target = null;
   } else { if (ex.placed.includes(id)) return; ex.placed.push(id); }
   renderCard();
+  kfocus('#card .pool button.tile');
 }
+function setTarget(i) { const ex = cur; if (!ex || ex.kind !== 'conj' || ex.done || ex.fill[i] !== null) return; ex.target = i; renderCard(); kfocus('#card .pool button.tile'); }
 function unplace(id) { const ex = cur; if (!ex || ex.done) return; ex.placed = ex.placed.filter(x => x !== id); renderCard(); }
 function unfillRow(i) { const ex = cur; if (!ex || ex.kind !== 'conj' || ex.done) return; ex.fill[i] = null; renderCard(); }
 function clearPlaced() {
@@ -1110,17 +1147,17 @@ function checkConj() {
     return {ok:false, why: `«${got}» — это форма для «${who}».`};
   });
   Object.assign(ex, {done:true, checkedAt: Date.now(), ok: ex.res.every(x => x.ok)});
-  say(ex.ok ? 'Верно, все шесть форм.' : `Верно ${ex.res.filter(x => x.ok).length} из ${ex.rows.length}.`);
+  say(ex.ok ? 'Верно, все шесть форм.' : `Верно ${ex.res.filter(x => x.ok).length} из ${ex.rows.length}. Правильные формы: ` + ex.rows.filter((r, i) => !ex.res[i].ok).map(r => disp(r.form)).join(', '));
   ex.rows.forEach((r, i) => bump(S.cells, lk(`${ex.t}.${ex.f}.${GROUP[r.p]}`), ex.res[i].ok));   // каждая строка — своя клетка матрицы
   bump(S.verbs, lk(ex.v.id), ex.ok);
-  persist(); renderSide(); renderCard();
+  persist(); renderSide(); renderCard(); revealFb();
 }
 function checkPoss() {
   const ex = cur; if (!ex.placed.length) return;
   ex.ans = ex.placed.map(id => ex.tiles[id].t);
   Object.assign(ex, diagnosePoss(ex, ex.ans), {done:true, checkedAt: Date.now()});
-  say((ex.ok ? 'Верно. ' : 'Неверно. Правильно: ') + ex.canon.map(disp).join(' '));
-  bump(S.poss, lk(ex.key), ex.ok); persist(); renderSide(); renderCard();
+  say((ex.ok ? 'Верно. ' : 'Неверно. Правильно: ') + ex.canon.map(disp).join(' ') + (ex.ok ? '' : '. ' + plain(ex.why)));
+  bump(S.poss, lk(ex.key), ex.ok); persist(); renderSide(); renderCard(); revealFb();
 }
 function check() {
   if (cur && cur.kind === 'conj' && !cur.done) return checkConj();
@@ -1128,42 +1165,53 @@ function check() {
   const ex = cur; if (!ex || ex.kind === 'clitic' || ex.done || !ex.placed.length) return;
   ex.ans = ex.placed.map(id => ex.tiles[id].t);
   Object.assign(ex, diagnose(ex, ex.ans), {done:true, checkedAt: Date.now()});
-  say((ex.ok ? 'Верно. ' : 'Неверно. Правильно: ') + sentence(ex.canon, ex.cell.f === 'q'));
+  say((ex.ok ? 'Верно. ' : 'Неверно. Правильно: ') + sentence(ex.canon, ex.cell.f === 'q') + (ex.ok ? '' : ' ' + plain(ex.why)));
   commit(ex, ex.ok);
-  renderCard();
+  renderCard(); revealFb();
 }
 function chooseSlot(s) {
   const ex = cur; if (!ex || ex.kind !== 'clitic' || ex.done || s > ex.words.length || tooSoon(ex.createdAt)) return;
   Object.assign(ex, {chosen:s, done:true, ok: s === ex.it.at, checkedAt: Date.now()});
   say(ex.ok ? 'Верно.' : 'Неверно.');
-  commit(ex, ex.ok); renderCard();
+  commit(ex, ex.ok); renderCard(); revealFb();
 }
 function chooseGen(n, g) {
   const ex = cur; if (!ex || ex.kind !== 'rod' || ex.done || tooSoon(ex.createdAt)) return;
   // Проверяем само слово: «ona» — и «она» (ж. р. ед. ч.), и «они» (ср. р. мн. ч.), строка не важна.
   Object.assign(ex, {chosen:{n, g}, done:true, ok: PRON[n][g] === PRON[ex.it.n][ex.it.g], checkedAt: Date.now()});
   say((ex.ok ? 'Верно: ' : 'Неверно. Правильно: ') + disp(PRON[ex.it.n][ex.it.g]));
-  bump(S.gen, lk(ex.it.w), ex.ok); persist(); renderSide(); renderCard();
+  bump(S.gen, lk(ex.it.w), ex.ok); persist(); renderSide(); renderCard(); revealFb();
 }
 function next() {
   if (cur && tooSoon(cur.checkedAt)) return;   // двойное касание «Проверить» не проскакивает разбор
-  newEx(); renderCard();
+  newEx(); exCache[cacheKey()] = cur; renderCard();
+  kfocus('#card .pool button.tile, #card .slot, #card .gtile');
 }
 
 function setLesson(n) {
   if (S.lesson === n) return;
-  S.lesson = n;
+  S.lesson = n; pendingFocus = null;
   if (S.focus && !LESSONS[n - 1].tenses.includes(S.focus.split('.')[0])) S.focus = null;
   if (S.mode === 'clitic' && !LESSONS[n - 1].clitics) S.mode = 'conj';
-  persist(true); newEx(); renderAll();
+  persist(true); showEx(); renderAll();
 }
-function setMode(m) { if (S.mode === m) return; S.mode = m; persist(true); newEx(); renderAll(); }
-function toggleFocus(key) {
-  S.focus = key && S.focus !== key ? key : null;
-  if (S.focus && (['clitic', 'rod', 'poss'].includes(S.mode) || (S.mode === 'conj' && !conjOK(...S.focus.split('.'))))) S.mode = 'build';
-  persist(true); newEx(); renderAll();
+function setMode(m) { if (S.mode === m) return; S.mode = m; pendingFocus = null; persist(true); showEx(); renderAll(); }
+// Фильтр по клетке работает в «Сборке», «Трансформациях» и (для утверждения и отрицания) в «Спряжении».
+// Из другого раздела не переключаем молча — спрашиваем.
+let pendingFocus = null;
+const focusFits = key => !['clitic', 'rod', 'poss'].includes(S.mode) && !(S.mode === 'conj' && !conjOK(...key.split('.')));
+function applyFocus(key) {
+  if (key && !focusFits(key)) { pendingFocus = key; return renderModes(); }
+  pendingFocus = null; S.focus = key; persist(true); showEx(); renderAll();
 }
-function setGender(g) { if (S.gender === g) return; S.gender = g; persist(true); newEx(); renderAll(); }
+function toggleFocus(key) { applyFocus(key && S.focus !== key ? key : null); }
+function setGender(g) {
+  if (S.gender === g) return;
+  S.gender = g; persist(true);
+  for (const k of Object.keys(exCache)) if (needsGender(exCache[k])) delete exCache[k];
+  if (needsGender(cur)) showEx();
+  renderAll();
+}
 function setScript(s) { if (S.script === s) return; S.script = s; persist(true); renderAll(); }
 
 // ---------- отрисовка ----------
@@ -1184,27 +1232,32 @@ function readiness(n) {
 }
 function renderLessons() {
   $('#lessons').innerHTML = LESSONS.map(L =>
-    `<button type="button" data-lesson="${L.n}" aria-pressed="${S.lesson === L.n}"><span class="ln">Урок ${L.n} · ${Math.round(readiness(L.n) * 100)}%</span><span class="lt">${mixHTML(L.title)}</span></button>`).join('');
+    `<button type="button" data-lesson="${L.n}" aria-current="${S.lesson === L.n}"><span class="ln">Урок ${L.n} · ${Math.round(readiness(L.n) * 100)}%</span><span class="lt">${mixHTML(L.title)}</span></button>`).join('');
 }
 function renderModes() {
   const L = LESSONS[S.lesson - 1];
   $('#modes').innerHTML = MODES.filter(m => m.id !== 'clitic' || L.clitics)
-    .map(m => `<button type="button" role="tab" data-mode="${m.id}" aria-selected="${S.mode === m.id}">${m.name}</button>`).join('');
-  const [t, f] = (S.focus || '').split('.'), r = readiness(S.lesson);
+    .map(m => `<button type="button" role="tab" data-mode="${m.id}" aria-controls="card" aria-selected="${S.mode === m.id}">${m.name}</button>`).join('');
+  const [t, f, g] = (S.focus || '').split('.'), r = readiness(S.lesson);
   const nextHint = S.lesson < 3 && r >= .75
     ? `<div class="focusbar"><span>Урок ${S.lesson} закреплён на ${Math.round(r * 100)}% — можно переходить дальше.</span><button type="button" class="link" data-lesson="${S.lesson + 1}">К уроку ${S.lesson + 1}</button></div>` : '';
-  $('#focusbar').innerHTML = nextHint + (S.focus && !['clitic', 'rod', 'poss'].includes(S.mode)
-    ? `<div class="focusbar"><span class="chip to">Только: ${T_RU[t]} · ${F_RU[f]}</span><button type="button" class="link" id="unfocus">Вся матрица</button></div>` : '');
+  const pend = pendingFocus
+    ? `<div class="focusbar"><span>Тренировка одной клетки работает в «Сборке» и «Трансформациях».</span><button type="button" class="link" id="gofocus">Перейти в «Сборку»</button><button type="button" class="link" id="nofocus">Отмена</button></div>` : '';
+  $('#focusbar').innerHTML = nextHint + pend + (S.focus && !['clitic', 'rod', 'poss'].includes(S.mode)
+    ? `<div class="focusbar"><span class="chip to">Только: ${T_RU[t]} · ${F_RU[f]}${g ? ' · ' + GROUP_RU[g] : ''}</span><button type="button" class="link" id="unfocus">Вся матрица</button></div>` : '');
 }
 
 function renderCard() {
   const card = $('#card'), mode = MODES.find(m => m.id === S.mode);
-  const ask = S.gender === null && S.lesson >= 2
-    ? `<div class="ask"><p>В прошедшем времени сербский различает род: ${sr('radio')} — он, ${sr('radila')} — она. О себе вы говорите…</p><div class="actions"><button type="button" class="btn" data-gender="m">в мужском роде</button><button type="button" class="btn" data-gender="f">в женском роде</button></div></div>`
+  const fresh = !S.introSeen && ['cells', 'clit', 'gen', 'poss'].every(k => !Object.keys(S[k]).length);
+  const intro = fresh
+    ? `<div class="intro"><p><b>Тренажёр сербского глагола для русскоязычных.</b> Собирайте ответы из плиток — приложение объяснит каждую ошибку и чаще будет давать то, что пока не получается.</p><p>Начните с урока 1 и раздела «Спряжение». Правило к уроку — в шпаргалке.</p><div class="actions"><button type="button" class="btn sm primary" id="intro-ok">Понятно</button><button type="button" class="btn sm" id="rule">Открыть правило</button></div></div>` : '';
+  const ask = S.gender === null && needsGender(cur)
+    ? `<div class="ask"><p>В прошедшем времени сербский различает род (${sr('radio / radila')}). О себе вы говорите в роде:</p><div class="actions"><button type="button" class="btn sm" data-gender="m">мужском</button><button type="button" class="btn sm" data-gender="f">женском</button></div></div>`
     : '';
   const scope = ['rod', 'poss'].includes(S.mode)
     ? [' В уроке 1 — единственное число; множественное — в уроке 2, вместе с прошедшим временем.', ' Средний род множественного числа (' + sr('pisma, sela') + ') — в уроке 3.', ''][S.lesson - 1] : '';
-  const lead = ask + `<p class="lead">${mode.lead}${scope}</p>`;
+  const lead = intro + ask + `<div class="leadrow"><p class="lead">${mode.lead}${scope}</p><button type="button" class="link" id="rule">Правило</button></div>`;
   if (S.mode === 'clitic') return renderClit(card, lead);
   if (S.mode === 'conj') return renderConj(card, lead);
   if (S.mode === 'rod') return renderGen(card, lead);
@@ -1212,9 +1265,12 @@ function renderCard() {
   renderTiles(card, lead);
 }
 
-const poolHTML = (ex, used) => ex.tiles.map(tl => used.has(tl.id)
+const poolHTML = (ex, used) => `<div class="pool" role="group" aria-label="Слова">` + ex.tiles.map(tl => used.has(tl.id)
   ? `<span class="tile ghost" aria-hidden="true">${esc(disp(tl.t))}</span>`
-  : `<button type="button" class="tile" data-id="${tl.id}" lang="${srLang()}"${ex.done ? ' disabled' : ''}>${esc(disp(tl.t))}</button>`).join('');
+  : `<button type="button" class="tile" data-id="${tl.id}" lang="${srLang()}"${ex.done ? ' disabled' : ''}>${esc(disp(tl.t))}</button>`).join('') + '</div>';
+const HINT = '<span class="placeholder">Нажимайте слова по порядку. Слово в ответе убирается нажатием.</span>';
+const verdict = (ok, text) => `<span class="verdict"><span lang="${srLang()}">${esc(disp(text || (ok ? 'Tačno!' : 'Netačno.')))}</span><span class="vru">${ok ? 'верно' : 'неверно'}</span></span>`;
+const placedBtn = (attr, id, text) => `<button type="button" class="tile placed" ${attr}="${id}" lang="${srLang()}" aria-label="Убрать «${esc(disp(text))}»"${cur.done ? ' disabled' : ''}>${esc(disp(text))}</button>`;
 
 function renderTiles(card, lead) {
   const ex = cur, q = ex.cell.f === 'q';
@@ -1229,11 +1285,11 @@ function renderTiles(card, lead) {
     const to = [];
     if (ex.src.t !== ex.cell.t) to.push(T_RU[ex.cell.t]);
     if (ex.src.f !== ex.cell.f) to.push(F_RU[ex.cell.f]);
-    head = `<div class="meta"><span class="chip">измените на</span>${to.map(x => `<span class="chip to">→ ${x}</span>`).join('')}${gchip}</div><p class="prompt" lang="${srLang()}">${esc(sentence(canonicalFor(ex.v, ex.src), ex.src.f === 'q'))}</p>`;
+    head = `<div class="meta"><span class="chip">измените на</span>${to.map(x => `<span class="chip to">→ ${x}</span>`).join('')}${gchip}</div><p class="prompt" lang="${srLang()}">${esc(sentence(canonicalFor(ex.v, ex.src), ex.src.f === 'q'))}</p><p class="gloss" lang="ru">${esc(ruFor(ex.v, ex.src))}</p>`;
   }
   const ansTiles = ex.placed.length
-    ? ex.placed.map((id, i) => `<button type="button" class="tile placed" data-un="${id}" lang="${srLang()}"${ex.done ? ' disabled' : ''}>${esc(i === 0 ? cap(disp(ex.tiles[id].t)) : disp(ex.tiles[id].t))}</button>`).join('') + (ex.done ? `<span class="punct">${q ? '?' : '.'}</span>` : '')
-    : '<span class="placeholder">Нажимайте слова по порядку</span>';
+    ? ex.placed.map((id, i) => placedBtn('data-un', id, i === 0 ? cap(ex.tiles[id].t) : ex.tiles[id].t)).join('') + (ex.done ? `<span class="punct">${q ? '?' : '.'}</span>` : '')
+    : HINT;
   let actions, fb = '';
   if (!ex.done) actions = `<button type="button" class="btn primary" id="check"${ex.placed.length ? '' : ' disabled'}>Проверить</button><button type="button" class="btn" id="clear"${ex.placed.length ? '' : ' disabled'}>Стереть</button>`;
   else {
@@ -1241,17 +1297,17 @@ function renderTiles(card, lead) {
     const canon = `<span class="sent" lang="${srLang()}">${esc(sentence(ex.canon, q))}</span>`;
     if (ex.ok) {
       const same = eqT(ex.ans, ex.canon);
-      fb = `<div class="fb ok"><span class="verdict" lang="${srLang()}">${ex.overridden ? 'Засчитано.' : esc(disp('Tačno!'))}</span>${same ? '' : `<span>Основной вариант: ${canon}</span>`}</div>`;
+      fb = `<div class="fb ok" tabindex="-1">${ex.overridden ? `<span class="verdict">Засчитано</span>` : verdict(true)}${same ? '' : `<span>Основной вариант: ${canon}</span>`}</div>`;
     } else {
-      fb = `<div class="fb bad"><span class="verdict" lang="${srLang()}">${esc(disp('Netačno.'))}</span><span><s lang="${srLang()}">${esc(sentence(ex.ans, q))}</s> → ${canon}</span><p class="why">${whyHTML(ex.why)}</p><span><button type="button" class="link" id="override">Мой вариант тоже верный — засчитать</button></span></div>`;
+      fb = `<div class="fb bad" tabindex="-1">${verdict(false)}<span><s lang="${srLang()}">${esc(sentence(ex.ans, q))}</s> → ${canon}</span><p class="why">${whyHTML(ex.why)}</p><span><button type="button" class="link" id="override">Мой вариант тоже верный — засчитать</button></span></div>`;
     }
   }
   card.innerHTML = lead + head +
-    `<div class="answer${ex.done ? (ex.ok ? ' ok' : ' bad') : ''}">${ansTiles}</div>${ex.done ? '' : `<div class="pool">${poolHTML(ex, new Set(ex.placed))}</div>`}<div class="actions">${actions}</div>${fb}`;
+    `<div class="answer${ex.done ? (ex.ok ? ' ok' : ' bad') : ''}" role="group" aria-label="Ваш ответ">${ansTiles}</div>${ex.done ? '' : poolHTML(ex, new Set(ex.placed))}${fb}<div class="actions">${actions}</div>`;
 }
 
 function renderConj(card, lead) {
-  const ex = cur, next = ex.fill.indexOf(null), used = new Set(ex.fill.filter(x => x !== null));
+  const ex = cur, next = ex.target != null ? ex.target : ex.fill.indexOf(null), used = new Set(ex.fill.filter(x => x !== null));
   const who = r => {
     if (ex.t !== 'past') return esc(disp(r.p === 2 ? 'on, ona, ono' : r.p === 6 ? 'oni, one, ona' : P[r.p]));
     const mark = r.p <= 1 ? (r.g ? ' (ж)' : ' (м)') : (r.p === 4 || r.p === 5) && r.g === 4 ? ' (ж)' : '';
@@ -1261,12 +1317,12 @@ function renderConj(card, lead) {
   const cell = (r, i) => {
     const id = ex.fill[i], res = ex.done ? ex.res[i] : null;
     const slot = id === null
-      ? `<span class="cslot${i === next ? ' next' : ''}" aria-hidden="true"></span>`
-      : `<button type="button" class="tile placed" data-row="${i}" lang="${srLang()}"${ex.done ? ' disabled' : ''}>${esc(disp(ex.tiles[id].t))}</button>`;
+      ? `<button type="button" class="cslot${i === next ? ' next' : ''}${ex.target === i ? ' target' : ''}" data-target="${i}" aria-label="${esc(disp(P[r.p]))}: пусто — сюда встанет следующая плитка"${ex.done ? ' disabled' : ''}></button>`
+      : placedBtn('data-row', i, ex.tiles[id].t);
     return `<div class="ccell${res ? (res.ok ? ' ok' : ' bad') : ''}"><span class="who" lang="${srLang()}">${who(r)}</span>${slot}</div>`;
   };
   const cells = ex.rows.map(cell);
-  const grid = `<div class="paradigm"><span class="colh">${sr('jednina')}</span>${cells.slice(0, 3).join('')}<span class="colh">${sr('množina')}</span>${cells.slice(3).join('')}</div>`;
+  const grid = `<div class="paradigm"><span class="colh">${sr('jednina')} · ед. ч.</span>${cells.slice(0, 3).join('')}<span class="colh">${sr('množina')} · мн. ч.</span>${cells.slice(3).join('')}</div>`;
   const notes = ex.done && !ex.ok ? `<ul class="cnotes">${ex.rows.map((r, i) => ex.res[i].ok ? '' :
     `<li><span class="who" lang="${srLang()}">${who(r)}</span> <span class="sent" lang="${srLang()}">${esc(disp(r.form))}</span>${ex.res[i].why ? `<span>${whyHTML(ex.res[i].why)}</span>` : ''}</li>`).join('')}</ul>` : '';
   const actions = ex.done
@@ -1274,27 +1330,27 @@ function renderConj(card, lead) {
     : `<button type="button" class="btn primary" id="check"${next < 0 ? '' : ' disabled'}>Проверить</button><button type="button" class="btn" id="clear"${used.size ? '' : ' disabled'}>Стереть</button>`;
   const right = ex.done ? ex.res.filter(x => x.ok).length : 0;
   const fb = !ex.done ? '' : ex.ok
-    ? `<div class="fb ok"><span class="verdict" lang="${srLang()}">${esc(disp('Tačno!'))}</span><span>Все шесть форм верны.</span></div>`
-    : `<div class="fb bad"><span class="verdict" lang="${srLang()}">${esc(disp('Netačno.'))}</span><span>Верно ${right} из ${ex.rows.length}. Правильные формы:</span>${notes}</div>`;
+    ? `<div class="fb ok" tabindex="-1">${verdict(true)}<span>Все шесть форм верны.</span></div>`
+    : `<div class="fb bad" tabindex="-1">${verdict(false)}<span>Верно ${right} из ${ex.rows.length}. Правильные формы:</span>${notes}</div>`;
   card.innerHTML = lead + `<div class="meta"><span class="chip">${T_RU[ex.t]}</span><span class="chip">${F_RU[ex.f]}</span></div>` +
     `<p class="prompt"><span lang="${srLang()}">${esc(disp(ex.v.inf))}</span> <span class="trn" lang="ru">— ${esc(TR[ex.v.id] || ex.v.ru.inf)}</span></p>` +
-    grid + (ex.done ? '' : `<div class="pool">${poolHTML(ex, used)}</div>`) + `<div class="actions">${actions}</div>${fb}`;
+    grid + (ex.done ? '' : poolHTML(ex, used)) + fb + `<div class="actions">${actions}</div>`;
 }
 
 function renderPoss(card, lead) {
   const ex = cur;
   const ans = ex.placed.length
-    ? ex.placed.map(id => `<button type="button" class="tile placed" data-un="${id}" lang="${srLang()}"${ex.done ? ' disabled' : ''}>${esc(disp(ex.tiles[id].t))}</button>`).join('')
-    : '<span class="placeholder">Нажимайте слова по порядку</span>';
+    ? ex.placed.map((id, i) => placedBtn('data-un', id, i === 0 ? cap(ex.tiles[id].t) : ex.tiles[id].t)).join('')
+    : HINT;
   const right = `<span class="sent" lang="${srLang()}">${esc(ex.canon.map(disp).join(' '))}</span>`;
   const fb = !ex.done ? '' : ex.ok
-    ? `<div class="fb ok"><span class="verdict" lang="${srLang()}">${esc(disp('Tačno!'))}</span>${right}</div>`
-    : `<div class="fb bad"><span class="verdict" lang="${srLang()}">${esc(disp('Netačno.'))}</span><span><s lang="${srLang()}">${esc(ex.ans.map(disp).join(' '))}</s> → ${right}</span><p class="why">${whyHTML(ex.why)}</p></div>`;
+    ? `<div class="fb ok" tabindex="-1">${verdict(true)}${right}</div>`
+    : `<div class="fb bad" tabindex="-1">${verdict(false)}<span><s lang="${srLang()}">${esc(ex.ans.map(disp).join(' '))}</s> → ${right}</span><p class="why">${whyHTML(ex.why)}</p></div>`;
   const actions = ex.done
     ? `<button type="button" class="btn primary" id="next">Дальше</button>`
     : `<button type="button" class="btn primary" id="check"${ex.placed.length ? '' : ' disabled'}>Проверить</button><button type="button" class="btn" id="clear"${ex.placed.length ? '' : ' disabled'}>Стереть</button>`;
   card.innerHTML = lead + `<div class="meta"><span class="chip">чей</span></div><p class="prompt" lang="ru">${esc(cap(ex.ru))}</p>` +
-    `<div class="answer${ex.done ? (ex.ok ? ' ok' : ' bad') : ''}">${ans}</div>${ex.done ? '' : `<div class="pool">${poolHTML(ex, new Set(ex.placed))}</div>`}<div class="actions">${actions}</div>${fb}`;
+    `<div class="answer${ex.done ? (ex.ok ? ' ok' : ' bad') : ''}" role="group" aria-label="Ваш ответ">${ans}</div>${ex.done ? '' : poolHTML(ex, new Set(ex.placed))}${fb}<div class="actions">${actions}</div>`;
 }
 
 function renderGen(card, lead) {
@@ -1316,20 +1372,20 @@ function renderGen(card, lead) {
     const why = (numWrong ? numMsg + ' ' : '') + (it.why || `«${it.w}» — ${G[it.g]} род.`);
     const same = ex.ok && numWrong ? `<p class="why">${whyHTML(`«${PRON[it.n][it.g]}» — это и «она» (ж. р. ед. ч.), и «они» (ср. р. мн. ч.). Здесь — ${it.n === 'pl' ? 'мн. ч.' : 'ед. ч.'}`)}</p>` : '';
     fb = ex.ok
-      ? `<div class="fb ok"><span class="verdict" lang="${srLang()}">${esc(disp('Tačno!'))}</span>${same}${it.why ? `<p class="why">${whyHTML(it.why)}</p>` : ''}<span>Например: ${example}</span></div>`
-      : `<div class="fb bad"><span class="verdict" lang="${srLang()}">${esc(disp('Netačno.'))}</span><p class="why">${whyHTML(why)}</p><span>Например: ${example}</span></div>`;
+      ? `<div class="fb ok" tabindex="-1">${verdict(true)}${same}${it.why ? `<p class="why">${whyHTML(it.why)}</p>` : ''}<span>Например: ${example}</span></div>`
+      : `<div class="fb bad" tabindex="-1">${verdict(false)}<p class="why">${whyHTML(why)}</p><span>Например: ${example}</span></div>`;
   }
   card.innerHTML = lead + `<div class="meta"><span class="chip">каким местоимением заменить</span></div>` +
     `<p class="prompt"><span lang="${srLang()}">${esc(disp(it.w))}</span> <span class="trn" lang="ru">— ${esc(it.ru)}</span></p>` +
     `<div class="gpick">${row('sg', 'jednina')}${row('pl', 'množina')}</div>` +
-    (ex.done ? `<div class="actions"><button type="button" class="btn primary" id="next">Дальше</button></div>` : '') + fb;
+    fb + (ex.done ? `<div class="actions"><button type="button" class="btn primary" id="next">Дальше</button></div>` : '');
 }
 
 function renderClit(card, lead) {
   const ex = cur, it = ex.it, k = it.k;
   let row = '';
   const slot = i => {
-    if (!ex.done) return `<button type="button" class="slot" data-slot="${i}" aria-label="Поставить сюда"></button>`;
+    if (!ex.done) return `<button type="button" class="slot" data-slot="${i}" aria-label="Поставить «${esc(disp(k))}» ${i === 0 ? 'в начало' : `после «${esc(disp(ex.words[i - 1]))}»`}"></button>`;
     return i === ex.chosen ? `<span class="ins ${ex.ok ? 'ok' : 'bad'}" lang="${srLang()}">${esc(disp(k))}</span>` : '<span class="gap"></span>';
   };
   ex.words.forEach((wd, i) => { row += slot(i) + `<span class="w" lang="${srLang()}">${esc(disp(wd))}</span>`; });
@@ -1339,21 +1395,21 @@ function renderClit(card, lead) {
   if (ex.done) {
     actions = `<button type="button" class="btn primary" id="next">Дальше</button>`;
     const right = `<span class="sent" lang="${srLang()}">${esc(build(it.at))}</span>`;
-    if (ex.ok) fb = `<div class="fb ok"><span class="verdict" lang="${srLang()}">${esc(disp('Tačno!'))}</span>${right}</div>`;
+    if (ex.ok) fb = `<div class="fb ok" tabindex="-1">${verdict(true)}${right}</div>`;
     else {
       const first = ex.words.slice(0, it.at).join(' ');
       const why = ex.chosen === 0 ? `«${k}» — энклитика: с неё фраза не начинается.`
         : ex.chosen < it.at ? `«${first}» — одно целое, энклитика встаёт после него.`
         : `Энклитика стоит на втором месте — сразу после «${first}».`;
-      fb = `<div class="fb bad"><span class="verdict" lang="${srLang()}">${esc(disp('Netačno.'))}</span>${right}<p class="why">${whyHTML(why)}</p></div>`;
+      fb = `<div class="fb bad" tabindex="-1">${verdict(false)}${right}<p class="why">${whyHTML(why)}</p></div>`;
     }
   }
-  card.innerHTML = lead + `<div class="meta"><span class="chip">куда поставить</span><span class="chip to" lang="${srLang()}">${esc(disp(k))}</span></div><p class="prompt" lang="ru">${esc(ex.ru)}</p><div class="slots">${row}</div><div class="actions">${actions}</div>${fb}`;
+  card.innerHTML = lead + `<div class="meta"><span class="chip">куда поставить</span><span class="chip to" lang="${srLang()}">${esc(disp(k))}</span></div><p class="prompt" lang="ru">${esc(ex.ru)}</p><div class="slots">${row}</div>${fb}${actions ? `<div class="actions">${actions}</div>` : ''}`;
 }
 
 function mastery(t, f) { let s = 0; for (const g of GROUPS) { const r = S.cells[lk(`${t}.${f}.${g}`)]; s += r ? r.box / 4 : 0; } return s / GROUPS.length; }
 const firstLesson = t => LESSONS.find(L => L.tenses.includes(t)).n;
-const heatCell = (m, extra, label) => { const p = Math.round(m * 100); return `<button type="button" class="cell${m > .55 ? ' dk' : ''}${extra}" style="--p:${p}%" aria-label="${label}: ${p}%">${p}%</button>`; };
+const heatCell = (m, extra, label) => { const p = Math.round(m * 100); return `<button type="button" class="cell${extra}" style="--p:${p}%" aria-label="${label}: ${p}%"><span class="num">${p}%</span></button>`; };
 function renderSide() {
   const L = LESSONS[S.lesson - 1], mode = S.mode, box = r => r ? r.box / 4 : 0;
   let title = 'Матрица', hint = 'Процент — насколько клетка закреплена в этом уроке. Нажмите на клетку, чтобы тренировать только её.', h = '', weak = [];
@@ -1385,15 +1441,15 @@ function renderSide() {
     for (const t of TENSES) {
       h += `<tr><th scope="row">${T_RU[t]}</th>`;
       for (const f of FORMS) {
-        if (!L.tenses.includes(t)) { h += `<td><span class="cell locked">урок ${firstLesson(t)}</span></td>`; continue; }
-        const sel = S.focus === `${t}.${f}`;
+        if (!L.tenses.includes(t)) { h += `<td><span class="cell locked" aria-label="откроется в уроке ${firstLesson(t)}">урок ${firstLesson(t)}</span></td>`; continue; }
+        const sel = !!S.focus && S.focus.startsWith(`${t}.${f}`);
         h += `<td>${heatCell(mastery(t, f), sel ? ' sel' : '', `${T_RU[t]}, ${F_RU[f]}`).replace('<button ', `<button data-focus="${t}.${f}" aria-pressed="${sel}" `)}</td>`;
       }
       h += '</tr>';
     }
     h += '</tbody></table>';
     const pre = S.lesson + '.';
-    weak = Object.entries(S.cells).filter(([k]) => k.startsWith(pre)).map(([k, r]) => { const [, t, f, g] = k.split('.'); return [`${T_RU[t]} · ${F_RU[f]} · ${GROUP_RU[g]}`, r, `${t}.${f}`]; });
+    weak = Object.entries(S.cells).filter(([k]) => k.startsWith(pre)).map(([k, r]) => { const [, t, f, g] = k.split('.'); return [`${T_RU[t]} · ${F_RU[f]} · ${GROUP_RU[g]}`, r, `${t}.${f}.${g}`]; });
   }
   $('#heatTitle').textContent = title;
   $('#heat').innerHTML = h;
@@ -1403,7 +1459,7 @@ function renderSide() {
   const errs = n => `${n} ${n % 10 === 1 && n % 100 !== 11 ? 'ошибка' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 'ошибки' : 'ошибок'}`;
   $('#weak').innerHTML = rows.length
     ? rows.map(([label, r, focus]) => focus
-      ? `<li><button type="button" data-focus="${focus}"><span>${esc(label)}</span><span class="cnt">${errs(r.wrong)}</span></button></li>`
+      ? `<li><button type="button" data-setfocus="${focus}"><span>${esc(label)}</span><span class="cnt">${errs(r.wrong)}</span></button></li>`
       : `<li class="wrow"><span lang="${srLang()}">${whyHTML(label)}</span><span class="cnt">${errs(r.wrong)}</span></li>`).join('')
     : '<li class="empty">Сейчас слабых мест нет. То, где вы ошибаетесь, появится здесь и будет выпадать чаще.</li>';
   $('#program').innerHTML = PROGRAM.map((x, i) => `<li${i < 3 ? ' class="here"' : ''}>${mixHTML(x)}${i < 3 ? ' <span class="chip to">в приложении</span>' : ''}</li>`).join('');
@@ -1414,7 +1470,7 @@ function renderSide() {
     ? '<span class="confirm">Удалить весь прогресс? <button type="button" class="btn" id="reset-yes">Да, сбросить</button><button type="button" class="link" id="reset-no">Отмена</button></span>'
     : '<button type="button" class="link" id="reset">Сбросить прогресс</button>';
   $('#sheet').innerHTML = sheetHTML();
-  $('#sync').textContent = syncMode === 'cloud' ? 'Прогресс сохраняется в вашем аккаунте и доступен на других устройствах.' : 'Прогресс хранится в этом браузере.';
+  $('#sync').textContent = syncMode === 'cloud' ? 'Прогресс сохраняется в вашем аккаунте и доступен на других устройствах.' : 'Прогресс хранится в этом браузере. На iPhone он надёжнее, если добавить сайт на экран «Домой».';
 }
 
 // Программа курса: уроки 1–3 — в приложении, остальные — план.
@@ -1451,18 +1507,24 @@ function sheetHTML() {
 }
 
 // ---------- события ----------
+if (!('popover' in HTMLElement.prototype)) {
+  const m = $('#settings'); m.hidden = true;
+  $('.gear').addEventListener('click', () => { m.hidden = !m.hidden; });
+  m.querySelector('.x').addEventListener('click', () => { m.hidden = true; });
+}
 let menuClosedAt = 0;
 $('#settings').addEventListener('beforetoggle', e => { if (e.newState === 'closed') menuClosedAt = Date.now(); });
 document.addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b || b.disabled) return;
   if (tooSoon(menuClosedAt) && !b.closest('#settings, .gear')) return;
   const d = b.dataset;
-  if (d.focus && b.closest('.side')) {   // матрица под карточкой: на телефоне показываем, что упражнение сменилось
-    toggleFocus(d.focus);
+  if ((d.focus || d.setfocus) && b.closest('.side')) {   // матрица под карточкой: на телефоне показываем, что упражнение сменилось
+    if (d.setfocus) applyFocus(d.setfocus); else toggleFocus(d.focus);
     const top = $('#card').getBoundingClientRect().top;
-    if (top < 0 || top > innerHeight * 0.6) $('#card').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start'});
+    if (top < 0 || top > innerHeight * 0.6) $('#card').scrollIntoView({behavior: reduced() ? 'auto' : 'smooth', block: 'start'});
     return;
   }
+  if (d.target !== undefined) return setTarget(+d.target);
   if (d.lesson) return setLesson(+d.lesson);
   if (d.mode) return setMode(d.mode);
   if (d.row !== undefined) return unfillRow(+d.row);
@@ -1479,23 +1541,29 @@ document.addEventListener('click', e => {
     case 'next': return next();
     case 'override': return override();
     case 'unfocus': return toggleFocus(null);
+    case 'gofocus': { const k = pendingFocus; pendingFocus = null; S.mode = 'build'; S.focus = k; persist(true); showEx(); return renderAll(); }
+    case 'nofocus': pendingFocus = null; return renderModes();
+    case 'intro-ok': S.introSeen = true; persist(true); return renderCard();
+    case 'rule': { const det = $('#sheet').closest('details'); det.open = true; return det.scrollIntoView({behavior: reduced() ? 'auto' : 'smooth', block: 'start'}); }
     case 'reset': confirmReset = true; return renderSide();
     case 'reset-no': confirmReset = false; return renderSide();
     case 'reset-yes': {
       // resetAt отсекает старые записи и на других устройствах — иначе слияние вернуло бы их обратно.
       S = Object.assign(DEFAULT(), settingsOf(S), {owner: S.owner, resetAt: Date.now()});
-      confirmReset = false; persist(); newEx(); return renderAll();
+      confirmReset = false; for (const k of Object.keys(exCache)) delete exCache[k]; persist(); showEx(); return renderAll();
     }
   }
 });
 
 // ---------- сохранение: браузер сразу, аккаунт и другие вкладки — слиянием ----------
-const settingsOf = s => ({lesson:s.lesson, mode:s.mode, gender:s.gender, script:s.script, focus:s.focus, settingsAt:s.settingsAt});
+const settingsOf = s => ({lesson:s.lesson, mode:s.mode, gender:s.gender, script:s.script, focus:s.focus, introSeen:s.introSeen, settingsAt:s.settingsAt});
 const visible = s => [s.lesson, s.mode, s.gender, s.script, s.focus].join('|');
 // Сравнение по содержимому, а не по часам: у разных устройств часы расходятся. Порядок ключей не важен.
 const statsKey = s => JSON.stringify([s.cells, s.verbs, s.clit, s.gen, s.poss].map(o => Object.keys(o).sort().map(k => [k, o[k].box, o[k].seen, o[k].wrong, o[k].rs]))) + s.resetAt;
 const sameState = (a, b) => statsKey(a) === statsKey(b) && visible(a) === visible(b) && a.settingsAt === b.settingsAt;
+let persistAsked = false;
 function persist(settings) {
+  if (!persistAsked && navigator.storage && navigator.storage.persist) { persistAsked = true; navigator.storage.persist().catch(() => {}); }
   const now = Date.now();
   S.updatedAt = now;
   if (settings) S.settingsAt = now;
@@ -1524,7 +1592,7 @@ function mergeState(a, b) {
 function adopt(next) {
   const was = S;
   S = next;
-  if ([was.lesson, was.mode, was.gender, was.focus].join('|') !== [S.lesson, S.mode, S.gender, S.focus].join('|')) { newEx(); renderAll(); }
+  if ([was.lesson, was.mode, was.gender, was.focus].join('|') !== [S.lesson, S.mode, S.gender, S.focus].join('|')) { showEx(); renderAll(); }
   else if (was.script !== S.script) renderAll();
   else renderSide();
 }
@@ -1598,7 +1666,7 @@ async function initRemote(attempt = 0) {
     next = Object.assign({}, next, {owner: uid});
     if (raw) next = mergeState(next, normalize(raw));   // слияние, а не замена: касания до загрузки облака ничего не стирают
     adopt(next);
-    if (switched) { newEx(); renderAll(); }   // экран прежнего аккаунта не должен остаться на месте
+    if (switched) { for (const k of Object.keys(exCache)) delete exCache[k]; showEx(); renderAll(); }   // экран прежнего аккаунта не должен остаться на месте
     saveLocal();
     remoteRef = ref; syncMode = 'cloud'; renderSide();
     dirty = !raw || !sameState(S, normalize(raw));
@@ -1611,7 +1679,7 @@ async function initRemote(attempt = 0) {
 }
 
 if (location.hash === '#selftest') { const r = selfTest(); console.log('selfTest:', r.cells, 'клеток,', r.errors.length, 'ошибок'); r.errors.forEach(x => console.warn(x)); }
-newEx(); renderAll(); initRemote();
+showEx(); renderAll(); initRemote();
 })();
 </script>
 </html>
