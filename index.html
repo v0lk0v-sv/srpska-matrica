@@ -398,19 +398,19 @@ const CLIT = [
   {id:'c25', l:2, w:['Žene','radile','kod','kuće'], k:'su', at:1, ru:'Женщины работали дома.'},
   {id:'c26', l:2, w:['Dete','bilo','kod','kuće'], k:'je', at:1, ru:'Ребёнок был дома.'},
   // Первое «слово» — целая группа: энклитика встаёт после неё, а не после первого слова.
-  {id:'c27', l:2, w:['Moja','sestra','radila','kod','kuće'], k:'je', at:2, ru:'Моя сестра работала дома.'},
-  {id:'c28', l:2, w:['Njegov','pas','bio','ovde'], k:'je', at:2, ru:'Его собака была здесь.'},
-  {id:'c29', l:2, w:['Moji','prijatelji','živeli','u','Beogradu'], k:'su', at:2, ru:'Мои друзья жили в Белграде.'},
-  {id:'c30', l:2, w:['Naša','kuća','bila','ovde'], k:'je', at:2, ru:'Наш дом был здесь.'},
+  {id:'c27', l:2, w:['Moja','sestra','radila','kod','kuće'], k:'je', at:2, alt:1, ru:'Моя сестра работала дома.'},
+  {id:'c28', l:2, w:['Njegov','pas','bio','ovde'], k:'je', at:2, alt:1, ru:'Его собака была здесь.'},
+  {id:'c29', l:2, w:['Moji','prijatelji','živeli','u','Beogradu'], k:'su', at:2, alt:1, ru:'Мои друзья жили в Белграде.'},
+  {id:'c30', l:2, w:['Naša','kuća','bila','ovde'], k:'je', at:2, alt:1, ru:'Наш дом был здесь.'},
   {id:'c31', l:2, w:['Kod','kuće','učili','srpski'], k:'smo', at:2, ru:'Дома мы учили сербский.'},
   {id:'c32', l:2, w:['U','Beogradu','radi{o|la}'], k:'sam', at:2, ru:'В Белграде я работал{|а}.'},
-  {id:'c33', l:2, w:['Tvoji','prijatelji','govorili','srpski'], k:'su', at:2, ru:'Твои друзья говорили по-сербски.'},
+  {id:'c33', l:2, w:['Tvoji','prijatelji','govorili','srpski'], k:'su', at:2, alt:1, ru:'Твои друзья говорили по-сербски.'},
   {id:'c34', l:2, w:['Juče','naši','prijatelji','bili','ovde'], k:'su', at:1, ru:'Вчера наши друзья были здесь.'},
-  {id:'c35', l:3, w:['Moj','prijatelj','raditi','kod','kuće'], k:'će', at:2, ru:'Мой друг будет работать дома.'},
-  {id:'c36', l:3, w:['Njihova','deca','bila','kod','kuće'], k:'su', at:2, ru:'Их дети были дома.'},
+  {id:'c35', l:3, w:['Moj','prijatelj','raditi','kod','kuće'], k:'će', at:2, alt:1, ru:'Мой друг будет работать дома.'},
+  {id:'c36', l:3, w:['Njihova','deca','bila','kod','kuće'], k:'su', at:2, alt:1, ru:'Их дети были дома.'},
   {id:'c37', l:3, w:['Da','li','tvoj','prijatelj','ići','kući'], k:'će', at:2, q:true, ru:'Твой друг пойдёт домой?'},
   {id:'c38', l:3, w:['Sutra','moja','sestra','biti','kod','kuće'], k:'će', at:1, ru:'Завтра моя сестра будет дома.'},
-  {id:'c39', l:3, w:['Tvoja','sestra','imala','vremena'], k:'je', at:2, ru:'У твоей сестры было время.'},
+  {id:'c39', l:3, w:['Tvoja','sestra','imala','vremena'], k:'je', at:2, alt:1, ru:'У твоей сестры было время.'},
 ];
 
 // Раздел «Род»: каким местоимением заменить слово. n — число, g — род; why — где род расходится с русским.
@@ -433,6 +433,42 @@ const GEN = [
   {w:'pivo', ru:'пиво', n:'sg', g:'n'},
   {w:'dete', ru:'ребёнок', n:'sg', g:'n', why:'«dete» — средний род, хотя «ребёнок» — мужского.'},
   {w:'selo', ru:'деревня', n:'sg', g:'n', why:'«selo» — средний род, хотя «деревня» — женского.'},
+  {w:'posao', ru:'работа', n:'sg', g:'m', why:'«posao» — мужской род, хотя «работа» — женского. На «-o», но мужской: «posao, posla».'},
+  {w:'prozor', ru:'окно', n:'sg', g:'m', why:'«prozor» — мужской род, хотя «окно» — среднего.'},
+  {w:'krevet', ru:'кровать', n:'sg', g:'m', why:'«krevet» — мужской род, хотя «кровать» — женского.'},
+  {w:'trg', ru:'площадь', n:'sg', g:'m', why:'«trg» — мужской род, хотя «площадь» — женского.'},
+  {w:'kafić', ru:'кафе', n:'sg', g:'m', why:'«kafić» — мужской род, хотя «кафе» — среднего.'},
+  {w:'godina', ru:'год', n:'sg', g:'f', why:'«godina» — женский род, хотя «год» — мужского.'},
+  {w:'karta', ru:'билет', n:'sg', g:'f', why:'«karta» — женский род, хотя «билет» — мужского.'},
+  {w:'supa', ru:'суп', n:'sg', g:'f', why:'«supa» — женский род, хотя «суп» — мужского.'},
+  {w:'jabuka', ru:'яблоко', n:'sg', g:'f', why:'«jabuka» — женский род, хотя «яблоко» — среднего.'},
+  {w:'banka', ru:'банк', n:'sg', g:'f', why:'«banka» — женский род, хотя «банк» — мужского.'},
+  {w:'pijaca', ru:'рынок', n:'sg', g:'f', why:'«pijaca» — женский род, хотя «рынок» — мужского.'},
+  {w:'prodavnica', ru:'магазин', n:'sg', g:'f', why:'«prodavnica» — женский род, хотя «магазин» — мужского.'},
+  {w:'stolica', ru:'стул', n:'sg', g:'f', why:'«stolica» — женский род, хотя «стул» — мужского.'},
+  {w:'kiša', ru:'дождь', n:'sg', g:'f', why:'«kiša» — женский род, хотя «дождь» — мужского.'},
+  {w:'zgrada', ru:'здание', n:'sg', g:'f', why:'«zgrada» — женский род, хотя «здание» — среднего.'},
+  {w:'veče', ru:'вечер', n:'sg', g:'n', why:'«veče» — средний род, хотя «вечер» — мужского. «Dobro veče».'},
+  {w:'proleće', ru:'весна', n:'sg', g:'n', why:'«proleće» — средний род, хотя «весна» — женского.'},
+  {w:'pitanje', ru:'вопрос', n:'sg', g:'n', why:'«pitanje» — средний род, хотя «вопрос» — мужского.'},
+  {w:'oko', ru:'глаз', n:'sg', g:'n', why:'«oko» — средний род, хотя «глаз» — мужского.'},
+  {w:'so', ru:'соль', n:'sg', g:'f', why:'«so» — женский род, как «соль», хотя оканчивается на «-o».'},
+  {w:'jesen', ru:'осень', n:'sg', g:'f', why:'«jesen» — женский род: на согласный бывает и женский, как «осень».'},
+  {w:'novac', ru:'деньги', n:'sg', g:'m', why:'«novac» — одно слово в ед. ч., мужской род, хотя «деньги» — мн. ч.'},
+  {w:'kosa', ru:'волосы', n:'sg', g:'f', why:'«kosa» — ед. ч., женский род, хотя «волосы» — мн. ч.'},
+  {w:'sat', ru:'часы', n:'sg', g:'m', why:'«sat» — ед. ч., мужской род, хотя «часы» — мн. ч.'},
+  {w:'čaj', ru:'чай', n:'sg', g:'m'},
+  {w:'jezik', ru:'язык', n:'sg', g:'m'},
+  {w:'dan', ru:'день', n:'sg', g:'m'},
+  {w:'telefon', ru:'телефон', n:'sg', g:'m'},
+  {w:'voda', ru:'вода', n:'sg', g:'f'},
+  {w:'škola', ru:'школа', n:'sg', g:'f'},
+  {w:'ulica', ru:'улица', n:'sg', g:'f'},
+  {w:'soba', ru:'комната', n:'sg', g:'f'},
+  {w:'mleko', ru:'молоко', n:'sg', g:'n'},
+  {w:'sunce', ru:'солнце', n:'sg', g:'n'},
+  {w:'jaje', ru:'яйцо', n:'sg', g:'n'},
+  {w:'ime', ru:'имя', n:'sg', g:'n'},
   {w:'ljudi', ru:'люди', n:'pl', g:'m'},
   {w:'gradovi', ru:'города', n:'pl', g:'m'},
   {w:'psi', ru:'собаки', n:'pl', g:'m', why:'«psi» — мужской род, как и «pas».'},
@@ -442,6 +478,18 @@ const GEN = [
   {w:'kuće', ru:'дома́ (мн. ч.)', n:'pl', g:'f', why:'«kuće» — женский род, как и «kuća».'},
   {w:'Ana i Mila', ru:'Ана и Мила', n:'pl', g:'f', why:'Только женщины — женский род: «one».'},
   {w:'pisma', ru:'письма', n:'pl', g:'n'},
+  {w:'prozori', ru:'окна', n:'pl', g:'m', why:'«prozori» — мужской род, как и «prozor», хотя «окна» — среднего.'},
+  {w:'kreveti', ru:'кровати', n:'pl', g:'m', why:'«kreveti» — мужской род, как и «krevet», хотя «кровати» — женского.'},
+  {w:'kafići', ru:'кафе (мн. ч.)', n:'pl', g:'m', why:'«kafići» — мужской род, как и «kafić».'},
+  {w:'banke', ru:'банки', n:'pl', g:'f', why:'«banke» — женский род, как и «banka», хотя «банки» — мужского.'},
+  {w:'godine', ru:'годы', n:'pl', g:'f', why:'«godine» — женский род, как и «godina», хотя «годы» — мужского.'},
+  {w:'karte', ru:'билеты', n:'pl', g:'f', why:'«karte» — женский род, как и «karta», хотя «билеты» — мужского.'},
+  {w:'stolice', ru:'стулья', n:'pl', g:'f', why:'«stolice» — женский род, как и «stolica», хотя «стулья» — мужского.'},
+  {w:'jabuke', ru:'яблоки', n:'pl', g:'f', why:'«jabuke» — женский род, как и «jabuka», хотя «яблоки» — среднего.'},
+  {w:'pitanja', ru:'вопросы', n:'pl', g:'n', why:'«pitanja» — средний род, как и «pitanje», хотя «вопросы» — мужского.'},
+  {w:'imena', ru:'имена', n:'pl', g:'n'},
+  {w:'jaja', ru:'яйца', n:'pl', g:'n'},
+  {w:'vrata', ru:'дверь', n:'pl', g:'n', why:'«vrata» — только мн. ч., средний род: «ona», хотя «дверь» — одна.'},
   {w:'deca', ru:'дети', n:'pl', g:'n', why:'«deca» заменяется на «ona»: глагол при нём — во множественном числе среднего рода, «deca su bila».'},
 ];
 const PRON = {sg:{m:'on', f:'ona', n:'ono'}, pl:{m:'oni', f:'one', n:'ona'}};
@@ -476,10 +524,35 @@ const NOUNS = [
   {sg:'stvar', pl:'stvari', g:'f', ruG:'f', ru:['вещь', 'вещи']},
   {sg:'kuća', pl:'kuće', g:'f', ruG:'m', ru:['дом', 'дома']},
   {sg:'reč', pl:'reči', g:'f', ruG:'n', ru:['слово', 'слова']},
-  {sg:'ime', pl:null, g:'n', ruG:'n', ru:['имя']},
+  {sg:'ime', pl:'imena', g:'n', ruG:'n', ru:['имя', 'имена']},
   {sg:'selo', pl:'sela', g:'n', ruG:'f', ru:['деревня', 'деревни']},
   {sg:'pismo', pl:'pisma', g:'n', ruG:'n', ru:['письмо', 'письма']},
   {sg:'dete', pl:'deca', g:'n', ruG:'m', ru:['ребёнок', 'дети']},
+  {sg:'posao', pl:'poslovi', g:'m', ruG:'f', ru:['работа', 'работы']},
+  {sg:'prozor', pl:'prozori', g:'m', ruG:'n', ru:['окно', 'окна']},
+  {sg:'krevet', pl:'kreveti', g:'m', ruG:'f', ru:['кровать', 'кровати']},
+  {sg:'kafić', pl:'kafići', g:'m', ruG:'n', ru:['кафе', 'кафе']},
+  {sg:'telefon', pl:'telefoni', g:'m', ruG:'m', ru:['телефон', 'телефоны']},
+  {sg:'ključ', pl:'ključevi', g:'m', ruG:'m', ru:['ключ', 'ключи']},
+  {sg:'muž', pl:'muževi', g:'m', ruG:'m', ru:['муж', 'мужья']},
+  {sg:'brat', pl:null, g:'m', ruG:'m', ru:['брат']},
+  {sg:'majka', pl:'majke', g:'f', ruG:'f', ru:['мать', 'матери']},
+  {sg:'žena', pl:'žene', g:'f', ruG:'f', ru:['жена', 'жёны']},
+  {sg:'devojka', pl:'devojke', g:'f', ruG:'f', ru:['девушка', 'девушки']},
+  {sg:'porodica', pl:'porodice', g:'f', ruG:'f', ru:['семья', 'семьи']},
+  {sg:'soba', pl:'sobe', g:'f', ruG:'f', ru:['комната', 'комнаты']},
+  {sg:'torba', pl:'torbe', g:'f', ruG:'f', ru:['сумка', 'сумки']},
+  {sg:'karta', pl:'karte', g:'f', ruG:'m', ru:['билет', 'билеты']},
+  {sg:'stolica', pl:'stolice', g:'f', ruG:'m', ru:['стул', 'стулья']},
+  {sg:'adresa', pl:'adrese', g:'f', ruG:'m', ru:['адрес', 'адреса']},
+  {sg:'zemlja', pl:'zemlje', g:'f', ruG:'f', ru:['страна', 'страны']},
+  {sg:'pitanje', pl:'pitanja', g:'n', ruG:'m', ru:['вопрос', 'вопросы']},
+  {sg:'odelo', pl:'odela', g:'n', ruG:'m', ru:['костюм', 'костюмы']},
+  {sg:'mesto', pl:'mesta', g:'n', ruG:'n', ru:['место', 'места']},
+  {sg:'srce', pl:'srca', g:'n', ruG:'n', ru:['сердце', 'сердца']},
+  {sg:'prezime', pl:'prezimena', g:'n', ruG:'f', ru:['фамилия', 'фамилии']},
+  {sg:'dvorište', pl:'dvorišta', g:'n', ruG:'m', ru:['двор', 'дворы']},
+  {sg:'ogledalo', pl:'ogledala', g:'n', ruG:'n', ru:['зеркало', 'зеркала']},
 ];
 const GI = {m:0, f:1, n:2}, G_GEN = {m:'мужского', f:'женского', n:'среднего'};
 const possIdx = (n, g) => (n === 'pl' ? 3 : 0) + GI[g];
@@ -496,13 +569,15 @@ function possTask(owner, noun, n, lesson = 3) {
     if (!nounOpen(rn, rg, lesson) || canon.includes(t) || req.concat(opt).some(d => d.t === t)) return;
     list.push({t, why, n: rn, g: rg});
   };
-  if (typeof O.ru !== 'string' && noun.ruG !== g) {   // согласовали по русскому роду: «моя собака» → «moja pas»
+  const fixed = typeof O.ru === 'string';   // «его, её, их» по-русски не меняются
+  if (fixed) add(req, O.sr[0], `По-русски ${OWNER_RU[owner]} не меняется, а по-сербски согласуется со словом: «${right} ${word}».`, 'sg', 'm');
+  if (noun.ruG !== g) {   // согласовали по русскому роду: «моя собака» → «moja pas», «его фамилия» → «njegova prezime»
     const x = O.sr[possIdx(n, noun.ruG)];
-    add(req, x, n === 'sg'
-      ? `«${x}» — так было бы по-русски: «${noun.ru[0]}» ${G_GEN[noun.ruG]} рода. А «${noun.sg}» — ${G_GEN[g]}, поэтому «${right}».`
-      : `«${x}» — форма ${G_GEN[noun.ruG]} рода, а «${word}» — ${G_GEN[g]}: «${right} ${word}».`, n, noun.ruG);
+    add(req, x, n === 'pl'
+      ? `«${x}» — форма ${G_GEN[noun.ruG]} рода, а «${word}» — ${G_GEN[g]}: «${right} ${word}».`
+      : fixed ? `«${x}» — это по русскому роду: «${noun.ru[0]}» ${G_GEN[noun.ruG]} рода. А «${noun.sg}» — ${G_GEN[g]}, поэтому «${right}».`
+      : `«${x}» — так было бы по-русски: «${noun.ru[0]}» ${G_GEN[noun.ruG]} рода. А «${noun.sg}» — ${G_GEN[g]}, поэтому «${right}».`, n, noun.ruG);
   }
-  if (typeof O.ru === 'string') add(req, O.sr[0], `По-русски ${OWNER_RU[owner]} не меняется, а по-сербски согласуется со словом: «${right} ${word}».`, 'sg', 'm');
   const mix = OWNER_MIX[owner];
   add(opt, POSS[mix].sr[i], `«${POSS[mix].sr[i]}» — это ${OWNER_RU[mix]}, а здесь ${OWNER_RU[owner]}.`, n, g);
   const sgFirst = n === 'sg' ? ['sg', 'pl'] : ['pl', 'sg'];
@@ -821,7 +896,7 @@ function selfTest() {
     for (const d of distractorsFor(v, cell, ex.canon, 3, false)) if (ex.canon.includes(d.t)) errors.push(id + ': лишняя плитка совпадает с ответом: ' + d.t);
     if (/undefined|null|\s{2}/.test(ru + ' ' + ex.canon.join(' '))) errors.push(id + ': битый текст: ' + ru + ' / ' + ex.canon.join(' '));
   }
-  for (const it of CLIT) if (!CLITICS.has(it.k) || it.at < 1 || it.at > it.w.length) errors.push(it.id + ': неверный пример энклитики');
+  for (const it of CLIT) if (!CLITICS.has(it.k) || it.at < 1 || it.at > it.w.length || (it.alt && it.alt >= it.at)) errors.push(it.id + ': неверный пример энклитики');
 
   // Регрессии из ревью: свободный порядок слов и честные объяснения ошибок. Слова разделены «|».
   const V = id => VERBS.find(v => v.id === id), OV = comp('ovde', 'здесь'), KU = comp('kući', 'домой'), KNJ = comp('knjigu', 'книгу');
@@ -1224,7 +1299,7 @@ function check() {
 }
 function chooseSlot(s) {
   const ex = cur; if (!ex || ex.kind !== 'clitic' || ex.done || s > ex.words.length || tooSoon(ex.createdAt)) return;
-  Object.assign(ex, {chosen:s, done:true, ok: s === ex.it.at, checkedAt: Date.now()});
+  Object.assign(ex, {chosen:s, done:true, ok: s === ex.it.at || s === ex.it.alt, checkedAt: Date.now()});
   say(ex.ok ? 'Верно.' : 'Неверно.');
   commit(ex, ex.ok); renderCard(); revealFb();
 }
@@ -1456,7 +1531,9 @@ function renderClit(card, lead) {
   if (ex.done) {
     actions = `<button type="button" class="btn primary" id="next">Дальше</button>`;
     const right = `<span class="sent" lang="${srLang()}">${esc(build(it.at))}</span>`;
-    if (ex.ok) fb = `<div class="fb ok" tabindex="-1">${verdict(true)}${right}</div>`;
+    // «Moja je sestra…» — разрыв группы допустим, но звучит книжно; основной вариант — после всей группы.
+    const alt = ex.chosen === it.alt ? `<p class="why">${whyHTML(`Так тоже можно — это книжнее. В разговоре чаще после всей группы: «${ex.words.slice(0, it.at).join(' ')}».`)}</p>` : '';
+    if (ex.ok) fb = `<div class="fb ok" tabindex="-1">${verdict(true)}${right}${alt}</div>`;
     else {
       const first = ex.words.slice(0, it.at).join(' ');
       const why = ex.chosen === 0 ? `«${k}» — энклитика: с неё фраза не начинается.`
