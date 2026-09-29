@@ -348,7 +348,8 @@ const eqT = (a, b) => a.length === b.length && a.every((x, i) => x.toLowerCase()
 
 const w = s => s.split(' ');
 const comp = (sr, ru, x) => Object.assign({sr, ru}, x);
-const KOD = comp('kod kuće', 'дома'), BG = comp('u Beogradu', 'в Белграде');
+// gx — с урока 8 (падежи уже пройдены) плитка с падежной ошибкой: «iz Moskvi» рядом с «iz Moskve».
+const KOD = comp('kod kuće', 'дома', {gx:[['kod kuću', 'После «kod» — родительный: «kod kuće».']]}), BG = comp('u Beogradu', 'в Белграде');
 
 // ponytail: формы хранятся таблицей, а не выводятся правилами — проверяемо глазами.
 // Комплементы: null = можно без дополнения; если null нет — дополнение обязательно. l — урок, с которого дополнение
@@ -358,16 +359,27 @@ const JUCE = comp('juče', 'вчера', {t:'past', l:5}), SUTRA = comp('sutra',
 const VERBS = [
   {id:'raditi', l:1, inf:'raditi', pres:w('radim radiš radi radimo radite rade'), part:w('radio radila radilo radili radile'),
    ru:{inf:'работать', pres:w('работаю работаешь работает работаем работаете работают'), past:w('работал работала работали')},
-   comps:[null, KOD, BG, comp('mnogo', 'много'), comp('u banci', 'в банке', {l:4}), comp('na fakultetu', 'в университете', {l:4}), JUCE, SUTRA]},
+   comps:[null, KOD, BG, comp('mnogo', 'много'), comp('u banci', 'в банке', {l:4}), comp('na fakultetu', 'в университете', {l:4}), JUCE, SUTRA,
+     comp('sa bratom', 'с братом', {l:8, gx:[['sa brat', 'После «sa» — творительный: «sa bratom».'], ['sa brata', '«brata» — «брата» (кого?). «С братом» — «sa bratom».']]}),
+     comp('bez pauze', 'без перерыва', {l:8, gx:[['bez pauzu', '«pauzu» — винительный. После «bez» — родительный: «bez pauze».']]}),
+     comp('sa kolegama', 'с коллегами', {l:9, gx:[['sa kolegima', '«kolega» склоняется как ж. р.: «sa kolegama».'], ['sa kolege', '«kolege» — «коллеги» (кто? или кого? чего?). «С коллегами» — «sa kolegama».']]})]},
   {id:'govoriti', l:1, inf:'govoriti', pres:w('govorim govoriš govori govorimo govorite govore'), part:w('govorio govorila govorilo govorili govorile'),
    ru:{inf:'говорить', pres:w('говорю говоришь говорит говорим говорите говорят'), past:w('говорил говорила говорили')},
-   comps:[comp('srpski', 'по-сербски'), comp('ruski', 'по-русски'), comp('engleski', 'по-английски'), comp('polako', 'медленно')]},
+   comps:[comp('srpski', 'по-сербски'), comp('ruski', 'по-русски'), comp('engleski', 'по-английски'), comp('polako', 'медленно'),
+     comp('sa Anom', 'с Аной', {l:8, gx:[['sa Anoj', 'По-русски «с Аной», а по-сербски — «-om»: «sa Anom».'], ['sa Ana', 'После «sa» — творительный: «sa Anom».']]}),
+     comp('sa tatom', 'с папой', {l:8, gx:[['sa tatoj', 'По-русски «с папой», а по-сербски — «-om»: «sa tatom».'], ['sa tata', '«tata» склоняется как «žena»: «sa tatom».']]}),
+     comp('sa decom', 'с детьми', {l:9, gx:[['sa decama', '«deca» склоняется как ж. р. ед. ч.: «sa decom».'], ['sa deca', 'После «sa» — творительный: «sa decom».']]}),
+     comp('sa ljudima', 'с людьми', {l:9, gx:[['sa ljudama', 'М. р. во мн. ч. — «-ima»: «sa ljudima».'], ['sa ljudi', '«ljudi» — именительный. После «sa» — «sa ljudima».']]})]},
   {id:'učiti', l:1, inf:'učiti', pres:w('učim učiš uči učimo učite uče'), part:w('učio učila učilo učili učile'),
    ru:{inf:'учить', pres:w('учу учишь учит учим учите учат'), past:w('учил учила учили')},
    comps:[comp('srpski', 'сербский'), comp('engleski', 'английский'), comp('reči', 'слова'), KOD]},
   {id:'živeti', l:1, inf:'živeti', pres:w('živim živiš živi živimo živite žive'), part:w('živeo živela živelo živeli živele'),
    ru:{inf:'жить', pres:w('живу живёшь живёт живём живёте живут'), past:w('жил жила жили')},
-   comps:[BG, comp('ovde', 'здесь'), comp('u Rusiji', 'в России', {l:4}), comp('u Srbiji', 'в Сербии', {l:4}), comp('u centru', 'в центре', {l:4})]},
+   comps:[BG, comp('ovde', 'здесь'), comp('u Rusiji', 'в России', {l:4}), comp('u Srbiji', 'в Сербии', {l:4}), comp('u centru', 'в центре', {l:4}),
+     comp('sa sestrom', 'с сестрой', {l:8, gx:[['sa sestroj', 'По-русски «с сестрой», а по-сербски — «-om»: «sa sestrom».'], ['sa sestra', 'После «sa» — творительный: «sa sestrom».']]}),
+     comp('kod prijatelja', 'у друга', {l:8, gx:[['u prijatelja', 'По-русски «у друга», а по-сербски — «kod prijatelja».'], ['kod prijatelju', 'После «kod» — родительный: «kod prijatelja».']]}),
+     comp('blizu centra', 'рядом с центром', {l:8, gx:[['blizu centrom', 'По-русски «рядом с центром», а «blizu» — с родительным: «blizu centra».'], ['blizu centara', '«centara» — мн. ч. («центров»). У одного центра «a» выпадает: «blizu centra».']]}),
+     comp('sa roditeljima', 'с родителями', {l:9, gx:[['sa roditeljama', 'М. р. во мн. ч. — «-ima»: «sa roditeljima».'], ['sa roditelji', '«roditelji» — именительный. После «sa» — «sa roditeljima».']]})]},
   {id:'voleti', l:1, inf:'voleti', pres:w('volim voliš voli volimo volite vole'), part:w('voleo volela volelo voleli volele'),
    ru:{inf:'любить', pres:w('люблю любишь любит любим любите любят'), past:w('любил любила любили')},
    comps:[comp('Beograd', 'Белград'), comp('Srbiju', 'Сербию'), comp('kafu', 'кофе'), comp('muziku', 'музыку'), comp('pivo', 'пиво'), OBJC('acc', 7)]},
@@ -376,24 +388,35 @@ const VERBS = [
    comps:[null, comp('srpski', 'сербский'), comp('engleski', 'английский'), comp('to', 'это'), Object.assign(OBJC('acc', 7), {noFut:true})]},   // «Я буду знать тебя» — неестественно
   {id:'čitati', l:1, inf:'čitati', pair:'pročitati', pres:w('čitam čitaš čita čitamo čitate čitaju'), part:w('čitao čitala čitalo čitali čitale'),
    ru:{inf:'читать', pres:w('читаю читаешь читает читаем читаете читают'), past:w('читал читала читали')},
-   comps:[null, comp('knjigu', 'книгу'), comp('pismo', 'письмо'), comp('novine', 'газету')]},
+   comps:[null, comp('knjigu', 'книгу'), comp('pismo', 'письмо'), comp('novine', 'газету'),
+     comp('časopise', 'журналы', {l:9, gx:[['časopisi', '«časopisi» — именительный. После глагола — винительный: «časopise».'], ['časopis', '«časopis» — один журнал. «Журналы» — «časopise».']]})]},   // не «книги»: «не читал книги» можно понять как «ни одной книги»
   {id:'pisati', l:1, inf:'pisati', pair:'napisati', pres:w('pišem pišeš piše pišemo pišete pišu'), part:w('pisao pisala pisalo pisali pisale'),
    ru:{inf:'писать', pres:w('пишу пишешь пишет пишем пишете пишут'), past:w('писал писала писали')},
-   comps:[null, comp('pismo', 'письмо'), comp('poruku', 'сообщение'), comp('knjigu', 'книгу')]},
+   comps:[null, comp('pismo', 'письмо'), comp('poruku', 'сообщение'), comp('knjigu', 'книгу'),
+     comp('olovkom', 'карандашом', {l:8, gx:[['sa olovkom', '«sa» — «вместе с». «Чем?» — без предлога: «olovkom».'], ['olovka', '«olovka» — именительный. «Чем?» — творительный: «olovkom».']]}),
+     comp('poruke prijateljima', 'сообщения друзьям', {l:9, gx:[['poruke prijateljama', 'М. р. во мн. ч. — «-ima»: «prijateljima».'], ['poruke prijateljam', 'По-русски «друзьям», а по-сербски — «prijateljima».']]})]},
   {id:'ići', l:1, inf:'ići', pres:w('idem ideš ide idemo idete idu'), part:w('išao išla išlo išli išle'),
    ru:{pres:w('иду идёшь идёт идём идёте идут'), past:w('шёл шла шли'), pastNeg:w('ходил ходила ходили'), fut:w('пойду пойдёшь пойдёт пойдём пойдёте пойдут')},
-   comps:[comp('kući', 'домой'), comp('u grad', 'в город', {l:4}), comp('na posao', 'на работу', {l:4}), comp('u prodavnicu', 'в магазин', {l:4}), comp('na pijacu', 'на рынок', {l:4}), SUTRA]},
+   comps:[comp('kući', 'домой'), comp('u grad', 'в город', {l:4}), comp('na posao', 'на работу', {l:4}), comp('u prodavnicu', 'в магазин', {l:4}), comp('na pijacu', 'на рынок', {l:4}), SUTRA,
+     comp('kod lekara', 'к врачу', {l:8, noPast:true, gx:[['kod lekaru', 'После «kod» — родительный: «kod lekara». Без «kod» — «lekaru».'], ['u lekara', 'По-русски «у врача», а «к врачу» — «kod lekara».']]}),
+     comp('do centra', 'до центра', {l:8, noPast:true, gx:[['do centar', 'После «do» — родительный: «do centra».'], ['do centara', '«centara» — мн. ч. («центров»). У одного центра «a» выпадает: «do centra».']]}),
+     comp('sa prijateljem', 'с другом', {l:8, noPast:true, gx:[['sa prijateljom', 'После «lj» — «-em»: «sa prijateljem».'], ['sa prijatelj', 'После «sa» — творительный: «sa prijateljem».']]})]},
   {id:'razumeti', l:1, inf:'razumeti', pres:w('razumem razumeš razume razumemo razumete razumeju'), part:w('razumeo razumela razumelo razumeli razumele'),
    ru:{inf:'понимать', pres:w('понимаю понимаешь понимает понимаем понимаете понимают'), past:w('понимал понимала понимали')},
    comps:[null, comp('srpski', 'по-сербски'), comp('ruski', 'по-русски'), comp('sve', 'всё'), OBJC('acc', 7)]},
   {id:'biti', l:1, inf:'biti', pres:w('sam si je smo ste su'), presNeg:w('nisam nisi nije nismo niste nisu'), presClitic:true, part:w('bio bila bilo bili bile'),
    ru:{pres:null, past:w('был была были'), fut:w('буду будешь будет будем будете будут')},
-   comps:[KOD, BG, comp('ovde', 'здесь'), comp('tu', 'тут'), comp('iz Rusije', 'из России', {noNet:true, presOnly:true}), comp('iz Srbije', 'из Сербии', {noNet:true, presOnly:true}),
-     comp('iz Beograda', 'из Белграда', {noNet:true, presOnly:true}), comp('iz Moskve', 'из Москвы', {noNet:true, presOnly:true}),
+   comps:[KOD, BG, comp('ovde', 'здесь'), comp('tu', 'тут'), comp('iz Rusije', 'из России', {noNet:true, presOnly:true, gx:[['iz Rusiji', '«Rusiji» — это «в России». «Из России» — родительный: «iz Rusije».'], ['iz Rusija', 'После «iz» — родительный: «iz Rusije».']]}),
+     comp('iz Srbije', 'из Сербии', {noNet:true, presOnly:true, gx:[['iz Srbiji', '«Srbiji» — это «в Сербии». «Из Сербии» — родительный: «iz Srbije».'], ['iz Srbija', 'После «iz» — родительный: «iz Srbije».']]}),
+     comp('iz Beograda', 'из Белграда', {noNet:true, presOnly:true, gx:[['iz Beograd', 'После «iz» — родительный: «iz Beograda».'], ['iz Beogradu', '«Beogradu» — это «в Белграде». «Из Белграда» — «iz Beograda».']]}),
+     comp('iz Moskve', 'из Москвы', {noNet:true, presOnly:true, gx:[['iz Moskvi', '«Moskvi» — это «в Москве». Родительный ж. р. — на «-e»: «iz Moskve».'], ['iz Moskva', 'После «iz» — родительный: «iz Moskve».']]}),
      // byG — форма по роду и числу подлежащего (g: м, ж, ср — ед. ч.; м, ж — мн. ч.): «Ja sam Ruskinja», «Mi smo Rusi».
      comp('Rus', 'русский', {byG:['Rus', 'Ruskinja', null, 'Rusi', 'Ruskinje'], ruByG:['русский', 'русская', null, 'русские', 'русские'], noNet:true, presOnly:true}),
      comp('Srbin', 'серб', {byG:['Srbin', 'Srpkinja', null, 'Srbi', 'Srpkinje'], ruByG:['серб', 'сербка', null, 'сербы', 'сербки'], noNet:true, presOnly:true}),
-     comp('u gradu', 'в городе', {l:4}), comp('na poslu', 'на работе', {l:4}), comp('u banci', 'в банке', {l:4})]},
+     comp('u gradu', 'в городе', {l:4}), comp('na poslu', 'на работе', {l:4}), comp('u banci', 'в банке', {l:4}),
+     comp('kod brata', 'у брата', {l:8, noNet:true, gx:[['kod bratu', 'После «kod» — родительный: «kod brata».'], ['u brata', 'По-русски «у брата», а по-сербски — «kod brata».']]}),
+     comp('sa prijateljem', 'с другом', {l:8, noNet:true, gx:[['sa prijateljom', 'После «lj» — «-em»: «sa prijateljem».'], ['sa prijatelj', 'После «sa» — творительный: «sa prijateljem».']]}),
+     comp('sa prijateljima', 'с друзьями', {l:9, noNet:true, gx:[['sa prijateljama', 'М. р. во мн. ч. — «-ima»: «sa prijateljima».'], ['sa prijatelji', '«prijatelji» — именительный. После «sa» — «sa prijateljima».']]})]},
   {id:'imati', l:3, inf:'imati', pres:w('imam imaš ima imamo imate imaju'), presNeg:w('nemam nemaš nema nemamo nemate nemaju'), part:w('imao imala imalo imali imale'),
    ruSpecial:'imati', comps:[comp('psa','собака',{gen:'собаки', g:'f'}), comp('vremena','время',{gen:'времени', g:'n'}), comp('sestru', 'сестра', {gen:'сестры', g:'f'}),
      comp('brata', 'брат', {gen:'брата', g:'m'}), comp('stan', 'квартира', {gen:'квартиры', g:'f'}), comp('auto', 'машина', {gen:'машины', g:'f'})]},
@@ -406,10 +429,14 @@ const VERBS = [
      comp('da kupiti', 'купить', {da:'kupiti', l:5, gen:'покупать'}), comp('da doći', 'прийти', {da:'doći', l:5, gen:'приходить'})]},
   {id:'piti', l:3, inf:'piti', pres:w('pijem piješ pije pijemo pijete piju'), part:w('pio pila pilo pili pile'),
    ru:{inf:'пить', pres:w('пью пьёшь пьёт пьём пьёте пьют'), past:w('пил пила пили')},
-   comps:[comp('kafu','кофе'), comp('vodu','воду'), comp('pivo','пиво'), comp('čaj', 'чай'), comp('mleko', 'молоко')]},
+   comps:[comp('kafu','кофе'), comp('vodu','воду'), comp('pivo','пиво'), comp('čaj', 'чай'), comp('mleko', 'молоко'),
+     comp('kafu bez šećera', 'кофе без сахара', {l:8, gx:[['kafu bez šećer', 'После «bez» — родительный: «bez šećera».']]}),
+     comp('čaj sa mlekom', 'чай с молоком', {l:8, gx:[['čaj sa mleko', 'После «sa» — творительный: «sa mlekom».']]})]},
   {id:'jesti', l:3, inf:'jesti', futStem:'ješ', pres:w('jedem jedeš jede jedemo jedete jedu'), part:w('jeo jela jelo jeli jele'),
    ru:{inf:'есть', pres:w('ем ешь ест едим едите едят'), past:w('ел ела ели')},
-   comps:[null, comp('hleb','хлеб'), comp('supu','суп'), comp('jabuku', 'яблоко'), comp('meso', 'мясо'), comp('kolač', 'пирожное')]},
+   comps:[null, comp('hleb','хлеб'), comp('supu','суп'), comp('jabuku', 'яблоко'), comp('meso', 'мясо'), comp('kolač', 'пирожное'),
+     comp('hleb sa sirom', 'хлеб с сыром', {l:8, gx:[['hleb sa sir', 'После «sa» — творительный: «sa sirom».']]}),
+     comp('supu bez soli', 'суп без соли', {l:8, gx:[['supu bez so', 'После «bez» — родительный: «bez soli».'], ['supu bez sole', 'Ж. р. на согласный: родительный на «-i» — «soli».']]})]},
   // Урок 5: «могу», «должен». После них — «da» + настоящее время.
   {id:'moći', l:4, inf:'moći', pres:w('mogu možeš može možemo možete mogu'), part:w('mogao mogla moglo mogli mogle'),
    ru:{inf:'мочь', pres:w('могу можешь может можем можете могут'), past:w('мог могла могли'), fut:w('смогу сможешь сможет сможем сможете смогут')},
@@ -421,19 +448,25 @@ const VERBS = [
   // Урок 6: виды. У совершенного настоящее — только после «da» («hoću da kupim»); одно оно не значит будущее.
   {id:'kupovati', l:5, inf:'kupovati', pair:'kupiti', pres:w('kupujem kupuješ kupuje kupujemo kupujete kupuju'), part:w('kupovao kupovala kupovalo kupovali kupovale'),
    ru:{inf:'покупать', pres:w('покупаю покупаешь покупает покупаем покупаете покупают'), past:w('покупал покупала покупали')},
-   comps:[comp('hleb', 'хлеб'), comp('kafu', 'кофе'), comp('knjigu', 'книгу'), comp('kartu', 'билет'), comp('jabuke', 'яблоки'), comp('na pijaci', 'на рынке')]},
+   comps:[comp('hleb', 'хлеб'), comp('kafu', 'кофе'), comp('knjigu', 'книгу'), comp('kartu', 'билет'), comp('jabuke', 'яблоки'), comp('na pijaci', 'на рынке'),
+     comp('poklone', 'подарки', {l:9, gx:[['pokloni', '«pokloni» — именительный. После глагола — винительный: «poklone».'], ['poklon', '«poklon» — один. «Подарки» — «poklone».']]})]},
   {id:'kupiti', l:5, inf:'kupiti', pf:true, pair:'kupovati', pres:w('kupim kupiš kupi kupimo kupite kupe'), part:w('kupio kupila kupilo kupili kupile'),
    ru:{inf:'купить', past:w('купил купила купили'), fut:w('куплю купишь купит купим купите купят')},
    comps:[comp('hleb', 'хлеб'), comp('kafu', 'кофе'), comp('knjigu', 'книгу'), comp('kartu', 'билет'), comp('jabuke', 'яблоки')]},
   {id:'dolaziti', l:5, inf:'dolaziti', pair:'doći', pres:w('dolazim dolaziš dolazi dolazimo dolazite dolaze'), part:w('dolazio dolazila dolazilo dolazili dolazile'),
    ru:{inf:'приходить', pres:w('прихожу приходишь приходит приходим приходите приходят'), past:w('приходил приходила приходили')},
-   comps:[comp('kući', 'домой'), comp('na posao', 'на работу'), comp('u grad', 'в город'), comp('kasno', 'поздно'), comp('ovamo', 'сюда')]},
+   comps:[comp('kući', 'домой'), comp('na posao', 'на работу'), comp('u grad', 'в город'), comp('kasno', 'поздно'), comp('ovamo', 'сюда'),
+     comp('sa posla', 'с работы', {l:8, gx:[['iz posla', '«на работе» — «na poslu», поэтому «с работы» — «sa posla».'], ['sa posao', '«sa» в значении «откуда?» — с родительным: «sa posla».']]}),
+     comp('iz škole', 'из школы', {l:8, gx:[['iz školi', '«školi» — это «в школе». «Из школы» — «iz škole».'], ['iz školu', '«školu» — винительный (куда?). Откуда — родительный: «iz škole».']]})]},
   {id:'doći', l:5, inf:'doći', pf:true, pair:'dolaziti', pres:w('dođem dođeš dođe dođemo dođete dođu'), part:w('došao došla došlo došli došle'),
    ru:{inf:'прийти', past:w('пришёл пришла пришли'), fut:w('приду придёшь придёт придём придёте придут')},
-   comps:[comp('kući', 'домой'), comp('na posao', 'на работу'), comp('u grad', 'в город'), comp('kasno', 'поздно'), comp('ovamo', 'сюда'), JUCE, SUTRA]},
+   comps:[comp('kući', 'домой'), comp('na posao', 'на работу'), comp('u grad', 'в город'), comp('kasno', 'поздно'), comp('ovamo', 'сюда'), JUCE, SUTRA,
+     comp('sa posla', 'с работы', {l:8, gx:[['iz posla', '«на работе» — «na poslu», поэтому «с работы» — «sa posla».'], ['sa posao', '«sa» в значении «откуда?» — с родительным: «sa posla».']]}),
+     comp('iz škole', 'из школы', {l:8, gx:[['iz školi', '«školi» — это «в школе». «Из школы» — «iz škole».'], ['iz školu', '«školu» — винительный (куда?). Откуда — родительный: «iz škole».']]})]},
   {id:'gledati', l:5, inf:'gledati', pair:'pogledati', pres:w('gledam gledaš gleda gledamo gledate gledaju'), part:w('gledao gledala gledalo gledali gledale'),
    ru:{inf:'смотреть', pres:w('смотрю смотришь смотрит смотрим смотрите смотрят'), past:w('смотрел смотрела смотрели')},
-   comps:[null, comp('film', 'фильм'), comp('televiziju', 'телевизор'), comp('utakmicu', 'матч')]},
+   comps:[null, comp('film', 'фильм'), comp('televiziju', 'телевизор'), comp('utakmicu', 'матч'),
+     comp('filmove', 'фильмы', {l:9, gx:[['filme', 'Короткие слова м. р. во мн. ч. получают «-ov-»: «filmove».'], ['filmovi', '«filmovi» — именительный. После глагола — винительный: «filmove».']]})]},
   {id:'pogledati', l:5, inf:'pogledati', pf:true, pair:'gledati', pres:w('pogledam pogledaš pogleda pogledamo pogledate pogledaju'), part:w('pogledao pogledala pogledalo pogledali pogledale'),
    ru:{inf:'посмотреть', past:w('посмотрел посмотрела посмотрели'), fut:w('посмотрю посмотришь посмотрит посмотрим посмотрите посмотрят')},
    comps:[comp('film', 'фильм'), comp('utakmicu', 'матч')]},
@@ -454,7 +487,8 @@ const VERBS = [
    comps:[comp('Anu', 'Ану'), comp('grad', 'город'), comp('more', 'море'), comp('sestru', 'сестру'), comp('brata', 'брата'), OBJC('acc', 7)]},
   // Урок 7: глаголы с дополнением-местоимением. Дательный — «кому?»: «Dajem mu knjigu».
   {id:'čekati', l:7, inf:'čekati', pres:w('čekam čekaš čeka čekamo čekate čekaju'), part:w('čekao čekala čekalo čekali čekale'),
-   ru:{inf:'ждать', pres:w('жду ждёшь ждёт ждём ждёте ждут'), past:w('ждал ждала ждали')}, comps:[OBJC('acc', 7), comp('autobus', 'автобус'), comp('Anu', 'Ану')]},
+   ru:{inf:'ждать', pres:w('жду ждёшь ждёт ждём ждёте ждут'), past:w('ждал ждала ждали')}, comps:[OBJC('acc', 7), comp('autobus', 'автобус'), comp('Anu', 'Ану'),
+     comp('kod stanice', 'у остановки', {l:8, gx:[['kod stanici', 'После «kod» — родительный: «kod stanice».'], ['u stanice', 'По-русски «у остановки», а по-сербски — «kod stanice».']]})]},
   {id:'pitati', l:7, inf:'pitati', pres:w('pitam pitaš pita pitamo pitate pitaju'), part:w('pitao pitala pitalo pitali pitale'),
    ru:{inf:'спрашивать', pres:w('спрашиваю спрашиваешь спрашивает спрашиваем спрашиваете спрашивают'), past:w('спрашивал спрашивала спрашивали')}, comps:[OBJC('acc', 7), comp('sestru', 'сестру')]},
   {id:'davati', l:7, inf:'davati', pair:'dati', pres:w('dajem daješ daje dajemo dajete daju'), part:w('davao davala davalo davali davale'),
@@ -483,8 +517,8 @@ const LESSONS = [
   {n:5, title:'Прошедшее время и вид', tabs:['conj','build','transform','clitic','phr']},
   {n:6, title:'Будущее, время, возраст', tabs:['conj','build','transform','clitic','phr']},
   {n:7, title:'Местоимения, дательный, [se]', tabs:['pron','case','conj','transform','clitic','phr']},
-  {n:8, title:'Родительный и творительный', soon:true},
-  {n:9, title:'Падежи во множественном', soon:true},
+  {n:8, title:'Родительный и творительный', tabs:['case','build','transform','phr']},
+  {n:9, title:'Падежи во множественном', tabs:['case','build','phr']},
 ];
 const tensesOf = n => TENSES.filter(t => TENSE_L[t] <= n);
 const vTenses = v => TENSES.filter(t => !(t === 'fut' && v.noFut) && !(t === 'pres' && v.pf) && !(v.onlyPres && t !== 'pres'));   // kazati — только настоящее: «сказал/скажу» — это reći   // у совершенного вида нет настоящего
@@ -947,23 +981,41 @@ const QTY = [
   {w:'kolač', g:'m', f:['kolač', 'kolača', 'kolača'], ru:'пирожное'}, {w:'hiljada', g:'f', f:['hiljada', 'hiljade', 'hiljada'], ru:'тысяча'},
 ];
 const ONE = {m:'jedan', f:'jedna', n:'jedno'}, G_RU = {m:'м. р.', f:'ж. р.', n:'ср. р.'};
+// Урок 9: после 5 — родительный мн. ч. («pet sestara», «pet ljudi»). x — типичная ошибка, x5 — только после 5 («pet knjig» — как по-русски).
+const CNT = [
+  {w:'grad', g:'m', f:['grad', 'grada', 'gradova'], ru:'город', x5:true, x:['gradov', 'По-русски «городов», а по-сербски — «gradova».']},
+  {w:'čovek', g:'m', f:['čovek', 'čoveka', 'ljudi'], ru:'человек', x:['ljudima', '«ljudima» — «людям, с людьми». После числа — «čoveka» (2–4) или «ljudi» (5+).']},
+  {w:'dan', g:'m', f:['dan', 'dana', 'dana'], ru:'день', x:['dani', '«dani» — именительный мн. ч. После числа — «dana».']},
+  {w:'mesec', g:'m', f:['mesec', 'meseca', 'meseci'], ru:'месяц', x:null},
+  {w:'prijatelj', g:'m', f:['prijatelj', 'prijatelja', 'prijatelja'], ru:'друг', x:['prijatelji', '«prijatelji» — именительный мн. ч. После числа — «prijatelja».']},
+  {w:'knjiga', g:'f', f:['knjiga', 'knjige', 'knjiga'], ru:'книга', x5:true, x:['knjig', 'По-русски «пять книг», а по-сербски — «pet knjiga».']},
+  {w:'sestra', g:'f', f:['sestra', 'sestre', 'sestara'], ru:'сестра', x:['sestri', '«sestri» — «сестре». После числа — «sestre» (2–4) или «sestara» (5+).']},
+  {w:'nedelja', g:'f', f:['nedelja', 'nedelje', 'nedelja'], ru:'неделя', x5:true, x:['nedelj', 'По-русски «пять недель», а по-сербски — «pet nedelja».']},
+  {w:'stvar', g:'f', f:['stvar', 'stvari', 'stvari'], ru:'вещь', x:['stvare', 'Ж. р. на согласный: «dve stvari», «pet stvari».']},
+  {w:'reč', g:'f', f:['reč', 'reči', 'reči'], ru:'слово', x:['reče', 'Ж. р. на согласный: «dve reči», «pet reči».']},
+  {w:'pismo', g:'n', f:['pismo', 'pisma', 'pisama'], ru:'письмо', x5:true, x:['pisem', 'По-русски «писем», а по-сербски — «pisama».']},
+  {w:'selo', g:'n', f:['selo', 'sela', 'sela'], ru:'деревня', x:['selu', '«selu» — «в деревне». После числа — «sela».']},
+  {w:'pitanje', g:'n', f:['pitanje', 'pitanja', 'pitanja'], ru:'вопрос', x:['pitanjima', '«pitanjima» — «вопросам, о вопросах». После числа — «pitanja».']},
+];
+const CNT_KEYS = ['m', 'f', 'n'].flatMap(g => ['2', '5'].map(b => `cnt.${g}.${b}`));
 // Последнее слово числа согласуется со словом: «dvadeset jedna kafa», «dvadeset dve kafe».
 const qtyNum = (n, g) => numWords(n).map((x, i, a) => i < a.length - 1 ? x : x === 'jedan' ? ONE[g] : x === 'dva' && g === 'f' ? 'dve' : x);
 const QTY_KEYS = ['m', 'f', 'n'].flatMap(g => ['1', '2', '5'].map(b => `qty.${g}.${b}`)), QTYC_KEYS = QTY_KEYS.map(k => k.replace('qty.', 'qtyc.'));
 const lastDigit = n => { const r = n % 100; return r >= 11 && r <= 14 ? 5 : r % 10 === 1 ? 1 : r % 10 >= 2 && r % 10 <= 4 ? 2 : 5; };
 function qtyTask(key, item, n) {
-  const [kind, g, b] = key.split('.'), big = [];
+  const [kind, g, b] = key.split('.'), big = [], cnt = kind === 'cnt';
   for (let x = 21; x <= 99; x++) if (lastDigit(x) === +b) big.push(x);
-  item = item || pick(QTY.filter(x => x.g === g));
+  item = item || pick((cnt ? CNT : QTY).filter(x => x.g === g));
   n = n || (kind === 'qtyc' ? pick(big) : b === '1' ? 1 : b === '2' ? 2 + rnd(3) : 5 + rnd(16));
   const bi = b === '1' ? 0 : b === '2' ? 1 : 2, form = item.f[bi], canon = qtyNum(n, g).concat(form), low = canon.map(x => x.toLowerCase()), distract = [];
   const add = (t, why) => { if (!low.includes(t) && !distract.some(d => d.t === t)) distract.push(D(t, why)); };
-  const RULE = ['после «1» — как в словаре', 'после 2, 3, 4 — «' + item.f[1] + '»', 'после 5 и больше — «' + item.f[2] + '»'];
+  const RULE = ['после «1» — как в словаре', 'после 2, 3, 4 — «' + item.f[1] + '»', 'после 5 и больше — ' + (cnt ? 'родительный мн. ч. ' : '') + '«' + item.f[2] + '»'];
   for (let j = 0; j < 3; j++) if (j !== bi) add(item.f[j], `«${item.f[j]}» — не та форма: ${RULE[bi]}.`);
+  if (item.x && (!item.x5 || bi === 2)) add(...item.x);
   if (bi === 0) for (const h of ['m', 'f', 'n']) if (h !== g) add(ONE[h], `«${item.w}» — ${G_RU[g]}: «${ONE[g]}».`);
   for (const x of canon.slice(0, -1)) if (N_MIX[x]) add(N_MIX[x], `«${N_MIX[x]}» — это ${N_VAL[N_MIX[x]]}.`);
   if (n % 10 === 2 && n % 100 !== 12) add(g === 'f' ? 'dva' : 'dve', g === 'f' ? `«${item.w}» — ж. р.: «dve».` : `«dve» — только с ж. р. «${item.w}» — ${G_RU[g]}: «dva».`);
-  return tt(key, kind === 'qtyc' ? 6 : 3, {ru:`${n} × «${item.w}» (${item.ru})`, canon, distract: distract.slice(0, 3), n, item});
+  return tt(key, cnt ? 9 : kind === 'qtyc' ? 6 : 3, {ru:`${n} × «${item.w}» (${item.ru})`, canon, distract: distract.slice(0, 3), n, item});
 }
 
 // «Падежи», урок 4: винительный ед. ч. [им., вин., тип, рус. им., рус. вин., рамки]
@@ -1021,6 +1073,8 @@ const CASE_KEYS = ACC_TYPES.map(t => 'acc.' + t).concat([...new Set(ACC_MOD.map(
 function caseTask(key, row, fr, lesson = 10) {
   if (LOC_KEYS.includes(key)) return locTask(key, row, fr);
   if (DAT_KEYS.includes(key)) return datTask(key, row, fr);
+  if (GI_KEYS.includes(key)) return key.startsWith('gen.') ? genTask(key, row, fr) : insTask(key, row, fr);
+  if (MN_KEYS.includes(key)) return mnTask(key, row, fr);
   if (!key.startsWith('acc.') || !ACC_TYPES.includes(key.slice(4))) { const m = row || pick(ACC_MOD.filter(x => x.key === key)); return tt(key, 3, Object.assign({}, m, {key})); }
   const type = key.slice(4), okF = f => ACC_FRAME[f][2] <= lesson;
   const r = row || pick(ACC.filter(x => x[2] === type && x[5].split(' ').some(okF))), [nom, acc, , ruNom, ruAcc, frames] = r;
@@ -1176,9 +1230,61 @@ const FF_ITEMS = [
   ['prehlada', 5, 'простуда', [], ['прохлада', 'Прохлада — «svežina».']],
   // Урок 6: время
   ['sutra', 6, 'завтра', [], ['с утра', '«С утра» — «ujutru».']], ['godina', 6, 'год', [], ['година', '«Година» — устаревшее «время». «Godina» — год.']],
+  // Урок 7
+  ['reč', 7, 'слово', [], ['речь', 'Речь, выступление — «govor».']], ['pitanje', 7, 'вопрос', [], ['питание', 'Питание — «ishrana».']],
+  ['odgovor', 7, 'ответ', [], ['договор', 'Договор — «ugovor».']], ['drag', 7, 'милый, дорогой сердцу', [], ['дорогой по цене', 'Дорогой по цене — «skup».']],
+  ['brod', 7, 'корабль', [], ['брод', 'Брод через реку — «gaz».']],
+  // Урок 8
+  ['ukus', 8, 'вкус', [], ['укус', 'Укус — «ujed».']], ['trudna', 8, 'беременная', [], ['трудная', 'Трудная — «teška».']],
+  ['truditi se', 8, 'стараться', [], ['трудиться', 'Трудиться, работать — «raditi».']], ['tražiti', 8, 'искать', ['просить'], ['тратить', 'Тратить — «trošiti».']],
+  ['sreća', 8, 'счастье, удача', [], ['встреча', 'Встреча — «susret» или «sastanak».']], ['naručiti', 8, 'заказать', [], ['нарушить', 'Нарушить — «prekršiti».']],
+  ['otkaz', 8, 'увольнение', [], ['отказ', 'Отказ — «odbijanje».']], ['jelo', 8, 'блюдо, еда', [], ['ель', 'Ель — «jela».']],
+  // Урок 9
+  ['zavod', 9, 'учреждение, институт', [], ['завод', 'Завод — «fabrika».']], ['mir', 9, 'покой, мир без войны', [], ['весь свет', 'Весь мир, свет — «svet».']],
+  ['svet', 9, 'мир, весь свет', ['люди'], ['свет от лампы', 'Свет от лампы — «svetlo».']], ['lud', 9, 'сумасшедший', [], ['люди', 'Люди — «ljudi».']],
+  ['kiša', 9, 'дождь', [], ['кишка', 'Кишка — «crevo».']], ['haljina', 9, 'платье', [], ['халат', 'Халат — «bade-mantil».']],
 ];
 for (const [x, l, right, more, [trap, why]] of FF_ITEMS)
   PHR.push(tt('ff.' + x, l, {ru:`Что значит «${x}»?`, canon:[right], alts: more.map(m => [m]), distract:[D(trap, why)]}));
+PHR.push(
+  // Урок 8: родительный и творительный
+  tt('g.nema', 8, {ru:'Хлеба нет.', canon:['Nema', 'hleba'], alts:[['Hleba', 'nema']], distract:[D('hleb', 'После «nema» — родительный: «nema hleba».'), D('Nije', '«nije» — «не является». «Хлеба нет» — «nema hleba».')]}),
+  tt('g.nemam', 8, {ru:'У меня нет времени.', canon:['Nemam', 'vremena'], alts:[['Vremena', 'nemam']], distract:[D('vreme', 'После «nemam» — родительный: «vremena».'), D('Nisam', '«nisam» — «я не…». «У меня нет» — «nemam».')]}),
+  tt('g.problem', 8, {sr:'Izvinite!', ru:'— Ничего, без проблем.', canon:['Nema', 'problema'], alts:[['Bez', 'problema']], distract:[D('problem', 'После «nema» и «bez» — родительный: «problema».')]}),
+  tt('g.lekar', 8, {ru:'Я иду к врачу.', canon:['Idem', 'kod lekara'], alts:[['Idem', 'lekaru']], distract:[D('kod lekaru', 'После «kod» — родительный: «kod lekara». Без «kod» — «Idem lekaru».'), D('u lekara', 'По-русски «у врача», а «к врачу» — «kod lekara».')]}),
+  tt('g.imam', 8, {ru:'У меня есть машина.', canon:['Imam', 'auto'], alts:[['Imam', 'kola']], distract:[D('Kod mene je', '«Kod mene je…» — «у меня (дома, при мне) находится». «У меня есть» — «imam».')]}),
+  tt('g.kafa', 8, {sr:'Izvolite?', ru:'— Кофе без сахара, с молоком.', canon:['Kafu', 'bez šećera', 'sa mlekom'], alts:[['Kafu', 'sa mlekom', 'bez šećera']],
+    distract:[D('bez šećer', 'После «bez» — родительный: «bez šećera».'), D('sa mleko', 'После «sa» — творительный: «sa mlekom».')]}),
+  tt('g.autobus', 8, {ru:'Я еду на работу на автобусе.', canon:['Idem', 'na posao', 'autobusom'], alts:[['Idem', 'autobusom', 'na posao'], ['Autobusom', 'idem', 'na posao'], ['Na posao', 'idem', 'autobusom']],
+    distract:[D('na autobusu', 'По-русски «на автобусе», а по-сербски средство — творительный без предлога: «autobusom».'), D('sa autobusom', '«sa» — «вместе с кем-то». «На автобусе» — просто «autobusom».')]}),
+  tt('g.brat', 8, {ru:'Я еду автобусом со своим братом.', canon:['Idem', 'autobusom', 'sa svojim bratom'], alts:[['Idem', 'sa svojim bratom', 'autobusom'], ['Autobusom', 'idem', 'sa svojim bratom'], ['Sa svojim bratom', 'idem', 'autobusom']],
+    distract:[D('sa svojim brat', 'После «sa» — творительный: «sa svojim bratom».'), D('sa svojom bratom', '«svojom» — ж. р., а «brat» — м.: «sa svojim bratom».')]}),
+  tt('g.posla', 8, {ru:'Я иду с работы.', canon:['Idem', 'sa posla'], alts:[['Dolazim', 'sa posla'], ['Sa posla', 'idem']], distract:[D('iz posla', '«на работе» — «na poslu», поэтому «с работы» — «sa posla». «iz» — после «u»: «u školi → iz škole».'), D('sa posao', '«sa» в значении «откуда?» — с родительным: «sa posla».')]}),
+  tt('g.pijaca', 8, {ru:'Я иду с рынка.', canon:['Idem', 'sa pijace'], alts:[['Dolazim', 'sa pijace'], ['Sa pijace', 'idem']], distract:[D('iz pijace', '«на рынке» — «na pijaci», поэтому «с рынка» — «sa pijace».'), D('sa pijacom', '«sa pijacom» — «вместе с рынком». «С рынка» (откуда?) — «sa pijace».')]}),
+  tt('g.casa', 8, {frame:'Molim vas ___.', ru:'Стакан воды, пожалуйста.', canon:['čašu', 'vode'], alts:[['jednu', 'čašu', 'vode']], distract:[D('vodu', 'Стакан чего? — родительный: «čašu vode».'), D('čaša', '«Molim vas» + винительный: «čašu vode».')]}),
+  tt('g.malo', 8, {ru:'Немного молока, пожалуйста.', canon:['Malo', 'mleka', 'molim'], alts:[['Molim', 'malo', 'mleka']], distract:[D('mleko', 'После «malo» — родительный: «malo mleka».'), D('mleku', '«mleku» — «где? кому?». После «malo» — «mleka».')]}),
+  tt('g.od', 8, {sr:'Od koga je ovaj poklon?', ru:'— От Аны.', canon:['Od', 'Ane'], distract:[D('Ana', 'После «od» — родительный: «od Ane».'), D('Ani', '«Ani» — «Ане» (кому?). «От Аны» — «od Ane».')]}),
+  tt('g.posle', 8, {frame:'Vidimo se posle ___.', ru:'Увидимся после работы.', canon:['posla'], distract:[D('posao', 'После «posle» — родительный: «posle posla».'), D('poslu', '«poslu» — «где?» («na poslu»). После «posle» — «posla».')]}),
+  tt('g.blizu', 8, {frame:'Živim blizu ___.', ru:'Я живу рядом с центром.', canon:['centra'], distract:[D('centrom', 'По-русски «рядом с центром», а «blizu» — с родительным: «blizu centra».'), D('centara', '«centara» — мн. ч. («центров»). У одного центра «a» выпадает: «blizu centra».')]}),
+  tt('g.pored', 8, {frame:'Apoteka je pored ___.', ru:'Аптека рядом с банком.', canon:['banke'], distract:[D('bankom', 'По-русски «рядом с банком», а «pored» — с родительным: «pored banke».'), D('banka', '«banka» — именительный. После «pored» — «banke».')]}),
+  tt('g.mnom', 8, {ru:'Хочешь пойти со мной?', canon:['Hoćeš li', 'da ideš', 'sa mnom'], alts:[['Da li hoćeš', 'da ideš', 'sa mnom']], distract:[D('sa mene', '«mene» — «меня». «Со мной» — «sa mnom».'), D('sa mnoj', 'По-русски «со мной», а по-сербски — «sa mnom».')]}),
+  // Урок 9: мн. ч., числа и глагол
+  tt('mn.ljudi', 9, {ru:'Пришли пять человек.', canon:['Pet', 'ljudi', 'je', 'došlo'], alts:[['Došlo', 'je', 'pet', 'ljudi']],
+    distract:[D('čoveka', 'После 5 и больше — «ljudi»: «pet ljudi». «čoveka» — после 2, 3, 4.'), D('došao', '«došao» — один мужчина. «Pet ljudi» — «je došlo».')]}),
+  tt('mn.brata', 9, {ru:'Пришли два брата.', canon:['Dva', 'brata', 'su', 'došla'], alts:[['Došla', 'su', 'dva', 'brata']],
+    distract:[D('braća', 'После 2, 3, 4 — «brata»: «dva brata».'), D('došlo', '«je došlo» — после 5 и больше. С «dva brata» — «su došla».')]}),
+  tt('mn.imam', 9, {ru:'У меня два брата и три сестры.', canon:['Imam', 'dva brata', 'i', 'tri sestre'], alts:[['Imam', 'tri sestre', 'i', 'dva brata']],
+    distract:[D('dve brata', '«dve» — только с ж. р. «brat» — м.: «dva brata».'), D('tri sestara', 'После 2, 3, 4 — «sestre». «sestara» — после 5 и больше.')]}),
+  tt('mn.gradovi', 9, {ru:'В городах много людей.', canon:['U', 'gradovima', 'ima', 'mnogo', 'ljudi'], alts:[['Ima', 'mnogo', 'ljudi', 'u', 'gradovima']],
+    distract:[D('gradima', 'Короткие слова м. р. во мн. ч. получают «-ov-»: «gradovima».'), D('ljudima', '«ljudima» — «людям, с людьми, о людях». После «mnogo» — «ljudi».')]}),
+  tt('mn.deca', 9, {ru:'Я разговариваю с детьми.', canon:['Pričam', 'sa decom'], distract:[D('sa decama', '«deca» склоняется как ж. р. ед. ч.: «sa decom» (как «sa ženom»).'), D('sa deca', 'После «sa» — творительный: «sa decom».')]}),
+  tt('mn.sati', 9, {ru:'Я работаю восемь часов в день.', canon:['Radim', 'osam', 'sati', 'dnevno'], alts:[['Radim', 'osam', 'časova', 'dnevno'], ['Dnevno', 'radim', 'osam', 'sati'], ['Dnevno', 'radim', 'osam', 'časova']],
+    distract:[D('sata', '«sata» — после 2, 3, 4. После 5 и больше — «sati».'), D('satova', '«satova» — «часов» как вещей («pet satova» — пять наручных часов). Время — «osam sati».')]}),
+  tt('mn.dana', 9, {ru:'Я был{|а} там пять дней.', canon:['Bi{o|la}', 'sam', 'tamo', 'pet', 'dana'], alts:[['Tamo', 'sam', 'bi{o|la}', 'pet', 'dana'], ['Pet', 'dana', 'sam', 'bi{o|la}', 'tamo'], ['Bi{o|la}', 'sam', 'pet', 'dana', 'tamo']],
+    distract:[D('dani', '«dani» — именительный мн. ч. После «pet» — «dana».'), D('dan', '«dan» — один день. После «pet» — «dana».')]}),
+  tt('mn.knjige', 9, {ru:'Я читаю книги о Сербии.', canon:['Čitam', 'knjige', 'o Srbiji'], distract:[D('knjigi', 'По-русски «книги», а по-сербски мн. ч. — «knjige».'), D('knjigu', '«knjigu» — одну книгу. «Книги» — «knjige».')]}),
+  tt('mn.kafa', 9, {sr:'Koliko kafa?', ru:'— Пять (кофе).', canon:['Pet', 'kafa'], distract:[D('kafe', '«kafe» — после 2, 3, 4. После 5 — родительный мн. ч.: «pet kafa».'), D('kafu', '«kafu» — винительный ед. ч. После «pet» — «kafa».')]}),
+);
 
 // ---------- Урок 7: дательный — «кому?» [им., дат., вин., рус. им., рус. дат., тип] ----------
 const DAT = [
@@ -1198,6 +1304,212 @@ function datTask(key, row, fr) {
   add(nom, `«${nom}» — именительный. «Кому?» — «${dat}».`);
   return tt(key, 7, {frame, ru: ru.replace('{dat}', ruDat), canon:[dat], distract: distract.slice(0, 3)});
 }
+
+// ---------- Урок 8: родительный — откуда? чего нет? у кого? [им., род., тип, рус. род., рамки, доп.] ----------
+// доп.: k — «к кому?» по-русски, dat — дательный («Idem lekaru» — тоже верно), loc — «где?», fx — особая ошибка слова.
+const GENT = [
+  ['grad', 'grada', 'm', 'города', 'dolazim'], ['Beograd', 'Beograda', 'm', 'Белграда', 'iz'], ['Niš', 'Niša', 'm', 'Ниша', 'iz'],
+  ['Kragujevac', 'Kragujevca', 'm', 'Крагуеваца', 'iz', {fx:['Kragujevaca', 'Так было бы во мн. ч. У одного города «a» выпадает: «Kragujevac → Kragujevca».']}],
+  ['centar', 'centra', 'm', 'центра', 'do dolazim', {fx:['centara', '«centara» — мн. ч. («центров»). У одного центра «a» выпадает: «centar → centra».']}], ['trg', 'trga', 'm', 'площади', 'do'], ['most', 'mosta', 'm', 'моста', 'do'],
+  ['restoran', 'restorana', 'm', 'ресторана', 'dolazim'], ['posao', 'posla', 'm', 'работы', 'nema mnogo', {fx:['posala', 'Беглое «a»: «posao → posla».']}],
+  ['novac', 'novca', 'm', 'денег', 'nema mnogo', {alt:'novaca', fx:['novac', '«novac» — именительный. После «nema» и «mnogo» — родительный: «novca» (или «novaca»).']}], ['hleb', 'hleba', 'm', 'хлеба', 'nema supa'],
+  ['šećer', 'šećera', 'm', 'сахара', 'kafa nema'], ['problem', 'problema', 'm', 'проблем', 'nema'],
+  ['brat', 'brata', 'm', 'брата', 'kod kodS od', {k:'брату'}], ['lekar', 'lekara', 'm', 'врача', 'kod kodS', {k:'врачу'}],
+  ['zubar', 'zubara', 'm', 'зубного врача', 'kod', {k:'зубному врачу'}], ['frizer', 'frizera', 'm', 'парикмахера', 'kod kodS', {k:'парикмахеру'}],
+  ['prijatelj', 'prijatelja', 'm', 'друга', 'kod kodS od', {k:'другу'}], ['Marko', 'Marka', 'm', 'Марко', 'od kod', {k:'Марко'}],
+  ['Moskva', 'Moskve', 'f', 'Москвы', 'iz', {fx:['Moskvi', '«Moskvi» — это «в Москве». Родительный ж. р. — на «-e»: «iz Moskve» (по-русски «Москвы» — с «ы»).']}],
+  ['Rusija', 'Rusije', 'f', 'России', 'iz', {fx:['Rusiji', '«Rusiji» — это «в России». «Из России» — «iz Rusije».']}], ['Srbija', 'Srbije', 'f', 'Сербии', 'iz'],
+  ['škola', 'škole', 'f', 'школы', 'dolazim', {loc:'školi'}], ['banka', 'banke', 'f', 'банка', 'dolazim do', {loc:'banci'}],
+  ['prodavnica', 'prodavnice', 'f', 'магазина', 'dolazim', {loc:'prodavnici'}], ['apoteka', 'apoteke', 'f', 'аптеки', 'dolazim do', {loc:'apoteci'}],
+  ['bolnica', 'bolnice', 'f', 'больницы', 'dolazim', {loc:'bolnici'}], ['stanica', 'stanice', 'f', 'остановки', 'do', {loc:'stanici'}],
+  ['pošta', 'pošte', 'f', 'почты', 'do', {loc:'pošti'}], ['reka', 'reke', 'f', 'реки', 'do', {loc:'reci'}],
+  ['voda', 'vode', 'f', 'воды', 'nema malo'], ['kafa', 'kafe', 'f', 'кофе', 'malo nema moguBez'], ['struja', 'struje', 'f', 'электричества', 'nema'],
+  ['muzika', 'muzike', 'f', 'музыки', 'moguBez'],
+  ['sestra', 'sestre', 'f', 'сестры', 'kod kodS od', {k:'сестре', dat:'sestri'}], ['mama', 'mame', 'f', 'мамы', 'kod od', {k:'маме', dat:'mami'}],
+  ['Ana', 'Ane', 'f', 'Аны', 'od kod kodS', {k:'Ане', dat:'Ani'}], ['baka', 'bake', 'f', 'бабушки', 'kod kodS od', {k:'бабушке', dat:'baki'}],
+  ['tata', 'tate', 'm-a', 'папы', 'od kod', {k:'папе', dat:'tati'}], ['deda', 'dede', 'm-a', 'дедушки', 'kod kodS od', {k:'дедушке', dat:'dedi'}],
+  ['kolega', 'kolege', 'm-a', 'коллеги (мужчины)', 'od', {dat:'kolegi'}],
+  ['mleko', 'mleka', 'n', 'молока', 'kafa nema malo'], ['pivo', 'piva', 'n', 'пива', 'malo'], ['vino', 'vina', 'n', 'вина', 'malo'], ['meso', 'mesa', 'n', 'мяса', 'supa'],
+  ['vreme', 'vremena', 'n', 'времени', 'nema mnogo', {fx:['vremeta', '«vreme» склоняется с «-en-»: «vremena».']}], ['selo', 'sela', 'n', 'деревни', 'dolazim'],
+  ['dete', 'deteta', 'n', 'ребёнка', 'od', {dat:'detetu', fx:['deta', '«dete» склоняется с «-et-»: «deteta».']}],
+  ['so', 'soli', 'f-cons', 'соли', 'supa nema'], ['noć', 'noći', 'f-cons', 'ночи', 'radim'], ['ponoć', 'ponoći', 'f-cons', 'полуночи', 'radim'],
+  ['jesen', 'jeseni', 'f-cons', 'осени', 'radim'], ['ljubav', 'ljubavi', 'f-cons', 'любви', 'moguBez'],
+];
+const GEN_FRAME = {iz:['Ja sam iz ___.', 'Я из {gen}.'], dolazim:['Dolazim iz ___.', 'Я прихожу из {gen}.'], do:['Idem do ___.', 'Я иду до {gen}.'],
+  kod:['Idem kod ___.', 'Я иду к {k}.'], kodS:['Sada sam kod ___.', 'Сейчас я у {gen}.'], od:['Ovo je poklon od ___.', 'Это подарок от {gen}.'],
+  kafa:['Pijem kafu bez ___.', 'Я пью кофе без {gen}.'], supa:['Jedem supu bez ___.', 'Я ем суп без {gen}.'], nema:['Nema ___.', 'Нет {gen}.'],
+  mnogo:['Imam mnogo ___.', 'У меня много {gen}.'], malo:['Pijem malo ___.', 'Я пью мало {gen}.'], radim:['Radim do ___.', 'Я работаю до {gen}.'],
+  moguBez:['Ne mogu bez ___.', 'Я не могу без {gen}.']};
+// Лишние плитки: особая ошибка слова, «где?» / «кому?», именительный, винительный.
+function genTask(key, row, fr) {
+  if (GEN_MORE[key]) return tt(key, 8, Object.assign({}, row || pick(GEN_MORE[key]), {key}));
+  const type = key.slice(4), r = row || pick(GENT.filter(x => x[2] === type)), [nom, gen, , ruGen, frames, x = {}] = r;
+  const f = fr || pick(frames.split(' ')), [frame, ru] = GEN_FRAME[f], w = frame.split(' '), pr = w[w.findIndex(x => x.startsWith('___')) - 1].toLowerCase(), after = `После «${pr}» — «${gen}».`, distract = [];
+  const add = (t, why) => { if (t && t !== gen && t !== x.alt && !distract.some(d => d.t === t)) distract.push(D(t, why)); };
+  if (x.fx) add(...x.fx);
+  const u = gen.slice(0, -1) + 'u', person = !!(x.k || x.dat);
+  if (type === 'm' || type === 'n') add(u, person ? `«${u}» — «кому?» (дательный).${f === 'kod' ? ` Без «kod» можно: «Idem ${u}». После «kod» — «${gen}».` : ' ' + after}` : `«${u}» — «где? о чём?» (местный). ${after}`);
+  if ((type === 'f' || type === 'm-a') && x.dat) add(x.dat, `«${x.dat}» — «кому?» (дательный).${f === 'kod' ? ` Без «kod» можно: «Idem ${x.dat}». После «kod» — «${gen}».` : ' ' + after}`);
+  if (type === 'f' && x.loc) add(x.loc, `«${x.loc}» — это «где?» (местный). ${after}`);
+  add(nom, type === 'm-a' ? `«${nom}» — м. р. на «-a», а склоняется как «žena»: после «${pr}» — «${gen}».` : `«${nom}» — именительный ед. ч. После «${pr}» — родительный: «${gen}».`);
+  if (type === 'f' || type === 'm-a') add(nom.slice(0, -1) + 'u', `«${nom.slice(0, -1)}u» — винительный (кого? что?). ${after}`);
+  if (type === 'f-cons') add(nom === 'so' ? 'sole' : nom + 'e', `Ж. р. на согласный: родительный на «-i» — «${gen}».`);
+  return tt(key, 8, {frame, ru: ru.replace('{gen}', ruGen).replace('{k}', x.k || ruGen), canon:[gen], alts: x.alt ? [[x.alt]] : [], distract: distract.slice(0, 3)});
+}
+const GEN_MORE = {
+  'gen.mod': [   // с прилагательным и притяжательным
+    {frame:'Ja sam iz ___.', ru:'Я из Нового Сада.', canon:['Novog', 'Sada'], distract:[D('Novi', 'Прилагательное тоже в родительном: «Novog Sada».'), D('Sad', 'После «iz» — родительный: «Sada».')]},
+    {frame:'Idem kod ___.', ru:'Я иду к моему брату.', canon:['mog', 'brata'], alts:[['moga', 'brata']], distract:[D('moj', 'Притяжательное тоже в родительном: «mog brata».'), D('moje', '«moje» — ж. р. («moje sestre»). «brat» — м.: «mog».')]},
+    {frame:'Nema ___.', ru:'Нет чёрного кофе.', canon:['crne', 'kafe'], distract:[D('crna', 'Прилагательное тоже в родительном: «crne kafe».'), D('crnog', '«crnog» — м. или ср. р., а «kafa» — ж.: «crne».')]},
+    {frame:'Dolazim iz ___.', ru:'Я иду из нашей школы.', canon:['naše', 'škole'], distract:[D('naša', 'Притяжательное тоже в родительном: «naše škole».'), D('našeg', '«našeg» — м. или ср. р., а «škola» — ж.: «naše».')]},
+    {frame:'Ovo je poklon od ___.', ru:'Это подарок от моей сестры.', canon:['moje', 'sestre'], distract:[D('moja', 'Притяжательное тоже в родительном: «moje sestre».'), D('mog', '«mog» — м. или ср. р., а «sestra» — ж.: «moje».')]},
+    {frame:'Sada sam kod ___.', ru:'Сейчас я у своего друга.', canon:['svog', 'prijatelja'], alts:[['mog', 'prijatelja']], distract:[D('svoj', 'Притяжательное тоже в родительном: «svog prijatelja».'), D('svoje', '«svoje» — ж. р., а «prijatelj» — м.: «svog».')]},
+    {frame:'Ja sam iz ___.', ru:'Я из маленького города.', canon:['malog', 'grada'], distract:[D('mali', 'Прилагательное тоже в родительном: «malog grada».'), D('male', '«male» — ж. р., а «grad» — м.: «malog».')]},
+    {frame:'Idem do ___.', ru:'Я иду до главной площади.', canon:['glavnog', 'trga'], distract:[D('glavne', 'Так было бы по-русски («главной площади»), но «trg» — м. р.: «glavnog trga».'), D('glavni', 'Прилагательное тоже в родительном: «glavnog trga».')]},
+    {frame:'Nema ___.', ru:'Нет горячей воды.', canon:['tople', 'vode'], distract:[D('topla', 'Прилагательное тоже в родительном: «tople vode».'), D('toplog', '«toplog» — м. или ср. р., а «voda» — ж.: «tople».')]},
+  ],
+  'gen.pron': [   // после предлога — полная форма
+    {frame:'Sada sam kod ___.', ru:'Сейчас я у него.', canon:['njega'], distract:[D('ga', 'После предлога — полная форма: «kod njega».'), D('njemu', '«njemu» — «ему». «У него» — «kod njega».'), D('on', '«on» — именительный. После «kod» — «njega».')]},
+    {frame:'Idem kod ___.', ru:'Я иду к ней.', canon:['nje'], distract:[D('nju', '«nju» — «её» (кого?). После «kod» — родительный: «nje».'), D('njoj', '«njoj» — «ей». «К ней» — «kod nje».'), D('ona', '«ona» — именительный. После «kod» — «nje».')]},
+    {frame:'Ovo je od ___.', ru:'Это от них.', canon:['njih'], distract:[D('ih', 'После предлога — полная форма: «od njih».'), D('njima', '«njima» — «им». «От них» — «od njih».'), D('oni', '«oni» — именительный. После «od» — «njih».')]},
+    {frame:'Kod ___ je hladno.', ru:'У меня (дома) холодно.', canon:['mene'], distract:[D('me', 'После предлога — полная форма: «kod mene».'), D('meni', '«meni» — «мне». «У меня» — «kod mene».'), D('ja', '«ja» — именительный. После «kod» — «mene».')]},
+    {frame:'Ne mogu bez ___.', ru:'Я не могу без тебя.', canon:['tebe'], distract:[D('te', 'После предлога — полная форма: «bez tebe».'), D('tebi', '«tebi» — «тебе». «Без тебя» — «bez tebe».'), D('ti', '«ti» — «ты». После «bez» — «tebe».')]},
+    {frame:'Idemo kod ___.', ru:'Мы идём к вам.', canon:['vas'], distract:[D('vama', '«vama» — «вам». «К вам» — «kod vas».'), D('vi', '«vi» — именительный. После «kod» — «vas».')]},
+    {frame:'Ovo je poklon od ___.', ru:'Это подарок от нас.', canon:['nas'], distract:[D('nama', '«nama» — «нам». «От нас» — «od nas».'), D('mi', '«mi» — «мы». После «od» — «nas».')]},
+  ],
+};
+// ---------- Урок 8: творительный — с кем? чем? [им., твор., тип, рус. твор., рамки, доп.] ----------
+// soft — основа на мягкий согласный: окончание «-em». na — русская калька «на автобусе», alt — второй верный вариант.
+const INS = [
+  ['brat', 'bratom', 'm', 'братом', 'grad ziv pric radim'], ['sin', 'sinom', 'm', 'сыном', 'grad ziv'], ['Marko', 'Markom', 'm', 'Марко', 'grad pric'],
+  ['lekar', 'lekarom', 'm', 'врачом', 'pric'], ['sir', 'sirom', 'm', 'сыром', 'hleb'], ['med', 'medom', 'm', 'мёдом', 'hleb'], ['šećer', 'šećerom', 'm', 'сахаром', 'kafa'],
+  ['autobus', 'autobusom', 'm', 'на автобусе', 'posao', {na:'na autobusu'}], ['voz', 'vozom', 'm', 'на поезде', 'posao', {na:'na vozu'}],
+  ['prijatelj', 'prijateljem', 'soft', 'другом', 'grad ziv pric radim'], ['muž', 'mužem', 'soft', 'мужем', 'grad ziv pric'],
+  ['kolač', 'kolačem', 'soft', 'пирожным', 'kafa'], ['tramvaj', 'tramvajem', 'soft', 'на трамвае', 'posao', {na:'na tramvaju'}],
+  ['taksi', 'taksijem', 'soft', 'на такси', 'posao', {na:'na taksiju', fx:['taksiom', 'После «-i» — «-jem»: «taksijem».']}],
+  ['sestra', 'sestrom', 'f', 'сестрой', 'grad ziv pric radim'], ['mama', 'mamom', 'f', 'мамой', 'grad ziv pric'], ['Ana', 'Anom', 'f', 'Аной', 'grad pric'],
+  ['žena', 'ženom', 'f', 'женой', 'grad ziv pric'], ['koleginica', 'koleginicom', 'f', 'коллегой (женщиной)', 'pric radim'],
+  ['kartica', 'karticom', 'f', 'картой', 'placam'], ['gotovina', 'gotovinom', 'f', 'наличными', 'placam'], ['olovka', 'olovkom', 'f', 'карандашом', 'pisem'],
+  ['tata', 'tatom', 'm-a', 'папой', 'grad ziv pric'], ['deda', 'dedom', 'm-a', 'дедушкой', 'grad ziv pric'], ['kolega', 'kolegom', 'm-a', 'коллегой (мужчиной)', 'pric radim'],
+  ['mleko', 'mlekom', 'n', 'молоком', 'kafa'], ['dete', 'detetom', 'n', 'ребёнком', 'grad ziv pric', {fx:['detom', '«dete» склоняется с «-et-»: «detetom».']}],
+  ['so', 'solju', 'f-cons', 'солью', 'hleb', {alt:'soli', fx:['solom', 'Ж. р. на согласный: «sa solju» (или «sa soli»).']}],
+  ['ljubav', 'ljubavlju', 'f-cons', 'любовью', 'radim', {alt:'ljubavi', fx:['ljubavom', 'Ж. р. на согласный: «sa ljubavlju» (или «sa ljubavi»).']}],
+];
+const INS_FRAME = {grad:['Idem u grad sa ___.', 'Я иду в город с {ins}.'], ziv:['Živim sa ___.', 'Я живу с {ins}.'], pric:['Pričam sa ___.', 'Я разговариваю с {ins}.'],
+  radim:['Radim sa ___.', 'Я работаю с {ins}.'], kafa:['Kafu sa ___, molim.', 'Кофе с {ins}, пожалуйста.'], hleb:['Jedem hleb sa ___.', 'Я ем хлеб с {ins}.'],
+  posao:['Idem na posao ___.', 'Я еду на работу {ins}.'], placam:['Plaćam ___.', 'Я плачу {ins}.'], pisem:['Pišem ___.', 'Я пишу {ins}.']};
+const MEANS = new Set(['posao', 'placam', 'pisem']);   // средство: творительный без предлога
+function insTask(key, row, fr) {
+  if (INS_MORE[key]) return tt(key, 8, Object.assign({}, row || pick(INS_MORE[key]), {key}));
+  const type = key.slice(4), means = type === 'means', ok = f => MEANS.has(f) === means;
+  const r = row || pick(INS.filter(x => (means || x[2] === type) && x[4].split(' ').some(ok))), [nom, ins, t, ruIns, frames, x = {}] = r;
+  const f = fr || pick(frames.split(' ').filter(ok)), [frame, ru] = INS_FRAME[f], distract = [];
+  const add = (s, why) => { if (s && s !== ins && s !== x.alt && !distract.some(d => d.t === s)) distract.push(D(s, why)); };
+  const stem = ins.replace(/(om|em|ju|lju)$/, '');
+  if (x.fx) add(...x.fx);
+  if (MEANS.has(f)) { if (x.na) add(x.na, `По-русски «${ruIns}», а по-сербски средство — творительный без предлога: «${ins}».`);
+    add('sa ' + ins, `«sa» — «вместе с кем-то». «Чем?» — просто «${ins}».`); }
+  if (t === 'soft') add(stem + 'om', `После мягкого согласного — «-em»: «${ins}».`);
+  if ((t === 'f' || t === 'm-a') && /[ое]й$/.test(ruIns.split(' ')[0])) add(stem + 'oj', `По-русски «${ruIns.split(' ')[0]}», а по-сербски — «-om»: «${ins}».`);   // «сестрой» → «sestroj»
+  if (!MEANS.has(f) && (t === 'm' || t === 'soft' || t === 'n') && !x.fx) add(stem + 'a', `«${stem}a» — «кого? чего?». «С кем? с чем?» — «${ins}».`);
+  add(nom, `«${nom}» — именительный. ${MEANS.has(f) ? '«Чем? на чём?»' : 'После «sa»'} — творительный: «${ins}».`);
+  if (!MEANS.has(f) && (t === 'f' || t === 'm-a')) add(nom.slice(0, -1) + 'u', `«${nom.slice(0, -1)}u» — винительный (кого?). «С кем?» — «${ins}».`);
+  return tt(key, 8, {frame, ru: ru.replace('{ins}', ruIns), canon:[ins], alts: x.alt ? [[x.alt]] : [], distract: distract.slice(0, 3)});
+}
+const INS_MORE = {
+  'ins.mod': [
+    {frame:'Idem u grad sa ___.', ru:'Я иду в город с моим братом.', canon:['mojim', 'bratom'], distract:[D('mojom', '«mojom» — ж. р. «brat» — м.: «mojim bratom».'), D('moj', 'Притяжательное тоже в творительном: «mojim bratom».')]},
+    {frame:'Živim sa ___.', ru:'Я живу со своей сестрой.', canon:['svojom', 'sestrom'], alts:[['mojom', 'sestrom']], distract:[D('svojoj', '«svojoj» — «где? кому?». «С кем?» — «svojom sestrom».'), D('svojim', '«svojim» — м. или ср. р., а «sestra» — ж.: «svojom».')]},
+    {frame:'Kafu sa ___, molim.', ru:'Кофе с холодным молоком, пожалуйста.', canon:['hladnim', 'mlekom'], distract:[D('hladnom', '«hladnom» — ж. р. «mleko» — ср.: «hladnim mlekom».'), D('hladno', 'Прилагательное тоже в творительном: «hladnim mlekom».')]},
+    {frame:'Pričam sa ___.', ru:'Я разговариваю с новым коллегой.', canon:['novim', 'kolegom'], distract:[D('novom', '«kolega» — м. р., хотя на «-a»: «novim kolegom».'), D('kolegoj', 'По-русски «коллегой», а по-сербски — «-om»: «kolegom».')]},
+    {frame:'Idem na posao sa ___.', ru:'Я еду на работу со своим мужем.', canon:['svojim', 'mužem'], alts:[['mojim', 'mužem']], distract:[D('mužom', 'После мягкого «ž» — «-em»: «mužem».'), D('svojom', '«svojom» — ж. р., а «muž» — м.: «svojim».')]},
+    {frame:'Jedem hleb sa ___.', ru:'Я ем хлеб с белым сыром.', canon:['belim', 'sirom'], distract:[D('belom', '«belom» — ж. р., а «sir» — м.: «belim sirom».'), D('beli', 'Прилагательное тоже в творительном: «belim sirom».')]},
+  ],
+  'ins.pron': [   // sa mnom, sa tobom, s njim, s njom…
+    {frame:'Ideš li sa ___?', ru:'Ты идёшь со мной?', canon:['mnom'], distract:[D('mene', '«mene» — «меня». «Со мной» — «sa mnom».'), D('meni', '«meni» — «мне». «Со мной» — «sa mnom».'), D('mnoj', 'По-русски «со мной», а по-сербски — «sa mnom».')]},
+    {frame:'Pričam sa ___.', ru:'Я разговариваю с ним.', canon:['njim'], distract:[D('njega', '«njega» — «его». «С ним» — «sa njim».'), D('njemu', '«njemu» — «ему». «С ним» — «sa njim».'), D('ga', '«ga» — «его». «С ним» — «sa njim».')]},
+    {frame:'Živim sa ___.', ru:'Я живу с ней.', canon:['njom'], distract:[D('nju', '«nju» — «её». «С ней» — «sa njom».'), D('njoj', '«njoj» — «ей». «С ней» — «sa njom».')]},
+    {frame:'Radim sa ___.', ru:'Я работаю с тобой.', canon:['tobom'], distract:[D('tebe', '«tebe» — «тебя». «С тобой» — «sa tobom».'), D('tebi', '«tebi» — «тебе». «С тобой» — «sa tobom».')]},
+    {frame:'Idemo sa ___.', ru:'Мы идём с ними.', canon:['njima'], distract:[D('njih', '«njih» — «их». «С ними» — «sa njima».'), D('ih', '«ih» — «их». «С ними» — «sa njima».')]},
+    {frame:'Idete li sa ___?', ru:'Вы идёте с нами?', canon:['nama'], distract:[D('nas', '«nas» — «нас». «С нами» — «sa nama».'), D('mi', '«mi» — «мы». «С нами» — «sa nama».')]},
+  ],
+};
+const GI_KEYS = ['gen.m', 'gen.f', 'gen.n', 'gen.m-a', 'gen.f-cons', 'gen.mod', 'gen.pron', 'ins.m', 'ins.soft', 'ins.f', 'ins.m-a', 'ins.n', 'ins.f-cons', 'ins.means', 'ins.mod', 'ins.pron'];
+
+// ---------- Урок 9: падежи мн. ч. [ед. ч., им. мн., вин. мн., род. мн., дат./твор./мест. мн., рус. формы, рамки] ----------
+const PLC = [
+  ['grad', 'gradovi', 'gradove', 'gradova', 'gradovima', {acc:'города', gen:'городов', loc:'городах'}, 'volim srb u o'],
+  ['film', 'filmovi', 'filmove', 'filmova', 'filmovima', {acc:'фильмы', gen:'фильмов', loc:'фильмах'}, 'gledam volim imam o'],
+  ['poklon', 'pokloni', 'poklone', 'poklona', 'poklonima', {acc:'подарки', gen:'подарков'}, 'kupujem imam'],
+  ['prijatelj', 'prijatelji', 'prijatelje', 'prijatelja', 'prijateljima', {acc:'друзей', gen:'друзей', loc:'друзьях', ins:'друзьями', dat:'друзьям'}, 'volim imam o sa dajem'],
+  ['roditelj', 'roditelji', 'roditelje', 'roditelja', 'roditeljima', {acc:'родителей', loc:'родителях', ins:'родителями', dat:'родителям'}, 'volim o sa dajem'],
+  ['restoran', 'restorani', 'restorane', 'restorana', 'restoranima', {gen:'ресторанов', loc:'ресторанах'}, 'srb u'],
+  ['kafić', 'kafići', 'kafiće', 'kafića', 'kafićima', {gen:'кафе'}, 'srb'],
+  ['čovek', 'ljudi', 'ljude', 'ljudi', 'ljudima', {acc:'людей', gen:'людей', loc:'людях', ins:'людьми', dat:'людям'}, 'volim srb o sa'],
+  ['knjiga', 'knjige', 'knjige', 'knjiga', 'knjigama', {acc:'книги', gen:'книг', loc:'книгах'}, 'volim citam imam kupujem o'],
+  ['jabuka', 'jabuke', 'jabuke', 'jabuka', 'jabukama', {acc:'яблоки'}, 'kupujem volim'],
+  ['sestra', 'sestre', 'sestre', 'sestara', 'sestrama', {acc:'сестёр', loc:'сёстрах', ins:'сёстрами', dat:'сёстрам'}, 'volim o sa dajem'],
+  ['žena', 'žene', 'žene', 'žena', 'ženama', {loc:'женщинах', ins:'женщинами', dat:'женщинам'}, 'o sa dajem'],
+  ['prodavnica', 'prodavnice', 'prodavnice', 'prodavnica', 'prodavnicama', {gen:'магазинов', loc:'магазинах'}, 'srb u'],
+  ['kolega', 'kolege', 'kolege', 'kolega', 'kolegama', {loc:'коллегах', ins:'коллегами', dat:'коллегам'}, 'o sa dajem'],
+  ['stvar', 'stvari', 'stvari', 'stvari', 'stvarima', {gen:'вещей', loc:'вещах'}, 'imam o'],
+  ['selo', 'sela', 'sela', 'sela', 'selima', {gen:'деревень', loc:'деревнях'}, 'srb u'],
+  ['pismo', 'pisma', 'pisma', 'pisama', 'pismima', {acc:'письма', gen:'писем', loc:'письмах'}, 'citam imam o'],
+  ['pitanje', 'pitanja', 'pitanja', 'pitanja', 'pitanjima', {gen:'вопросов', loc:'вопросах'}, 'imam o'],
+];
+const MN_FRAME = {volim:['Volim ___.', 'Я люблю {acc}.', 'acc'], gledam:['Gledam ___.', 'Я смотрю {acc}.', 'acc'], citam:['Čitam ___.', 'Я читаю {acc}.', 'acc'],
+  kupujem:['Kupujem ___.', 'Я покупаю {acc}.', 'acc'], imam:['Imam mnogo ___.', 'У меня много {gen}.', 'gen'], srb:['U Srbiji ima mnogo ___.', 'В Сербии много {gen}.', 'gen'],
+  o:['Pričamo o ___.', 'Мы говорим о {loc}.', 'loc'], u:['U ___ ima mnogo ljudi.', 'В {loc} много людей.', 'loc'], sa:['Pričam sa ___.', 'Я разговариваю с {ins}.', 'ins'],
+  dajem:['Dajem poklone ___.', 'Я дарю подарки {dat}.', 'dat']};
+// Ключ — правило: винительный, родительный, «-ima» (м. и ср. р., ж. р. на согласный), «-ama» (ж. р. и м. р. на «-a»).
+const mnKeyOf = (r, c) => c === 'acc' || c === 'gen' ? 'mn.' + c : r[4].endsWith('ama') ? 'mn.ama' : 'mn.ima';
+const CALQUE = {loc:'ah', ins:'ami', dat:'am'};   // по-русски «о книгах, с книгами, книгам»
+function mnTask(key, row, fr) {
+  if (key === 'mn.deca') return tt(key, 9, Object.assign({}, row || pick(MN_DECA), {key}));
+  const fOk = (r, f) => mnKeyOf(r, MN_FRAME[f][2]) === key;
+  const r = row || pick(PLC.filter(x => x[6].split(' ').some(f => fOk(x, f)))), [sg, pl, acc, gen, dil, ru, frames] = r;
+  const f = fr || pick(frames.split(' ').filter(f => fOk(r, f))), [frame, ruT, c] = MN_FRAME[f], right = c === 'acc' ? acc : c === 'gen' ? gen : dil, distract = [];
+  const add = (t, why) => { if (t && t !== right && !distract.some(d => d.t === t)) distract.push(D(t, why)); };
+  const ov = pl.endsWith('ovi'), fem = /a$/.test(sg) && sg !== 'kolega', one = `«${sg}» — ед. ч.`;
+  if (c === 'acc') {
+    if (ov) add(acc.replace('ove', 'e'), `Короткие слова м. р. во мн. ч. получают «-ov-»: «${acc}».`);
+    if (pl !== acc) add(pl, `«${pl}» — именительный. После глагола — винительный: «${acc}».`);
+    if (fem) { add(sg.slice(0, -1) + 'u', `«${sg.slice(0, -1)}u» — одна. Здесь мн. ч.: «${acc}».`);
+      if (/и$/.test(ru.acc)) add(sg.slice(0, -1) + 'i', `По-русски «${ru.acc}», а по-сербски — «${acc}».`); }
+    else if (sg === 'čovek') add('čoveka', '«čoveka» — один человек. «Людей» — «ljude».');
+    else if (sg.endsWith('j')) add(gen, `«${gen}» — один («друга»). Здесь много: «${acc}».`.replace('«друга»', sg === 'roditelj' ? '«родителя»' : '«друга»'));
+    else add(sg, `${one} Здесь мн. ч.: «${acc}».`);
+    add(dil, `«${dil}» — «кому? с кем? о ком?». Здесь — «${acc}».`);
+  } else if (c === 'gen') {
+    if (!fem && /ов$/.test(ru.gen)) add(gen.endsWith('ova') ? gen.slice(0, -1) : gen.slice(0, -1) + 'ov', `По-русски «${ru.gen}», а по-сербски — «${gen}».`);
+    if (fem && gen === sg && !/(ов|ей)$/.test(ru.gen)) add(sg.slice(0, -1), `По-русски «${ru.gen}», а по-сербски — «${gen}».`);
+    if (sg === 'pismo') add('pisem', 'По-русски «писем», а по-сербски — «pisama».');
+    if (ov) add(gen.replace('ova', 'a'), `«${gen.replace('ova', 'a')}» — один (или после 2, 3, 4). После «mnogo» — «${gen}».`);
+    if (sg === 'čovek') add('čoveka', '«čoveka» — после 2, 3, 4. «Много людей» — «mnogo ljudi».');
+    if (pl !== gen) add(pl, `«${pl}» — именительный. После «mnogo» — родительный мн. ч.: «${gen}».`);
+    add(dil, `«${dil}» — «кому? с кем? о ком?». После «mnogo» — «${gen}».`);
+    if (sg !== gen) add(sg, `${one} После «mnogo» — «${gen}».`);
+  } else {
+    const stem = dil.slice(0, -3), ima = dil.endsWith('ima'), RU_END = {loc:/[ая]х$/, ins:/[ая]ми$/, dat:/[ая]м$/};
+    add(stem + (ima ? 'ama' : 'ima'), ima ? (sg === 'stvar' ? `Ж. р. на согласный во мн. ч. — «-ima»: «${dil}».` : `М. и ср. р. во мн. ч. — «-ima»: «${dil}».`)
+      : sg === 'kolega' ? `«kolega» склоняется как ж. р.: «${dil}».` : `Ж. р. во мн. ч. — «-ama»: «${dil}».`);
+    if (ov) add(dil.replace('ovima', 'ima'), `Короткие слова м. р. во мн. ч. получают «-ov-»: «${dil}».`);
+    if (ru[c] && RU_END[c].test(ru[c])) add(stem + CALQUE[c], `По-русски «${ru[c]}», а по-сербски — «${dil}».`);
+    add(pl, `«${pl}» — именительный. Здесь — «${dil}».`);
+  }
+  return tt(key, 9, {frame, ru: ruT.replace('{' + c + '}', ru[c] || ''), canon:[right], distract: distract.slice(0, 3)});
+}
+// deca, braća — склоняются как ж. р. ед. ч.: dece, deci, decu, decom
+const MN_DECA = [
+  {frame:'Volim ___.', ru:'Я люблю детей.', canon:['decu'], distract:[D('deca', '«deca» — именительный. Склоняется как ж. р. ед. ч. («žena → ženu»): «volim decu».'), D('dece', '«dece» — родительный («много детей»). «Люблю детей» — «decu».')]},
+  {frame:'U parku ima mnogo ___.', ru:'В парке много детей.', canon:['dece'], distract:[D('deca', '«deca» — именительный. После «mnogo» — родительный: «dece».'), D('decu', '«decu» — винительный («volim decu»). После «mnogo» — «dece».')]},
+  {frame:'Dajem poklone ___.', ru:'Я дарю подарки детям.', canon:['deci'], distract:[D('decama', '«deca» склоняется как ж. р. ед. ч.: «deci» (как «ženi»).'), D('decu', '«decu» — «детей» (кого?). «Детям» — «deci».')]},
+  {frame:'Pričam sa ___.', ru:'Я разговариваю с детьми.', canon:['decom'], distract:[D('decama', '«deca» склоняется как ж. р. ед. ч.: «sa decom» (как «sa ženom»).'), D('deci', '«deci» — «детям» или «о детях». «С детьми» — «sa decom».')]},
+  {frame:'Pričamo o ___.', ru:'Мы говорим о детях.', canon:['deci'], distract:[D('decama', '«deca» склоняется как ж. р. ед. ч.: «o deci» (как «o ženi»).'), D('decom', '«decom» — «с детьми». «О детях» — «o deci».')]},
+  {frame:'Volim svoju ___.', ru:'Я люблю своих братьев.', canon:['braću'], distract:[D('braća', '«braća» — именительный. Склоняется как ж. р. ед. ч.: «volim svoju braću».'), D('bratove', 'Во мн. ч. «brat» — «braća», склоняется как ж. р. ед. ч.: «braću».')]},
+  {frame:'Idem u grad sa ___.', ru:'Я иду в город с братьями.', canon:['braćom'], distract:[D('braćama', '«braća» склоняется как ж. р. ед. ч.: «sa braćom».'), D('braći', '«braći» — «братьям». «С братьями» — «sa braćom».')]},
+];
+const MN_KEYS = ['mn.acc', 'mn.gen', 'mn.ima', 'mn.ama', 'mn.deca'];
 
 // Раскрыть {м|ж} по роду говорящего.
 const gTpl = (s, g) => s.replace(/\{([^|}]*)\|([^}]*)\}/g, (_, m, f) => g === 'f' ? f : m);
@@ -1490,6 +1802,7 @@ function distractorsFor(v, cell, canon, lesson, genderFree) {
   }
   if (t !== 'pres' && !v.pf) add(opt, f.V, `«${f.V}» — это настоящее время.`);   // у совершенного вида настоящего одного нет
   else if (t === 'pres' && lesson >= TENSE_L.past) add(opt, v.part[cell.g], `«${v.part[cell.g]}» — это прошедшее время.`);
+  if (cell.c && cell.c.gx && lesson >= 8) cell.c.gx.forEach(([x, why], i) => add(i ? opt : req, x, why));   // «iz Moskvi» — с урока падежей
   if (cell.c && cell.c.byG && cell.p !== 4 && cell.p !== 5) { const og = [1, 0, null, 4, 3][cell.g], x = cell.c.byG[og];
     if (x) add(req, x, `«${x}» — ${og === 1 || og === 4 ? 'о женщинах' : 'о мужчинах'}${og < 2 ? '' : ' (мн. ч.)'}. Здесь — «${cell.c.byG[cell.g]}».`.replace('о женщинах. Здесь', 'о женщине. Здесь').replace('о мужчинах. Здесь', 'о мужчине. Здесь')); }
   if (cell.c && cell.c.cl) { const c = cell.c, other = c.obj === 'acc' ? 'dat' : 'acc', x = OBJ[other][c.op], shown = c.cl === 'je' && canon.includes('ju') ? 'ju' : c.cl;
@@ -1590,7 +1903,7 @@ function toCyr(s) {
 function selfTest() {
   const errors = []; let n = 0;
   const validG = (p, g) => p <= 1 ? g < 2 : p === 4 || p === 5 ? g >= 3 : g === PG[p];
-  const compOk = (c, t) => !c || ((!c.t || c.t === t) && !(c.presOnly && t !== 'pres') && !(c.noFut && t === 'fut'));
+  const compOk = (c, t) => !c || ((!c.t || c.t === t) && !(c.presOnly && t !== 'pres') && !(c.noFut && t === 'fut') && !(c.noPast && t === 'past'));
   const compsX = v => v.comps.flatMap(c => c && c.obj ? [0, 1, 2, 3, 4, 5, 6].map(op => objComp(c, op)) : [c]);   // местоимение — во всех лицах
   { const BI = VERBS.find(v => v.id === 'biti'), RUS = BI.comps.find(c => c && c.sr === 'Rus');
     if (ruFor(BI, {t:'pres', f:'aff', p:0, g:1, c:RUS}) !== 'Я русская.' || canonicalFor(BI, {t:'pres', f:'aff', p:4, g:3, c:RUS}).join(' ') !== 'Rusi smo') errors.push('регрессия: национальность по роду'); }
@@ -1601,7 +1914,7 @@ function selfTest() {
     n++;
     if (!isCorrect(ex, ex.canon)) errors.push(id + ': основной вариант не принят');
     for (const a of variantsFor(v, cell)) if (!isCorrect(ex, a)) errors.push(id + ': не принят верный вариант ' + a.join(' '));
-    for (const d of distractorsFor(v, cell, ex.canon, 7, false)) if (ex.canon.includes(d.t)) errors.push(id + ': лишняя плитка совпадает с ответом: ' + d.t);
+    for (const d of distractorsFor(v, cell, ex.canon, 9, false)) if (ex.canon.includes(d.t)) errors.push(id + ': лишняя плитка совпадает с ответом: ' + d.t);
     if (/undefined|null|\s{2}/.test(ru + ' ' + ex.canon.join(' '))) errors.push(id + ': битый текст: ' + ru + ' / ' + ex.canon.join(' '));
   }
   const CLIT_OK = new Set([...CLITICS, ...OBJ.acc, ...OBJ.dat, 'se']);
@@ -1706,7 +2019,7 @@ function selfTest() {
     const g = PG[p] == null ? 0 : PG[p];
     for (const li of f === 'q' ? [false, true] : [false]) {
       const cell = {t, f, p, g, c, li}, canon = canonicalFor(v, cell), alts = altCanons(v, cell), ex = {v, cell, canon, bases: basesFor(v, cell, false)};
-      const tl = tilesFor(canon, alts, distractorsFor(v, cell, canon, 7, false)).tiles.map(x => x.toLowerCase());
+      const tl = tilesFor(canon, alts, distractorsFor(v, cell, canon, 9, false)).tiles.map(x => x.toLowerCase());
       for (const a of alts) { if (!isCorrect(ex, a)) errors.push(`вопрос ${v.id} ${t} ${P[p]}: вариант «${a.join(' ')}» не принят`);
         const rest = tl.slice(); for (const x of a) { const i = rest.indexOf(x.toLowerCase()); if (i < 0) errors.push(`вопрос ${v.id} ${t} ${P[p]}: нет плитки «${x}»`); else rest.splice(i, 1); } }
     }
@@ -1820,7 +2133,7 @@ function selfTest() {
   // «Фразы» и «Падежи»: верные ответы принимаются, лишние плитки объяснены и не совпадают с плитками верных ответов.
   const ttOk = (t, id) => { for (const g of ['m', 'f']) { const e = expandTask(t, g), toks = new Set([e.canon].concat(e.alts).flat().map(x => x.toLowerCase()));
     const text = [e.ru, e.sr || '', e.frame || '', ...e.canon, ...e.alts.flat(), ...e.distract.flatMap(d => [d.t, d.why])].join(' ');
-    if (!e.canon.length || !e.ru || /undefined|null|[{}]/.test(text)) errors.push(id + ': битое задание');
+    if (!e.canon.length || !e.ru || /undefined|null|[{}]/.test(text) || / [.?!,]|  /.test(e.ru)) errors.push(id + ': битое задание');
     if (!ttCheck(e, e.canon).ok || e.alts.some(a => !ttCheck(e, a).ok)) errors.push(id + ': верный ответ не принят');
     if (!e.distract.length) errors.push(id + ': нет лишних плиток');
     for (const d of e.distract) { const bad = e.canon.slice(); bad[bad.length - 1] = d.t;
@@ -1836,6 +2149,16 @@ function selfTest() {
   for (const r of LOC) for (const f of r[6].split(' ')) ttOk(locTask(`${LOC_FRAME[f][2]}.${r[3]}`, r, f), `Где/куда ${r[0]} ${f}`);
   for (const k of LOC_KEYS) for (let rep = 0; rep < 10; rep++) ttOk(locTask(k), 'Где/куда ' + k);
   for (const r of DAT) for (const fr of DAT_FRAME) ttOk(datTask('dat.' + r[5], r, fr), `Дательный ${r[0]}`);
+  // Уроки 8–9: каждое слово в каждой рамке
+  for (const r of GENT) for (const f of r[4].split(' ')) ttOk(genTask('gen.' + r[2], r, f), `Родительный ${r[0]} ${f}`);
+  for (const k in GEN_MORE) for (const it of GEN_MORE[k]) ttOk(genTask(k, it), `Родительный ${k}: ${it.ru}`);
+  for (const r of INS) for (const f of r[4].split(' ')) ttOk(insTask(MEANS.has(f) ? 'ins.means' : 'ins.' + r[2], r, f), `Творительный ${r[0]} ${f}`);
+  for (const k in INS_MORE) for (const it of INS_MORE[k]) ttOk(insTask(k, it), `Творительный ${k}: ${it.ru}`);
+  for (const r of PLC) for (const f of r[6].split(' ')) ttOk(mnTask(mnKeyOf(r, MN_FRAME[f][2]), r, f), `Мн. ч. ${r[0]} ${f}`);
+  for (const it of MN_DECA) ttOk(mnTask('mn.deca', it), 'Мн. ч. deca: ' + it.ru);
+  for (const k of [...GI_KEYS, ...MN_KEYS]) for (let rep = 0; rep < 10; rep++) ttOk(caseTask(k), 'Падежи ' + k);
+  for (const k of CNT_KEYS) for (let rep = 0; rep < 20; rep++) ttOk(qtyTask(k), 'Число + слово ' + k);
+  for (const it of CNT) for (const b of ['2', '5']) ttOk(qtyTask(`cnt.${it.g}.${b}`, it), `Число + слово ${it.w} ${b}`);
   for (const k of [...TIME_KEYS, ...AGE_KEYS, ...QTYC_KEYS]) for (let rep = 0; rep < 20; rep++) ttOk(k.startsWith('time') ? timeTask(k) : k.startsWith('age') ? ageTask(k) : qtyTask(k), k);
   for (let rep = 0; rep < 30; rep++) { ttOk(dayTask(), 'Дни'); ttOk(bigNumTask(), 'Большие числа'); }
   const BW = [[1200, 'hiljadu dvesta'], [2000, 'dve hiljade'], [5000, 'pet hiljada'], [3456, 'tri hiljade četiristo pedeset šest'], [999, 'devetsto devedeset devet']];
@@ -1849,6 +2172,20 @@ function selfTest() {
   const QW = [['kafa', 1, 'jedna kafa'], ['kafa', 2, 'dve kafe'], ['kafa', 5, 'pet kafa'], ['pivo', 1, 'jedno pivo'], ['pivo', 3, 'tri piva'], ['dinar', 12, 'dvanaest dinara'], ['evro', 2, 'dva evra']];
   for (const [wd, n, want] of QW) { const it = QTY.find(x => x.w === wd), t = qtyTask(`qty.${it.g}.${n === 1 ? 1 : n <= 4 ? 2 : 5}`, it, n);
     if (t.canon.join(' ') !== want) errors.push(`количество: ${n} ${wd} → «${t.canon.join(' ')}», нужно «${want}»`); }
+  // Этап 4: падежная ловушка в готовом сочетании — только с урока 8; формы уроков 8–9
+  { const BI = V('biti'), MO = BI.comps.find(c => c && c.sr === 'iz Moskve'), cell = {t:'pres', f:'aff', p:0, g:0, c:MO}, can = canonicalFor(BI, cell);
+    if (distractorsFor(BI, cell, can, 7, false).some(d => d.t === 'iz Moskvi')) errors.push('«iz Moskvi» — ловушка раньше урока 8');
+    if (!distractorsFor(BI, cell, can, 8, false).some(d => d.t === 'iz Moskvi')) errors.push('«iz Moskvi» — нет ловушки в уроке 8'); }
+  for (const v of VERBS) for (const c of v.comps) if (c && c.gx) { for (const [x, why] of c.gx) if (!why || x === c.sr) errors.push(`${v.id} «${c.sr}»: плохая ловушка «${x}»`);
+    const t = vTenses(v).find(t => compOk(c, t)), cell = {t, f:'aff', p:2, g:0, c}, can = canonicalFor(v, cell);
+    if (distractorsFor(v, cell, can, 7, false).some(d => c.gx.some(([x]) => x === d.t))) errors.push(`${v.id} «${c.sr}»: ловушка урока 8 раньше урока 8`); }
+  const CW = (w, key, n) => qtyTask(key, CNT.find(x => x.w === w), n).canon.join(' ');
+  for (const [w, key, n, want] of [['knjiga', 'cnt.f.5', 5, 'pet knjiga'], ['čovek', 'cnt.m.5', 7, 'sedam ljudi'], ['sestra', 'cnt.f.5', 6, 'šest sestara'], ['grad', 'cnt.m.2', 3, 'tri grada'],
+    ['knjiga', 'cnt.f.2', 2, 'dve knjige'], ['pismo', 'cnt.n.5', 5, 'pet pisama'], ['pismo', 'cnt.n.2', 3, 'tri pisma'], ['mesec', 'cnt.m.5', 10, 'deset meseci']])
+    if (CW(w, key, n) !== want) errors.push(`число + слово: ${n} ${w} → «${CW(w, key, n)}», нужно «${want}»`);
+  if (genTask('gen.f', GENT.find(r => r[0] === 'Moskva'), 'iz').distract[0].t !== 'Moskvi') errors.push('родительный: нет ловушки «Moskvi»');
+  if (!insTask('ins.soft', INS.find(r => r[0] === 'prijatelj'), 'ziv').distract.some(d => d.t === 'prijateljom')) errors.push('творительный: нет ловушки «prijateljom»');
+  if (!mnTask('mn.gen', PLC.find(r => r[0] === 'knjiga'), 'imam').distract.some(d => d.t === 'knjig')) errors.push('мн. ч.: нет ловушки «knjig»');
   for (const [id, list] of Object.entries(PRES_ERR)) for (const [x] of list) if (VERBS.find(v => v.id === id).pres.includes(x)) errors.push(`PRES_ERR ${id}: «${x}» — настоящая форма`);
   return {cells:n, errors};
 }
@@ -1998,28 +2335,32 @@ const scopeMax = () => isRev() ? S.lesson - 1 : S.lesson;
 
 const focusMatch = (t, f, g) => { if (!S.focus || isRev()) return true; const [ft, ff, fg] = S.focus.split('.'); return ft === t && ff === f && (!fg || fg === g); };
 // Сначала глагол (по его записи), потом клетка среди времён, открытых для этого глагола.
-function pickVerbCell(ok = () => true, vOk = () => true, useFocus = true) {   // «Местоимения» фильтр клетки матрицы не применяют
+function pickVerbCell(ok = () => true, vOk = () => true, useFocus = true, vW = () => 1) {   // «Местоимения» фильтр клетки матрицы не применяют
   const cands = v => { const out = []; for (const t of tensesFor(v)) for (const f of FORMS) for (const g of GROUPS) if ((!useFocus || focusMatch(t, f, g)) && ok(t, f, v)) out.push({t, f, g}); return out; };
   const verbs = VERBS.filter(v => inScope(v.l) && vOk(v) && cands(v).length);
-  if (!verbs.length && S.focus && useFocus) { S.focus = null; return pickVerbCell(ok, vOk); }   // фильтр клетки больше не подходит — снимаем
-  const v = wpick(fresh(verbs, x => x.id, 'verb', 2), x => recW(B('verbs')[x.id]) * boost(x.l));
+  if (!verbs.length && S.focus && useFocus) { S.focus = null; return pickVerbCell(ok, vOk, useFocus, vW); }   // фильтр клетки больше не подходит — снимаем
+  const v = wpick(fresh(verbs, x => x.id, 'verb', 2), x => recW(B('verbs')[x.id]) * boost(x.l) * vW(x));
   remember('verb', v.id);
   const c = wpick(cands(v), x => recW(B('cells')[cellKey(x.t, x.f, x.g, v)]) * boost(cellL(x.t, v)));
   return {v, t:c.t, f:c.f, g:c.g};
 }
-const compIn = (c, cell) => !c || (inScope(c.l || 1) && (!c.t || c.t === cell.t) && !(c.presOnly && cell.t !== 'pres') && (!c.byG || c.byG[cell.g]));
+// noPast: «Išao sam kod lekara» — это «ходил к врачу», а прошедшее «ići» по-русски — «шёл».
+const compIn = (c, cell) => !c || (inScope(c.l || 1) && (!c.t || c.t === cell.t) && !(c.presOnly && cell.t !== 'pres') && !(c.noPast && cell.t === 'past') && (!c.byG || c.byG[cell.g]));
 const hasObj = v => v.comps.some(c => c && c.obj && inScope(c.l || 1));
+// Уроки 8–9 — падежи в готовых сочетаниях: такие дополнения и их глаголы выпадают чаще (около половины «Сборки»). Уроки 1–7 не меняются.
+const newComp = c => !!c && c.l >= 8 && c.l === S.lesson && !isRev();
 function drawCell(pronOnly) {
   let v, cell, key, n = 0;
   do {
-    const pc = pickVerbCell(undefined, pronOnly ? hasObj : undefined, !pronOnly); v = pc.v;
+    const pc = pickVerbCell(undefined, pronOnly ? hasObj : undefined, !pronOnly, x => x.comps.some(newComp) ? 4 : 1); v = pc.v;
     cell = {t:pc.t, f:pc.f, p: pc.g === 'on' ? (Math.random() < .5 ? 2 : 3) : P.indexOf(pc.g)};
     // Иногда подлежащее — существительное: «dete» (средний род, хотя «ребёнок» мужского) и «žene» (ж. р. мн. ч.).
     if (v.id !== 'hteti' && S.lesson >= NOUN_L && Math.random() < .3) cell.p = cell.p === 2 || cell.p === 3 ? 7 : cell.p === 6 ? 8 : cell.p;
     cell.g = gFor(cell.p, S.gender === 'f' ? 1 : 0);
     // Дополнение урока — чаще; местоимение — в лице, которое сочетается с подлежащим («я вижу его», не «я вижу меня»).
     const cs = v.comps.filter(c => compIn(c, cell) && (!pronOnly || (c && c.obj)));
-    cell.c = cs.length ? wpick(cs, c => c && c.obj && (c.l || 1) === S.lesson && !isRev() ? 3 : 1) : null;
+    const nNew = cs.filter(newComp).length;   // дополнение урока 8–9 — примерно в 3 случаях из 4
+    cell.c = cs.length ? wpick(cs, c => c && c.obj && (c.l || 1) === S.lesson && !isRev() ? 3 : newComp(c) ? 3 * cs.length / nNew : 1) : null;
     if (cell.c && cell.c.obj) cell.c = objComp(cell.c, pick([0, 1, 2, 3, 4, 5, 6].filter(op => !OBJ_BAN(cell.p).includes(op))));
     if (cell.f === 'q') cell.li = Math.random() < .35;   // иногда вопрос с «li»: «Radiš li…?», «Jesi li…?»
     key = [v.id, cell.t, cell.f, cell.p, cell.c && cell.c.sr].join('|');
@@ -2028,7 +2369,7 @@ function drawCell(pronOnly) {
   return {v, cell};
 }
 function sourceFor(v, cell) {
-  const all = [], single = [], c = cell.c, okT = t => !c || ((!c.t || c.t === t) && !(c.presOnly && t !== 'pres'));   // не «Bio sam iz Rusije», не «Radim juče»
+  const all = [], single = [], c = cell.c, okT = t => !c || ((!c.t || c.t === t) && !(c.presOnly && t !== 'pres') && !(c.noPast && t === 'past'));   // не «Bio sam iz Rusije», не «Radim juče»
   for (const t of tensesFor(v).filter(okT)) for (const f of FORMS) {
     if (t === cell.t && f === cell.f) continue;
     all.push({t, f});
@@ -2087,12 +2428,17 @@ function makePoss() {
 // «Фразы» и «Падежи»: запись прогресса — по шаблону (у чисел и количества слово и число каждый раз новые).
 const GEN_TASKS = [...NUM_KEYS.map(([k]) => ({key:k, l:3, make: () => numTask(k)})), ...QTY_KEYS.map(k => ({key:k, l:3, make: () => qtyTask(k)})),
   ...QTYC_KEYS.map(k => ({key:k, l:6, make: () => qtyTask(k)})), ...TIME_KEYS.map(k => ({key:k, l:6, make: () => timeTask(k)})),
-  ...AGE_KEYS.map(k => ({key:k, l:6, make: () => ageTask(k)})), {key:'day', l:6, make: dayTask}, {key:'num.big', l:6, make: bigNumTask}];
+  ...AGE_KEYS.map(k => ({key:k, l:6, make: () => ageTask(k)})), {key:'day', l:6, make: dayTask}, {key:'num.big', l:6, make: bigNumTask},
+  ...CNT_KEYS.map(k => ({key:k, l:9, make: () => qtyTask(k)}))];
 const ttPool = kind => (kind === 'case'
-  ? CASE_KEYS.map(k => ({key:k, l:3, make: () => caseTask(k, null, null, scopeMax())})).concat(LOC_KEYS.map(k => ({key:k, l:4, make: () => locTask(k)})), DAT_KEYS.map(k => ({key:k, l:7, make: () => datTask(k)})))
+  ? CASE_KEYS.map(k => ({key:k, l:3, make: () => caseTask(k, null, null, scopeMax())})).concat(LOC_KEYS.map(k => ({key:k, l:4, make: () => locTask(k)})), DAT_KEYS.map(k => ({key:k, l:7, make: () => datTask(k)})),
+    GI_KEYS.map(k => ({key:k, l:8, make: () => caseTask(k)})), MN_KEYS.map(k => ({key:k, l:9, make: () => caseTask(k)})))
   : PHR.map(t => ({key:t.key, l:t.l, make: () => t})).concat(GEN_TASKS)).filter(x => inScope(x.l));
 function makeTT(kind) {
-  const it = wpick(fresh(ttPool(kind), x => x.key, kind, 8), x => recW(B(kind)[x.key]) * boost(x.l));
+  // Задания урока — 60 %: сначала группа, потом задание в ней. Обычного ×2 мало, когда новых ключей 5, а пройденных 30.
+  const pool = ttPool(kind), mine = pool.filter(x => x.l === S.lesson), old = pool.filter(x => x.l !== S.lesson);
+  const grp = isRev() || !mine.length || !old.length ? pool : Math.random() < .6 ? mine : old;
+  const it = wpick(fresh(grp, x => x.key, kind, 8), x => recW(B(kind)[x.key]));
   lastKey = it.key; remember(kind, it.key);
   const raw = it.make(), t = expandTask(raw, S.gender === 'f' ? 'f' : 'm'), tl = tilesFor(t.canon, t.alts, t.distract);
   const tiles = shuffle(tl.tiles).map((x, id) => ({t:x, id}));
@@ -2132,8 +2478,10 @@ function commit(ex, ok) {
   if (ex.kind === 'clitic') bump(B('clit'), ex.it.id, ok);
   else {
     const k = cellKey(ex.cell.t, ex.cell.f, GROUP[ex.cell.p], ex.v), vk = ex.v.id, pk = ex.cell.c && ex.cell.c.cl ? `${ex.cell.c.obj}.${ex.cell.c.op}` : null;
-    ex.snap = {k, vk, pk, rs: S.resetAt, c: clone(B('cells')[k]), v: clone(B('verbs')[vk]), pr: pk && clone(B('pron')[pk])};
+    const ck = ex.cell.c && ex.cell.c.l >= 8 ? ex.cell.c.sr : null;   // сочетание урока 8–9: «kod lekara», «sa decom»
+    ex.snap = {k, vk, pk, ck, rs: S.resetAt, c: clone(B('cells')[k]), v: clone(B('verbs')[vk]), pr: pk && clone(B('pron')[pk]), cp: ck && clone(B('comp')[ck])};
     if (pk) bump(B('pron'), pk, ok); else { bump(B('cells'), k, ok); bump(B('verbs'), vk, ok); }   // с местоимением проверяется место местоимения, а не спряжение
+    if (ck) bump(B('comp'), ck, ok);
   }
   persist(); renderSide();
 }
@@ -2149,7 +2497,7 @@ function override() {
   }
   // Только когда слова те же, а отвергнут порядок, и только если прогресс не сбросили с тех пор.
   if (!ex || !ex.done || ex.ok || !ex.snap || ex.snap.rs !== S.resetAt || !ex.bases || !sameWords(ex, ex.ans) || tooSoon(ex.checkedAt)) return;
-  put(B('cells'), ex.snap.k, ex.snap.c); put(B('verbs'), ex.snap.vk, ex.snap.v); if (ex.snap.pk) put(B('pron'), ex.snap.pk, ex.snap.pr);
+  put(B('cells'), ex.snap.k, ex.snap.c); put(B('verbs'), ex.snap.vk, ex.snap.v); if (ex.snap.pk) put(B('pron'), ex.snap.pk, ex.snap.pr); if (ex.snap.ck) put(B('comp'), ex.snap.ck, ex.snap.cp);
   ex.ok = true; ex.overridden = true;
   commit(ex, true); renderCard();
 }
@@ -2274,8 +2622,9 @@ function readinessParts(n) {
     {mode:'rod', name:'«Род»', v: n === NOUN_L ? avg(GEN.map(x => x.w), 'gen') : null},
     {mode:'poss', name:'«Чей»', v: n === NOUN_L ? avg(possCombos(n).map(c => c.k), 'poss') : null},
     {mode:'phr', name:'«Фразы»', v: avg(phrKeysOf(n), 'phr')},
-    {mode:'case', name:'«Падежи»', v: avg(n === 3 ? CASE_KEYS : n === 4 ? LOC_KEYS : n === 7 ? DAT_KEYS : [], 'case')},
+    {mode:'case', name:'«Падежи»', v: avg(n === 3 ? CASE_KEYS : n === 4 ? LOC_KEYS : n === 7 ? DAT_KEYS : n === 8 ? GI_KEYS : n === 9 ? MN_KEYS : [], 'case')},
     {mode:'pron', name:'«Местоимения»', v: n === 7 ? avg(PRON_KEYS, 'pron') : null},
+    {mode:'build', name:'«Сборка»: сочетания урока', v: n >= 8 ? avg([...new Set(VERBS.flatMap(v => v.comps.filter(c => c && c.l === n).map(c => c.sr)))], 'comp') : null},
   ].filter(x => x.v !== null && LESSONS[n - 1].tabs.includes(x.mode));
 }
 function renderLessons() {
@@ -2400,7 +2749,7 @@ function howOf(ex) {
   if (k === 'ff' || k === 'vid') return 'выберите значение';
   if (k === 'pl') return 'выберите множественное число';
   if (k === 'num') return 'соберите число словами';
-  if (k === 'qty' || k === 'qtyc') return 'число + слово в нужной форме';
+  if (k === 'qty' || k === 'qtyc' || k === 'cnt') return 'число + слово в нужной форме';
   if (ex.frame) return 'вставьте пропущенное';
   if (ex.sr) return 'ответьте по-сербски';
   return 'скажите по-сербски';
@@ -2524,9 +2873,13 @@ function renderSide() {
     const keys = mode === 'pron' ? PRON_KEYS : [...new Set(ttPool(mode).map(x => x.key))], done = keys.filter(k => box(B(mode)[k]) >= .75).length;
     h = `<p class="pbar-l">Закреплено ${done} из ${keys.length}</p><div class="pbar"><span style="width:${keys.length ? Math.round(done / keys.length * 100) : 0}%"></span></div>`;
     hint = mode === 'pron' ? 'Закрепляется каждая краткая форма — «ga», «joj», «ih»…: глагол и время каждый раз новые.' : 'У чисел, количества и падежей закрепляется правило: слово каждый раз новое.';
-    const KEY_RU = {num:'Числа', qty:'Количество', qtyc:'Количество, составные числа', time:'Который час', age:'Возраст', day:'Дни недели', acc:'Винительный', loc:'Где?', dir:'Куда?', dat:'Дательный'};
-    const label = k => { const t = PHR.find(x => x.key === k); if (t) return gsel(t.ru); const [a, b] = k.split('.');
-      if (mode === 'pron') return `«${OBJ_RU[a][+b]}» — «${OBJ[a][+b]}»`; return (KEY_RU[a] || k) + (b && a !== 'num' ? ` · ${b}` : ''); };
+    const KEY_RU = {num:'Числа', qty:'Количество', qtyc:'Количество, составные числа', time:'Который час', age:'Возраст', day:'Дни недели', acc:'Винительный', loc:'Где?', dir:'Куда?', dat:'Дательный',
+      gen:'Родительный', ins:'Творительный', mn:'Мн. ч.', cnt:'Число + слово'};
+    const TYPE_RU = {m:'м. р.', f:'ж. р.', n:'ср. р.', 'm-a':'м. р. на -a', 'm-anim':'живой м. р.', 'm-inan':'неживой м. р.', 'f-cons':'ж. р. на согласный', soft:'после мягких',
+      means:'чем? на чём?', mod:'с прилагательным', pron:'местоимения', acc:'винительный', gen:'родительный', deca:'deca, braća', o:'o + местный',
+      ima:'-ima (м. и ср. р.)', ama:'-ama (ж. р.)'}, NUM_RU = {1:'1', 2:'2–4', 5:'5 и больше'};
+    const label = k => { const t = mode === 'phr' && PHR.find(x => x.key === k); if (t) return gsel(t.ru); const [a, b, c] = k.split('.');
+      if (mode === 'pron') return `«${OBJ_RU[a][+b]}» — «${OBJ[a][+b]}»`; return (KEY_RU[a] || k) + (b && a !== 'num' ? ` · ${TYPE_RU[b] || b}` : '') + (c ? ` · ${NUM_RU[c] || c}` : ''); };
     weak = keys.map(k => [label(k), B(mode)[k]]);
   } else {
     h = `<table class="heat"><thead><tr><th></th>${FORMS.map(f => `<th scope="col">${F_SHORT[f]}</th>`).join('')}</tr></thead><tbody>`;
@@ -2641,7 +2994,23 @@ function sheetHTML() {
       <p>${sr('je')} (её) + ${sr('je')} (есть) → ${sr('ju je')}: ${sr('Video ju je')}. Краткие ${sr('mi, ti')} («мне, тебе») пишутся как «мы, ты» — различает место во фразе.</p>
       <p><b>Полная форма</b> — для выделения и после предлога: ${sr('Mene voli, a ne tebe. On voli mene.')}</p>
       <p><b>Дательный</b> (кому?): м. и ср. р. — ${sr('-u')} (${sr('bratu, detetu')}), ж. р. и м. р. на ${sr('-a')} — ${sr('-i')} (${sr('sestri, tati')}). ${sr('Dajem bratu knjigu. Dao sam mu knjigu.')} ${sr('davati — dajem')} (даю), ${sr('dati — dam')} (дам: после ${sr('da')} или в будущем ${sr('daću')}).</p>
-      <p><b>${sr('se')}</b>: ${sr('Zovem se Ana. Kako se zoveš?')} (или ${sr('Kako te zovu?')}) · ${sr('Sviđa mi se Beograd')} — «мне нравится» · ${sr('Treba mi pomoć')} · ${sr('Drago mi je')} · ${sr('Vidimo se!')} · ${sr('Nema ga')} — «его нет». «${sr('ne')} + глагол» — перед группой: ${sr('Ne sviđa mi se')}.</p>`;
+      <p><b>${sr('se')}</b>: ${sr('Zovem se Ana. Kako se zoveš?')} (или ${sr('Kako te zovu?')}) · ${sr('Sviđa mi se Beograd')} — «мне нравится» · ${sr('Treba mi pomoć')} · ${sr('Drago mi je')} · ${sr('Vidimo se!')} · ${sr('Nema ga')} — «его нет». «${sr('ne')} + глагол» — перед группой: ${sr('Ne sviđa mi se')}.</p>
+      ${ffHTML(7)}`;
+  if (n === 8) return `<p><b>Родительный</b> (кого? чего? откуда?): м. и ср. р. — ${sr('-a')} (${sr('brata, grada, mleka')}), ж. р. и м. р. на ${sr('-a')} — ${sr('-e')} (${sr('sestre, Moskve, tate')}), ж. р. на согласный — ${sr('-i')} (${sr('soli, noći')}). Беглое ${sr('a')}: ${sr('centar → centra, posao → posla, novac → novca')}; ${sr('vreme → vremena, dete → deteta')}.</p>
+      <p>После ${sr('iz, od, do, kod, bez, posle, blizu, pored')}: ${sr('Ja sam iz Moskve')} — не «${sr('iz Moskvi')}» (это «в Москве»). ${sr('kod')} — «у кого-то, к кому-то»: ${sr('kod lekara, kod brata, kod kuće')}; ${sr('Idem kod lekara')} = ${sr('Idem lekaru')}. Откуда: ${sr('u školi → iz škole')}, но ${sr('na poslu → sa posla, na pijaci → sa pijace')}.</p>
+      <p>${sr('Nema hleba')} — «хлеба нет»; ${sr('Nemam vremena')}; ${sr('mnogo / malo')} + родительный: ${sr('mnogo posla, malo vode')}. «У меня есть» — ${sr('imam')}, а ${sr('kod mene je')} — «у меня дома находится». «Рядом с центром» — ${sr('blizu centra, pored banke')}, без творительного.</p>
+      <p><b>Творительный</b> (с кем? чем?): м. и ср. р. — ${sr('-om')} (${sr('bratom, mlekom')}), после мягких ${sr('j, lj, nj, č, ć, dž, š, ž, đ, c')} — ${sr('-em')} (${sr('prijateljem, mužem, tramvajem')}); ж. р. и м. р. на ${sr('-a')} — ${sr('-om')}: ${sr('sestrom, tatom')} (по-русски «сестрой», по-сербски без «-oj»). ${sr('so → solju')} (или ${sr('soli')}).</p>
+      <p>${sr('sa')} + творительный — «вместе с»: ${sr('sa prijateljem')} (и ${sr('s prijateljem')}). Средство — без предлога: ${sr('Idem autobusom. Plaćam karticom. Pišem olovkom.')} Не «${sr('na autobusu')}», как по-русски.</p>
+      <p><b>Местоимения</b> после предлога — полные: ${sr('kod mene, kod njega, kod nje, od njih, bez tebe')}; ${sr('sa mnom, sa tobom, s njim, s njom, sa nama, sa vama, sa njima')}.</p>
+      <p>С прилагательным: ${sr('iz Novog Sada, kod mog brata, bez crne kafe, sa mojim bratom, sa svojom sestrom')}.</p>
+      ${ffHTML(8)}`;
+  if (n === 9) return `<p><b>Мн. ч.</b>: ${sr('gradovi, knjige, sela')}; короткие слова м. р. получают ${sr('-ov-')}: ${sr('grad → gradovi, film → filmovi')}. ${sr('čovek → ljudi')}.</p>
+      <p><b>Винительный мн. ч.</b>: м. р. — ${sr('-e')} (${sr('Volim gradove. Vidim ljude.')}), ж. и ср. р. — как именительный (${sr('Čitam knjige, pisma')}).</p>
+      <p><b>Дательный, творительный и местный мн. ч.</b> совпадают: м. и ср. р. — ${sr('-ima')} (${sr('sa prijateljima, o gradovima, u selima')}), ж. р. — ${sr('-ama')} (${sr('sa sestrama, o knjigama')}), ${sr('kolega → sa kolegama')}; ж. р. на согласный — ${sr('-ima')}: ${sr('o stvarima')}. По-русски «о книгах, с книгами, книгам» — по-сербски везде ${sr('knjigama')}.</p>
+      <p><b>Родительный мн. ч.</b> (много чего?): ${sr('mnogo knjiga, gradova, prijatelja')}; между согласными иногда вставляется ${sr('a')}: ${sr('sestara, pisama')}; ${sr('čovek → mnogo ljudi')}; особые: ${sr('sati, dana, meseci, stvari')}. Не «${sr('pet knjig')}», как по-русски.</p>
+      <p><b>Числа</b>: после 2, 3, 4 — ${sr('dva grada, tri sestre, četiri pisma')}; после 5 и больше — родительный мн. ч.: ${sr('pet gradova, pet sestara, pet ljudi')}. Поэтому ${sr('pet kafa')} — родительный мн. ч., а не ед. ч. Глагол: ${sr('Pet ljudi je došlo')} (в разговоре и ${sr('su došli')}), ${sr('Dva brata su došla')}.</p>
+      <p><b>${sr('deca, braća')}</b> склоняются как ж. р. ед. ч.: ${sr('deca, dece, deci, decu, decom')} — ${sr('Volim decu. Pričam sa decom')} (не «${sr('sa decama')}»). Глагол — во мн. ч.: ${sr('Deca su ovde. Moja braća su ovde.')}</p>
+      ${ffHTML(9)}`;
   return '';
 }
 
