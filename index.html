@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Тренажёр сербского глагола: спряжение, сборка фраз из плиток, трансформации и энклитики.">
+<meta name="description" content="Тренажёр сербского для русскоязычных: глаголы, род и «чей», падежи и фразы — ответы из плиток.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%232A45A8%22/%3E%3Ctext x=%2216%22 y=%2223%22 font-family=%22Georgia,serif%22 font-size=%2220%22 font-weight=%22700%22 fill=%22white%22 text-anchor=%22middle%22%3E%D0%A1%3C/text%3E%3C/svg%3E">
 <title>Srpska matrica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,12 +42,13 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent;touch-
 .app{max-width:1180px;margin:0 auto;padding-inline:max(24px, env(safe-area-inset-left, 0px)) max(24px, env(safe-area-inset-right, 0px));padding-block:20px 48px}
 
 /* Шапка: название, уроки, шестерёнка. На телефоне уроки уходят второй строкой. */
-.top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"brand lessons gear";align-items:center;gap:14px 20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.top{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand gear" "lessons lessons";align-items:center;gap:14px 20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
 .brand{grid-area:brand}
 .brand .name{display:block;font:700 30px/1.05 var(--serif);letter-spacing:-.01em}
 .brand .alt{display:block;margin-top:6px;font:500 13px/1.3 var(--mono);color:var(--muted)}
-.lessons{grid-area:lessons;justify-self:end;display:flex;gap:8px}
-.lessons button{display:grid;gap:2px;text-align:left;padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel);cursor:pointer}
+.lessons{grid-area:lessons;display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;padding-bottom:4px}
+.lessons button{flex:0 0 auto;width:168px;scroll-snap-align:start;display:grid;align-content:start;gap:2px;text-align:left;padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel);cursor:pointer}
+.lessons button:disabled{opacity:.5;cursor:default}
 .lessons button[aria-current="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
 .lessons .ln{font:600 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
 .lessons .lt{font-weight:600;line-height:1.2}
@@ -201,9 +202,7 @@ details[open] summary{margin-bottom:12px}
 
 @media (max-width:920px){.layout{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:900px){
-  .top{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand gear" "lessons lessons"}
-  .lessons{justify-self:stretch;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
-  .lessons button{padding:8px 10px}
+  .lessons button{width:150px;padding:8px 10px}
 }
 @media (max-width:700px){
   /* Вкладки сеткой в три колонки: полоса с прокруткой прятала часть вкладок за краем. */
@@ -240,7 +239,7 @@ details[open] summary{margin-bottom:12px}
   <header class="top">
     <div class="brand">
       <span class="name" lang="sr-Latn">Srpska matrica</span>
-      <span class="alt"><span lang="sr-Cyrl">Српска матрица</span><span class="sub"> · тренажёр сербского глагола</span></span>
+      <span class="alt"><span lang="sr-Cyrl">Српска матрица</span><span class="sub"> · тренажёр сербского</span></span>
     </div>
     <nav class="lessons" id="lessons" aria-label="Урок"></nav>
     <button type="button" class="gear" popovertarget="settings" aria-label="Настройки" title="Настройки">
@@ -351,7 +350,7 @@ const VERBS = [
   {id:'razumeti', l:3, inf:'razumeti', pres:w('razumem razumeš razume razumemo razumete razumeju'), part:w('razumeo razumela razumelo razumeli razumele'),
    ru:{inf:'понимать', pres:w('понимаю понимаешь понимает понимаем понимаете понимают'), past:w('понимал понимала понимали')}, comps:[null, comp('srpski','по-сербски')]},
   {id:'biti', l:1, inf:'biti', pres:w('sam si je smo ste su'), presNeg:w('nisam nisi nije nismo niste nisu'), presClitic:true, part:w('bio bila bilo bili bile'),
-   ru:{pres:null, past:w('был была были'), fut:w('буду будешь будет будем будете будут')}, comps:[KOD, BG]},
+   ru:{pres:null, past:w('был была были'), fut:w('буду будешь будет будем будете будут')}, comps:[KOD, BG, comp('iz Rusije', 'из России', {noNet:true, presOnly:true})]},
   {id:'imati', l:4, inf:'imati', pres:w('imam imaš ima imamo imate imaju'), presNeg:w('nemam nemaš nema nemamo nemate nemaju'), part:w('imao imala imalo imali imale'),
    ruSpecial:'imati', comps:[comp('psa','собака',{gen:'собаки', g:'f'}), comp('vremena','время',{gen:'времени', g:'n'})]},
   {id:'hteti', l:4, inf:'hteti', pres:w('hoću hoćeš hoće hoćemo hoćete hoće'), presNeg:w('neću nećeš neće nećemo nećete neće'), part:w('hteo htela htelo hteli htele'), noFut:true,
@@ -369,10 +368,10 @@ const VERBS = [
 const TENSE_L = {pres:1, past:6, fut:7};
 const NOUN_L = 2;   // «dete», «žene» в роли подлежащего, «Род» и «Чей» — с урока 2
 const LESSONS = [
-  {n:1, title:'[Biti] и знакомство', tabs:['conj','build','transform','clitic']},
-  {n:2, title:'Род и «чей»', tabs:['rod','poss']},
-  {n:3, title:'Настоящее время', tabs:['conj','build','transform','clitic']},
-  {n:4, title:'Кафе и магазин', tabs:['conj','build','transform']},
+  {n:1, title:'[Biti] и знакомство', tabs:['conj','build','transform','clitic','phr']},
+  {n:2, title:'Род и «чей»', tabs:['rod','poss','phr']},
+  {n:3, title:'Настоящее время и числа', tabs:['conj','build','transform','clitic','phr']},
+  {n:4, title:'Кафе и магазин', tabs:['case','conj','build','transform','phr']},
   {n:5, title:'Где и куда', soon:true},
   {n:6, title:'Прошедшее время', tabs:['conj','build','transform','clitic']},
   {n:7, title:'Будущее время', tabs:['conj','build','transform','clitic']},
@@ -439,6 +438,10 @@ const CLIT = [
   {id:'c48', l:1, w:['Kod','kuće'], k:'je', at:2, ru:'Он дома.'},
   {id:'c49', l:1, w:['Da','li','kod','kuće'], k:'si', at:2, q:true, ru:'Ты дома?'},
   {id:'c50', l:1, w:['U','Beogradu'], k:'su', at:2, ru:'Они в Белграде.'},
+  // Урок 3: вопросы с «li»
+  {id:'c51', l:3, w:['Govoriš','srpski'], k:'li', at:1, q:true, ru:'Ты говоришь по-сербски?'},
+  {id:'c52', l:3, w:['Razumete'], k:'li', at:1, q:true, ru:'Вы понимаете?'},
+  {id:'c53', l:3, w:['Radiš','kod','kuće'], k:'li', at:1, q:true, ru:'Ты работаешь дома?'},
 ];
 
 // Раздел «Род»: каким местоимением заменить слово. n — число, g — род; why — где род расходится с русским.
@@ -461,7 +464,7 @@ const GEN = [
   {w:'pivo', ru:'пиво', n:'sg', g:'n'},
   {w:'dete', ru:'ребёнок', n:'sg', g:'n', why:'«dete» — средний род, хотя «ребёнок» — мужского.'},
   {w:'selo', ru:'деревня', n:'sg', g:'n', why:'«selo» — средний род, хотя «деревня» — женского.'},
-  {w:'posao', ru:'работа', n:'sg', g:'m', why:'«posao» — мужской род, хотя «работа» — женского. На «-o», но мужской: «posao, posla».'},
+  {w:'posao', ru:'работа', n:'sg', g:'m', why:'«posao» — мужской род, хотя «работа» — женского. На «-o», но мужской, как «auto».'},
   {w:'prozor', ru:'окно', n:'sg', g:'m', why:'«prozor» — мужской род, хотя «окно» — среднего.'},
   {w:'krevet', ru:'кровать', n:'sg', g:'m', why:'«krevet» — мужской род, хотя «кровать» — женского.'},
   {w:'trg', ru:'площадь', n:'sg', g:'m', why:'«trg» — мужской род, хотя «площадь» — женского.'},
@@ -518,9 +521,11 @@ const GEN = [
   {w:'imena', ru:'имена', n:'pl', g:'n'},
   {w:'jaja', ru:'яйца', n:'pl', g:'n'},
   {w:'vrata', ru:'дверь', n:'pl', g:'n', why:'«vrata» — только мн. ч., средний род: «ona», хотя «дверь» — одна.'},
-  {w:'deca', ru:'дети', n:'pl', g:'n', why:'«deca» заменяется на «ona»: глагол при нём — во множественном числе среднего рода, «deca su bila».'},
+  {w:'deca', ru:'дети', n:'pl', g:'n', why:'«deca» заменяется на «ona»: «Deca su ovde» → «Ona su ovde».'},
 ];
 const PRON = {sg:{m:'on', f:'ona', n:'ono'}, pl:{m:'oni', f:'one', n:'ona'}};
+// Ответ в «Роде» — «местоимение + je/su»: так «ona je» (она) и «ona su» (они, ср. р.) не путаются.
+const genAns = (n, g) => `${PRON[n][g]} ${n === 'sg' ? 'je' : 'su'}`;
 const BITI_L = {sg:{m:'bio', f:'bila', n:'bilo'}, pl:{m:'bili', f:'bile', n:'bila'}};   // пример согласования: «One su bile ovde.»
 // Что открыто в уроке для «Рода» и «Чей»: 1 — единственное число; 2 — плюс мн. ч. м. и ж. рода (как и «-li / -le»
 // в прошедшем); 3 — плюс средний род мн. ч. («pisma», «sela»; «deca» — собирательное, отдельная ловушка).
@@ -665,8 +670,9 @@ const PHR = [
     distract:[D('Molim', '«molim» — «пожалуйста». Извиняются — «izvinite».'), D('Hvala', '«hvala» — «спасибо».')]}),
   tt('zn.rus', 1, {ru:'Я {русский|русская}.', canon:['Ja', 'sam', '{Rus|Ruskinja}'], alts:[['{Rus|Ruskinja}', 'sam']],
     distract:[D('{ruski|ruska}', '«{ruski|ruska}» — прилагательное, как в «ruski jezik». О человеке — «{Rus|Ruskinja}».'), D('{Ruskinja|Rus}', '«{Ruskinja|Rus}» — {о женщине|о мужчине}. О себе — «{Rus|Ruskinja}».')]}),
+  // Женщине можно сказать и «programer» — поэтому мужская форма у неё не лишняя плитка.
   tt('zn.posao', 1, {ru:'Я {программист|программистка}.', canon:['Ja', 'sam', '{programer|programerka}'], alts:[['{programer|programerka}', 'sam']],
-    distract:[D('programirati', '«programirati» — глагол «программировать». Профессия — «{programer|programerka}».'), D('{programerka|programer}', '«{programerka|programer}» — {о женщине|о мужчине}.')]}),
+    distract:[D('programirati', '«programirati» — глагол «программировать». Профессия — «{programer|programerka}».'), D('programiram', '«programiram» — «я программирую». Профессия — «{programer|programerka}».')]}),
   tt('sp.kuce', 1, {ru:'Как пишется «дома»?', frame:'kod ___', canon:['kuće'], distract:[D('kuče', 'В «kuća, kuće» — мягкое «ć», близкое к русскому «ч».')]}),
   tt('sp.noc', 1, {ru:'Как пишется «спокойной ночи»?', frame:'laku ___', canon:['noć'], distract:[D('noč', 'В «noć» — мягкое «ć».')]}),
   // Урок 2: «чей?», «ovo su»
@@ -689,6 +695,10 @@ const PHR = [
     distract:[D('Kasa', '«kasa» — касса. Счёт — «račun».')]}),
   tt('kf.izvolite', 4, {ru:'Вы подаёте кофе: «Вот, пожалуйста».', canon:['Izvolite'],
     distract:[D('Molim', '«molim» — просьба или ответ на «hvala». Подавая — «izvolite».'), D('Hvala', '«hvala» — «спасибо».')]}),
+  tt('kf.sestra', 4, {ru:'У меня есть сестра.', canon:['Imam', 'sestru'], alts:[['Ja', 'imam', 'sestru']],
+    distract:[D('Kod mene je', '«Kod mene je sestra» — «сестра у меня (в гостях)». «У меня есть» — «imam».'), D('sestra', 'После «imam» — винительный: «sestru».')]}),
+  tt('kf.bih', 4, {ru:'Вежливо: «Я бы {хотел|хотела} кофе».', canon:['{Hteo|Htela}', 'bih', 'kafu'], alts:[['{Hteo|Htela}', 'bih', 'jednu', 'kafu']],
+    distract:[D('bi', '«bi» — для «он, она». О себе — «bih».'), D('kafa', 'После «{hteo|htela} bih» — винительный: «kafu».')]}),
   tt('kf.pivo', 4, {ru:'У вас есть холодное пиво?', canon:['Imate', 'li', 'hladno', 'pivo'], alts:[['Da', 'li', 'imate', 'hladno', 'pivo']],
     distract:[D('hladnu', '«pivo» — ср. р.: «hladno».'), D('Imam', '«imam» — «у меня есть». «У вас есть?» — «imate li».')]}),
 ];
@@ -748,7 +758,7 @@ const QTY = [
   {w:'kafa', g:'f', f:['kafa', 'kafe', 'kafa'], ru:'кофе'}, {w:'čaša', g:'f', f:['čaša', 'čaše', 'čaša'], ru:'стакан'},
   {w:'flaša', g:'f', f:['flaša', 'flaše', 'flaša'], ru:'бутылка'}, {w:'pivo', g:'n', f:['pivo', 'piva', 'piva'], ru:'пиво'},
   {w:'dinar', g:'m', f:['dinar', 'dinara', 'dinara'], ru:'динар'}, {w:'evro', g:'m', f:['evro', 'evra', 'evra'], ru:'евро'},
-  {w:'kolač', g:'m', f:['kolač', 'kolača', 'kolača'], ru:'пирожное'},
+  {w:'kolač', g:'m', f:['kolač', 'kolača', 'kolača'], ru:'пирожное'}, {w:'hiljada', g:'f', f:['hiljada', 'hiljade', 'hiljada'], ru:'тысяча'},
 ];
 const ONE = {m:'jedan', f:'jedna', n:'jedno'}, G_RU = {m:'м. р.', f:'ж. р.', n:'ср. р.'};
 const qtyNum = (n, g) => n === 1 ? [ONE[g]] : n === 2 ? [g === 'f' ? 'dve' : 'dva'] : numWords(n);
@@ -999,7 +1009,7 @@ function ruFor(v, cell) {
     else if (t === 'past') s = m === 'neg' ? `${u} не было ${co.gen}` : `${u} ${was} ${co.ru}`;
     else s = m === 'neg' ? `${u} не будет ${co.gen}` : `${u} будет ${co.ru}`;
   } else if (v.id === 'biti' && t === 'pres' && m === 'neg') {
-    s = `${RU_NET[i]} нет ${co.ru}`;   // не «Я не дома»
+    s = co.noNet ? `${RU_P[i]} не ${co.ru}` : `${RU_NET[i]} нет ${co.ru}`;   // «Меня нет дома», но «Я не из России»
   } else {
     let verb;
     if (t === 'pres') verb = v.ru.pres ? v.ru.pres[k] : '';
@@ -1175,6 +1185,9 @@ function selfTest() {
   if (ruFor(V('biti'), {t:'pres', f:'neg', p:0, g:0, c:KOD}) !== 'Меня нет дома.') errors.push('регрессия: «Меня нет дома»');
   if (ruFor(V('čitati'), {t:'past', f:'aff', p:7, g:2, c:KNJ}) !== 'Ребёнок читал книгу.') errors.push('регрессия: «Ребёнок читал книгу»');
   if (!/Не хватает: «dete»/.test(why(['čitati', 'past', 'aff', 7, 2, KNJ], 'čitalo|je|knjigu'))) errors.push('регрессия: без «dete» фраза неполная');
+  if (new Set(['sg', 'pl'].flatMap(n => ['m', 'f', 'n'].map(g => genAns(n, g)))).size !== 6) errors.push('«Род»: ответы совпадают');
+  // Урок 2: объяснения не называют прошедшее время и падежи, которых ещё не было.
+  for (const it of GEN) if (/\b(bio|bila|bilo|bili|bile|posla)\b|родительн|дательн|местн|творительн/.test(it.why || '')) errors.push(`«Род» ${it.w}: объяснение называет неоткрытое`);
   const seenW = new Set();
   for (const it of GEN) { if (!PRON[it.n] || !PRON[it.n][it.g] || seenW.has(it.w)) errors.push('«Род»: неверный пример ' + it.w); seenW.add(it.w); }
   for (const o of OWNERS) {
@@ -1307,7 +1320,7 @@ function selfTest() {
 (() => {
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
-const LS_KEY = 'srpska-matrica/v1';
+const LS_KEY = 'srpska-matrica/v2', LS_V1 = 'srpska-matrica/v1', V1_DONE = 'srpska-matrica/v1-imported';
 const MODES = [
   {id:'conj', name:'Спряжение', lead:'Разложите формы по лицам. Лишние плитки — типичные ошибки.'},
   {id:'build', name:'Сборка', lead:'Соберите перевод из слов. Лишние слова — типичные ошибки.'},
@@ -1315,54 +1328,78 @@ const MODES = [
   {id:'clitic', name:'Энклитики', lead:'Поставьте энклитику на её место.'},
   {id:'rod', name:'Род', lead:'Каким местоимением заменить слово? Род в сербском часто не совпадает с русским.'},
   {id:'poss', name:'Чей', lead:'Соберите «чей + слово». По-сербски и «его, её, их» меняются по роду и числу слова.'},
+  {id:'phr', name:'Фразы', lead:'Соберите ответ из плиток. Лишние плитки — типичные ошибки.'},
+  {id:'case', name:'Падежи', lead:'Поставьте слово в нужную форму.'},
+  {id:'rev', name:'Повторение', lead:'Задания из прошлых уроков вперемешку.'},
 ];
-// gender: null — ещё не выбран (до выбора используется мужской род).
-const DEFAULT = () => ({v:1, lesson:1, mode:'conj', gender:null, script:'lat', focus:null, introSeen:false, cells:{}, verbs:{}, clit:{}, gen:{}, poss:{},
-  updatedAt:0, settingsAt:0, resetAt:0, owner:null});
-// Всё, что пришло из хранилища, проверяется: битое состояние не должно ронять страницу.
+// gender: null — ещё не выбран (до выбора используется мужской род). st — прогресс по разделам: {раздел: {ключ: запись}}.
+// imp.cloud — облачный прогресс v1 этого аккаунта уже перенесён (локальный v1 отмечается в V1_DONE этого браузера).
+const DEFAULT = () => ({v:2, lesson:1, mode:'conj', gender:null, script:'lat', focus:null, introSeen:false, st:{},
+  updatedAt:0, settingsAt:0, resetAt:0, owner:null, imp:{cloud:0}});
+const obj = x => x && typeof x === 'object' && !Array.isArray(x) ? x : {};
+const cleanRec = (r, resetAt) => { const at = +r.at || 0; return {box: Math.max(0, Math.min(4, r.box | 0)), seen: +r.seen || 0, wrong: +r.wrong || 0, at, rs: 'rs' in r ? +r.rs || 0 : (at >= resetAt ? resetAt : 0)}; };
+const validLesson = n => LESSONS.some(L => L.n === n && !L.soon);
+// Повторение — разделы прошлых уроков, где есть что повторять.
+const revKinds = n => [...new Set(LESSONS.filter(L => L.n < n && !L.soon).flatMap(L => L.tabs))];
+const tabsOf = n => LESSONS[n - 1].tabs.concat(revKinds(n).length ? ['rev'] : []);
+const fixMode = st => { if (!tabsOf(st.lesson).includes(st.mode)) st.mode = tabsOf(st.lesson)[0]; return st; };
+// Всё, что пришло из хранилища, проверяется: битое состояние не должно ронять страницу. Незнакомые разделы и ключи
+// сохраняются — это прогресс более новой версии, открытой в другой вкладке.
 function normalize(s) {
   const d = DEFAULT();
-  if (!s || s.v !== 1) return d;
-  const obj = x => x && typeof x === 'object' && !Array.isArray(x) ? x : {};
-  const resetAt = +s.resetAt || 0;
-  // Ключи статистики начинаются с номера урока: «2.past.aff.ja». Старые ключи без урока переносятся:
-  // настоящее → урок 1, прошедшее → 2, будущее → 3; глагол — в урок, где он появляется. Битые ключи отбрасываются.
-  const TL = {pres:1, past:2, fut:3}, lOf = (list, id) => (list.find(x => x.id === id) || {}).l;
-  const KEY = {
-    cells: k => { const m = /^(?:([123])\.)?(past|pres|fut)\.(aff|q|neg)\.(ja|ti|on|mi|vi|oni)$/.exec(k); return m && `${m[1] || TL[m[2]]}.${m[2]}.${m[3]}.${m[4]}`; },
-    verbs: k => { const m = /^(?:([123])\.)?([a-zčćđšž]+)$/.exec(k), l = m && lOf(VERBS, m[2]); return l && `${m[1] || l}.${m[2]}`; },
-    clit: k => { const m = /^(?:([123])\.)?(c\d+)$/.exec(k), l = m && lOf(CLIT, m[2]); return l && `${m[1] || l}.${m[2]}`; },
-    gen: k => { const m = /^(?:([123])\.)?(.+)$/.exec(k); return GEN.some(x => x.w === m[2]) ? `${m[1] || 1}.${m[2]}` : null; },
-    poss: k => { const m = /^(?:([123])\.)?(ja|ti|on|ona|mi|vi|oni)\.(sg|pl)\.(m|f|n)$/.exec(k); return m && `${m[1] || (m[3] === 'sg' ? 1 : m[4] === 'n' ? 3 : 2)}.${m[2]}.${m[3]}.${m[4]}`; },
-  };
-  const recs = (x, kind) => {
-    const out = {};
-    for (const [k0, r] of Object.entries(obj(x))) {
-      const k = KEY[kind](k0);
-      if (!k || !r || typeof r.box !== 'number') continue;
-      const at = +r.at || 0, rs = 'rs' in r ? +r.rs || 0 : (at >= resetAt ? resetAt : 0);   // записи до появления rs
-      const rec = {box: Math.max(0, Math.min(4, r.box | 0)), seen: +r.seen || 0, wrong: +r.wrong || 0, at, rs};
-      if (!out[k] || rec.seen > out[k].seen) out[k] = rec;
-    }
-    return out;
-  };
-  const lesson = [1, 2, 3].includes(s.lesson) ? s.lesson : 1;
-  const focusOk = typeof s.focus === 'string' && /^(past|pres|fut)\.(aff|q|neg)(\.(ja|ti|on|mi|vi|oni))?$/.test(s.focus) && LESSONS[lesson - 1].tenses.includes(s.focus.split('.')[0]);
-  const modeOk = MODES.some(m => m.id === s.mode) && (s.mode !== 'clitic' || LESSONS[lesson - 1].clitics);
-  return Object.assign(d, {
-    lesson, focus: focusOk ? s.focus : null,
-    mode: modeOk ? s.mode : 'conj',
+  if (!s || s.v !== 2) return d;
+  const resetAt = +s.resetAt || 0, st = {};
+  for (const [b, recs] of Object.entries(obj(s.st))) { st[b] = {}; for (const [k, r] of Object.entries(obj(recs))) if (r && typeof r.box === 'number') st[b][k] = cleanRec(r, resetAt); }
+  const lesson = validLesson(s.lesson) ? s.lesson : 1;
+  const focusOk = typeof s.focus === 'string' && /^(past|pres|fut)\.(aff|q|neg)(\.(ja|ti|on|mi|vi|oni))?$/.test(s.focus) && tensesOf(lesson).includes(s.focus.split('.')[0]);
+  return fixMode(Object.assign(d, {
+    lesson, focus: focusOk ? s.focus : null, mode: typeof s.mode === 'string' ? s.mode : '',
     gender: s.gender === 'm' || s.gender === 'f' ? s.gender : null, introSeen: !!s.introSeen,
-    script: s.script === 'cyr' ? 'cyr' : 'lat',
-    cells: recs(s.cells, 'cells'), verbs: recs(s.verbs, 'verbs'), clit: recs(s.clit, 'clit'), gen: recs(s.gen, 'gen'), poss: recs(s.poss, 'poss'),
+    script: s.script === 'cyr' ? 'cyr' : 'lat', st,
     updatedAt: +s.updatedAt || 0, settingsAt: +s.settingsAt || 0, resetAt,
-    owner: typeof s.owner === 'string' ? s.owner : null,
-  });
+    owner: typeof s.owner === 'string' ? s.owner : null, imp: {cloud: +obj(s.imp).cloud || 0},
+  }));
 }
-const loadLocal = () => { try { return JSON.parse(localStorage.getItem(LS_KEY)); } catch (e) { return null; } };
+// Перенос из v1 — один раз из каждого источника (этот браузер, облако аккаунта). Ключи теряют номер урока.
+// Клетки: настоящее → @3 (в старых уроках это почти всегда 10 обычных глаголов), прошедшее → @6, будущее → @7.
+// Несколько старых записей в одну новую — ответы складываются, состояние берётся из самой поздней. Эпоха сброса
+// у перенесённого — 0: часы старого устройства не должны отменять сброс в новой версии.
+// ponytail: ответы, которые старая вкладка допишет в v1 после переноса, не учитываются — иначе слияние
+// могло бы затереть ответы, данные уже здесь.
+function migrate(v1) {
+  if (!v1 || v1.v !== 1) return null;
+  const resetAt = +v1.resetAt || 0, st = {};
+  const put = (b, k, r) => {
+    if (!r || typeof r.box !== 'number') return;
+    const x = cleanRec(r, resetAt); if (x.rs < resetAt) return;
+    x.rs = 0;
+    const o = st[b] || (st[b] = {}), y = o[k];
+    if (!y) { o[k] = x; return; }
+    const late = x.at !== y.at ? (x.at > y.at ? x : y) : x.seen !== y.seen ? (x.seen > y.seen ? x : y) : (x.box > y.box ? x : y);
+    o[k] = {box: late.box, at: late.at, rs: 0, seen: x.seen + y.seen, wrong: x.wrong + y.wrong};
+  };
+  for (const [k, r] of Object.entries(obj(v1.cells))) {
+    const m = /^(?:[123]\.)?(past|pres|fut)\.(aff|q|neg)\.(ja|ti|on|mi|vi|oni)$/.exec(k);
+    if (m) put('cells', `${m[1]}.${m[2]}.${m[3]}@${m[1] === 'pres' ? 3 : TENSE_L[m[1]]}`, r);
+  }
+  for (const b of ['verbs', 'clit', 'gen', 'poss']) for (const [k, r] of Object.entries(obj(v1[b]))) put(b, k.replace(/^[123]\./, ''), r);
+  return normalize({v:2, st, lesson: ({1:3, 2:6, 3:7})[v1.lesson] || 3, mode: v1.mode, gender: v1.gender, script: v1.script, introSeen: v1.introSeen,
+    settingsAt: +v1.settingsAt || 0, updatedAt: +v1.updatedAt || 0, owner: typeof v1.owner === 'string' ? v1.owner : null});
+}
+// Настройки v1 (урок, род, письмо) берутся, только если здесь ещё ничего не было.
+function importV1(state, raw) {
+  const m = migrate(raw);
+  if (!m || (m.owner && state.owner && m.owner !== state.owner)) return state;   // прогресс другого аккаунта
+  if (state.settingsAt || Object.values(state.st).some(b => Object.keys(b).length)) m.settingsAt = -1;
+  const next = mergeState(state, m);
+  next.owner = state.owner || m.owner;
+  return next;
+}
+const loadLocal = (key = LS_KEY) => { try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; } };
 const saveLocal = () => { try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch (e) {} };
 
 let S = normalize(loadLocal());
+// mergeState объявлен ниже; перенос из v1 — после объявления всех функций, в конце скрипта.
 let cur = null, lastKey = '', confirmReset = false;
 let syncMode = 'local', remoteRef = null, saveTimer = 0, dirty = false, writing = false, retry = 0;
 
@@ -1385,32 +1422,36 @@ const sentence = (toks, q) => cap(toks.map(disp).join(' ')) + (q ? '?' : '.');
 const whyHTML = s => s.split(/(«[^»]+»)/).map(part => part.startsWith('«') && /[a-zčćđšž]/i.test(part) ? '«' + sr(part.slice(1, -1)) + '»' : esc(part)).join('');
 const gsel = s => s.replace(/\{([^|}]*)\|([^}]*)\}/g, (_, m, f) => S.gender === 'f' ? f : m);
 
-// ---------- интервальные повторения по клеткам ----------
+// ---------- интервальные повторения по заданиям ----------
 const recW = (rec, unseen = 4) => rec ? [6, 3, 1.5, 0.7, 0.3][rec.box || 0] : unseen;
-const lk = k => S.lesson + '.' + k;   // ключ статистики в текущем уроке
-const cellKeyOf = c => lk(`${c.t}.${c.f}.${GROUP[c.p]}`);
+const B = name => S.st[name] || (S.st[name] = {});   // раздел прогресса
 const clone = o => o ? JSON.parse(JSON.stringify(o)) : undefined;
+// Урок как фильтр: обычный раздел — всё, что открыто к этому уроку, новое чаще; «Повторение» — только прошлые уроки.
+const isRev = () => S.mode === 'rev';
+const inScope = l => isRev() ? l < S.lesson : l <= S.lesson;
+const boost = l => !isRev() && l === S.lesson ? 2 : 1;
+const cellKey = (t, f, g, v) => `${t}.${f}.${g}@${cellL(t, v)}`;
+const tensesFor = v => TENSES.filter(t => !(t === 'fut' && v.noFut) && inScope(cellL(t, v)));
 
-const focusMatch = (t, f, g) => { if (!S.focus) return true; const [ft, ff, fg] = S.focus.split('.'); return ft === t && ff === f && (!fg || fg === g); };
-function pickCell(ok = () => true) {
-  const L = LESSONS[S.lesson - 1], cands = [];
-  for (const t of L.tenses) for (const f of FORMS) for (const g of GROUPS)
-    if (focusMatch(t, f, g) && ok(t, f)) cands.push({t, f, g});
-  const c = wpick(cands, x => recW(S.cells[lk(`${x.t}.${x.f}.${x.g}`)]));
-  return {t:c.t, f:c.f, p: c.g === 'on' ? (Math.random() < .5 ? 2 : 3) : P.indexOf(c.g)};
-}
-function pickVerb(t, ok = () => true) {
-  const pool = VERBS.filter(v => v.l <= S.lesson && !(t === 'fut' && v.noFut) && ok(v));
-  return wpick(pool, v => recW(S.verbs[lk(v.id)]) * (v.l === S.lesson ? 2 : 1));
+const focusMatch = (t, f, g) => { if (!S.focus || isRev()) return true; const [ft, ff, fg] = S.focus.split('.'); return ft === t && ff === f && (!fg || fg === g); };
+// Сначала глагол (по его записи), потом клетка среди времён, открытых для этого глагола.
+function pickVerbCell(ok = () => true) {
+  const cands = v => { const out = []; for (const t of tensesFor(v)) for (const f of FORMS) for (const g of GROUPS) if (focusMatch(t, f, g) && ok(t, f, v)) out.push({t, f, g}); return out; };
+  const verbs = VERBS.filter(v => inScope(v.l) && cands(v).length);
+  if (!verbs.length && S.focus) { S.focus = null; return pickVerbCell(ok); }   // фильтр клетки больше не подходит — снимаем
+  const v = wpick(verbs, x => recW(B('verbs')[x.id]) * boost(x.l));
+  const c = wpick(cands(v), x => recW(B('cells')[cellKey(x.t, x.f, x.g, v)]) * boost(cellL(x.t, v)));
+  return {v, t:c.t, f:c.f, g:c.g};
 }
 function drawCell() {
   let v, cell, key, n = 0;
   do {
-    cell = pickCell(); v = pickVerb(cell.t);
+    const pc = pickVerbCell(); v = pc.v;
+    cell = {t:pc.t, f:pc.f, p: pc.g === 'on' ? (Math.random() < .5 ? 2 : 3) : P.indexOf(pc.g)};
     // Иногда подлежащее — существительное: «dete» (средний род, хотя «ребёнок» мужского) и «žene» (ж. р. мн. ч.).
-    if (v.id !== 'hteti' && Math.random() < .3) cell.p = cell.p === 2 || cell.p === 3 ? 7 : cell.p === 6 && S.lesson >= 2 ? 8 : cell.p;   // žene — вместе с мн. ч. в уроке 2
+    if (v.id !== 'hteti' && S.lesson >= NOUN_L && Math.random() < .3) cell.p = cell.p === 2 || cell.p === 3 ? 7 : cell.p === 6 ? 8 : cell.p;
     cell.g = gFor(cell.p, S.gender === 'f' ? 1 : 0);
-    cell.c = pick(v.comps) || null;
+    cell.c = pick(v.comps.filter(c => !c || !c.presOnly || cell.t === 'pres')) || null;
     if (cell.f === 'q') cell.li = Math.random() < .35;   // иногда вопрос с «li»: «Radiš li…?», «Jesi li…?»
     key = [v.id, cell.t, cell.f, cell.p, cell.c && cell.c.sr].join('|');
   } while (key === lastKey && ++n < 6);
@@ -1418,13 +1459,13 @@ function drawCell() {
   return {v, cell};
 }
 function sourceFor(v, cell) {
-  const ts = LESSONS[S.lesson - 1].tenses.filter(t => !(t === 'fut' && v.noFut)), all = [], single = [];
-  for (const t of ts) for (const f of FORMS) {
+  const all = [], single = [];
+  for (const t of tensesFor(v)) for (const f of FORMS) {
     if (t === cell.t && f === cell.f) continue;
     all.push({t, f});
     if (t === cell.t || f === cell.f) single.push({t, f});
   }
-  return Object.assign({}, cell, Math.random() < .7 ? pick(single) : pick(all));
+  return Object.assign({}, cell, Math.random() < .7 && single.length ? pick(single) : pick(all));
 }
 function makeEx(kind) {
   const {v, cell} = drawCell();
@@ -1435,29 +1476,27 @@ function makeEx(kind) {
   const tiles = shuffle(canon.concat(distract.map(d => d.t))).map((t, id) => ({t, id}));
   return {kind, v, cell, src, canon, bases: basesFor(v, cell, genderFree), distract, tiles, placed:[], done:false};
 }
+// Из пула не берём то же, что только что было, — если есть из чего выбирать.
+const fresh = (pool, keyOf) => pool.length > 1 ? pool.filter(x => keyOf(x) !== lastKey) : pool;
 function makeClit() {
-  const pool = CLIT.filter(c => c.l <= S.lesson && c.id !== lastKey);
-  const it = wpick(pool, c => recW(S.clit[lk(c.id)]));
+  const it = wpick(fresh(CLIT.filter(c => inScope(c.l)), c => c.id), c => recW(B('clit')[c.id]) * boost(c.l));
   lastKey = it.id;
   return {kind:'clitic', it, words: it.w.map(gsel), ru: gsel(it.ru), chosen:null, done:false};   // род фиксируется при создании
 }
 // «Спряжение» тренирует только клетки, у которых есть своя таблица: без вопросов (это те же формы)
 // и без отрицания настоящего у обычных глаголов («ne radim» — не отдельная форма).
-const conjOK = (t, f) => f !== 'q' && !(t === 'pres' && f === 'neg' && !VERBS.some(v => v.l <= S.lesson && v.presNeg));
+const conjOK = (t, f, v) => f !== 'q' && !(t === 'pres' && f === 'neg' && v && !v.presNeg);
 function makeConj() {
-  if (S.focus && !conjOK(...S.focus.split('.'))) S.focus = null;
-  let c, v, f, n = 0;
-  do {
-    c = pickCell(conjOK); f = c.f;
-    v = pickVerb(c.t, x => !(c.t === 'pres' && f === 'neg') || x.presNeg);
-  } while ([v.id, c.t, f].join('|') === lastKey && ++n < 6);
-  lastKey = [v.id, c.t, f].join('|');
-  const tb = conjTable(v, c.t, f, S.gender === 'f' ? 1 : 0, S.lesson);
+  if (S.focus && !conjOK(...S.focus.split('.'), {presNeg: true})) S.focus = null;
+  let pc, n = 0;
+  do pc = pickVerbCell(conjOK); while ([pc.v.id, pc.t, pc.f].join('|') === lastKey && ++n < 6);
+  lastKey = [pc.v.id, pc.t, pc.f].join('|');
+  const tb = conjTable(pc.v, pc.t, pc.f, S.gender === 'f' ? 1 : 0, S.lesson);
   const tiles = shuffle(tb.rows.map(r => r.form).concat(tb.distract.map(d => d.t))).map((t, id) => ({t, id}));
-  return {kind:'conj', v, t:c.t, f, rows:tb.rows, distract:tb.distract, tiles, fill: tb.rows.map(() => null), done:false};
+  return {kind:'conj', v:pc.v, t:pc.t, f:pc.f, rows:tb.rows, distract:tb.distract, tiles, fill: tb.rows.map(() => null), done:false};
 }
 function makeGen() {
-  const it = wpick(GEN.filter(x => x.w !== lastKey && nounOpen(x.n, x.g, S.lesson)), x => recW(S.gen[lk(x.w)]));
+  const it = wpick(fresh(GEN, x => x.w), x => recW(B('gen')[x.w]));
   lastKey = it.w;
   return {kind:'rod', it, chosen:null, done:false};
 }
@@ -1470,26 +1509,42 @@ const possCombos = L => {
 function makePoss() {
   const combos = possCombos(S.lesson);
   let c, noun, n = 0;
-  do { c = wpick(combos, x => recW(S.poss[lk(x.k)])); noun = pick(NOUNS.filter(x => x.g === c.g && x[c.n])); }
+  do { c = wpick(combos, x => recW(B('poss')[x.k])); noun = pick(NOUNS.filter(x => x.g === c.g && x[c.n])); }
   while ([c.k, noun.sg].join('|') === lastKey && ++n < 6);
   lastKey = [c.k, noun.sg].join('|');
   const tk = possTask(c.o, noun, c.n, S.lesson);
   const tiles = shuffle(tk.canon.concat(tk.distract.map(d => d.t))).map((t, id) => ({t, id}));
-  return {kind:'poss', key:c.k, ru:tk.ru, canon:tk.canon, distract:tk.distract, tiles, placed:[], done:false};
+  return {kind:'poss', key:c.k, ru:tk.ru, canon:tk.canon, alts:[], distract:tk.distract, tiles, placed:[], done:false};
 }
+// «Фразы» и «Падежи»: запись прогресса — по шаблону (у чисел и количества слово и число каждый раз новые).
+const ttPool = kind => (kind === 'case' ? CASE_KEYS.map(k => ({key:k, l:4, make: () => caseTask(k)}))
+  : PHR.map(t => ({key:t.key, l:t.l, make: () => t})).concat(NUM_KEYS.map(([k]) => ({key:k, l:3, make: () => numTask(k)})), QTY_KEYS.map(k => ({key:k, l:4, make: () => qtyTask(k)}))))
+  .filter(x => inScope(x.l));
+function makeTT(kind) {
+  const it = wpick(fresh(ttPool(kind), x => x.key), x => recW(B(kind)[x.key]) * boost(x.l));
+  lastKey = it.key;
+  const raw = it.make(), t = expandTask(raw, S.gender === 'f' ? 'f' : 'm');
+  const tiles = shuffle(t.canon.concat(t.distract.map(d => d.t))).map((x, id) => ({t:x, id}));
+  return Object.assign(t, {kind, tiles, placed:[], done:false, tpl: /\{[^}]*\|/.test(JSON.stringify([raw.ru, raw.canon, raw.distract]))});
+}
+// Есть ли в разделе задания в текущем охвате (для «Повторения»).
+const kindHas = k => k === 'clitic' ? CLIT.some(c => inScope(c.l)) : k === 'rod' || k === 'poss' ? inScope(NOUN_L)
+  : k === 'phr' || k === 'case' ? ttPool(k).length > 0 : VERBS.some(v => inScope(v.l));
 const exCache = {};
 const cacheKey = () => [S.lesson, S.mode, S.focus || ''].join('|');
 function showEx() { const k = cacheKey(); if (exCache[k] && !exCache[k].done) cur = exCache[k]; else { newEx(); exCache[k] = cur; } }
-// Упражнение зависит от рода «я» (или ответ показывает причастие «ты», выбранное по роду «я»)?
+// Упражнение зависит от рода «я» (или ответ показывает причастие «ti», выбранное по роду «я»)?
 const needsGender = ex => !!ex && ((ex.kind === 'conj' && ex.t === 'past')
   || ((ex.kind === 'build' || ex.kind === 'transform') && ex.cell.p === 0 && (ex.cell.t === 'past' || (ex.src && ex.src.t === 'past')))
-  || (ex.kind === 'clitic' && /\{/.test(ex.it.w.join(' ') + ex.it.ru)));
+  || (ex.kind === 'clitic' && /\{/.test(ex.it.w.join(' ') + ex.it.ru)) || !!ex.tpl);
 function newEx() {
-  if (S.mode === 'rod') cur = makeGen();
-  else if (S.mode === 'poss') cur = makePoss();
-  else if (S.mode === 'conj') cur = makeConj();
-  else if (S.mode === 'clitic') cur = makeClit();
-  else cur = makeEx(S.mode);
+  const kind = isRev() ? pick(revKinds(S.lesson).filter(kindHas)) : S.mode;
+  if (kind === 'rod') cur = makeGen();
+  else if (kind === 'poss') cur = makePoss();
+  else if (kind === 'phr' || kind === 'case') cur = makeTT(kind);
+  else if (kind === 'conj') cur = makeConj();
+  else if (kind === 'clitic') cur = makeClit();
+  else cur = makeEx(kind);
   if (cur) cur.createdAt = Date.now();
 }
 // Второе касание двойного тапа не должно попадать в то, что появилось под пальцем.
@@ -1501,19 +1556,25 @@ function bump(bucket, key, ok) {
   if (ok) r.box = Math.min(4, r.box + 1); else { r.box = 0; r.wrong++; }
 }
 function commit(ex, ok) {
-  if (ex.kind === 'clitic') { ex.snap = {c: clone(S.clit[lk(ex.it.id)])}; bump(S.clit, lk(ex.it.id), ok); }
+  if (ex.kind === 'clitic') bump(B('clit'), ex.it.id, ok);
   else {
-    const k = cellKeyOf(ex.cell), vk = lk(ex.v.id);
-    ex.snap = {k, vk, rs: S.resetAt, c: clone(S.cells[k]), v: clone(S.verbs[vk])};
-    bump(S.cells, k, ok); bump(S.verbs, vk, ok);
+    const k = cellKey(ex.cell.t, ex.cell.f, GROUP[ex.cell.p], ex.v), vk = ex.v.id;
+    ex.snap = {k, vk, rs: S.resetAt, c: clone(B('cells')[k]), v: clone(B('verbs')[vk])};
+    bump(B('cells'), k, ok); bump(B('verbs'), vk, ok);
   }
   persist(); renderSide();
 }
+// Во «Фразах» и «Падежах» засчитать можно ответ без лишних плиток: другой порядок или вариант, которого нет в списке.
+const ttOwn = ex => ['phr', 'case'].includes(ex.kind) && !ex.ans.some(t => ex.distract.some(d => d.t.toLowerCase() === t.toLowerCase()));
 function override() {
+  const ex = cur, put = (bucket, key, val) => { if (val) bucket[key] = val; else delete bucket[key]; };
+  if (ex && ex.done && !ex.ok && ex.snap && ex.snap.rs === S.resetAt && ttOwn(ex) && !tooSoon(ex.checkedAt)) {
+    put(B(ex.kind), ex.key, ex.snap.r); bump(B(ex.kind), ex.key, true);
+    ex.ok = true; ex.overridden = true; persist(); renderSide(); return renderCard();
+  }
   // Только когда слова те же, а отвергнут порядок, и только если прогресс не сбросили с тех пор.
-  const ex = cur; if (!ex || !ex.done || ex.ok || !ex.snap || ex.snap.rs !== S.resetAt || !sameWords(ex, ex.ans) || tooSoon(ex.checkedAt)) return;
-  const put = (bucket, key, val) => { if (val) bucket[key] = val; else delete bucket[key]; };
-  put(S.cells, ex.snap.k, ex.snap.c); put(S.verbs, ex.snap.vk, ex.snap.v);
+  if (!ex || !ex.done || ex.ok || !ex.snap || ex.snap.rs !== S.resetAt || !ex.bases || !sameWords(ex, ex.ans) || tooSoon(ex.checkedAt)) return;
+  put(B('cells'), ex.snap.k, ex.snap.c); put(B('verbs'), ex.snap.vk, ex.snap.v);
   ex.ok = true; ex.overridden = true;
   commit(ex, true); renderCard();
 }
@@ -1549,20 +1610,21 @@ function checkConj() {
   });
   Object.assign(ex, {done:true, checkedAt: Date.now(), ok: ex.res.every(x => x.ok)});
   say(ex.ok ? 'Верно, все шесть форм.' : `Верно ${ex.res.filter(x => x.ok).length} из ${ex.rows.length}. Правильные формы: ` + ex.rows.filter((r, i) => !ex.res[i].ok).map(r => disp(r.form)).join(', '));
-  ex.rows.forEach((r, i) => bump(S.cells, lk(`${ex.t}.${ex.f}.${GROUP[r.p]}`), ex.res[i].ok));   // каждая строка — своя клетка матрицы
-  bump(S.verbs, lk(ex.v.id), ex.ok);
+  ex.rows.forEach((r, i) => bump(B('cells'), cellKey(ex.t, ex.f, GROUP[r.p], ex.v), ex.res[i].ok));   // каждая строка — своя клетка матрицы
+  bump(B('verbs'), ex.v.id, ex.ok);
   persist(); renderSide(); renderCard(); revealFb();
 }
-function checkPoss() {
+function checkTT() {
   const ex = cur; if (!ex.placed.length) return;
   ex.ans = ex.placed.map(id => ex.tiles[id].t);
-  Object.assign(ex, diagnosePoss(ex, ex.ans), {done:true, checkedAt: Date.now()});
-  say((ex.ok ? 'Верно. ' : 'Неверно. Правильно: ') + ex.canon.map(disp).join(' ') + (ex.ok ? '' : '. ' + plain(ex.why)));
-  bump(S.poss, lk(ex.key), ex.ok); persist(); renderSide(); renderCard(); revealFb();
+  Object.assign(ex, ex.kind === 'poss' ? diagnosePoss(ex, ex.ans) : ttCheck(ex, ex.ans), {done:true, checkedAt: Date.now()});
+  ex.snap = {rs: S.resetAt, r: clone(B(ex.kind)[ex.key])};
+  say((ex.ok ? 'Верно. ' : 'Неверно. Правильно: ') + ex.canon.map(disp).join(' ') + (ex.ok || !ex.why ? '' : '. ' + plain(ex.why)));
+  bump(B(ex.kind), ex.key, ex.ok); persist(); renderSide(); renderCard(); revealFb();
 }
 function check() {
   if (cur && cur.kind === 'conj' && !cur.done) return checkConj();
-  if (cur && cur.kind === 'poss' && !cur.done) return checkPoss();
+  if (cur && ['poss', 'phr', 'case'].includes(cur.kind) && !cur.done) return checkTT();
   const ex = cur; if (!ex || ex.kind === 'clitic' || ex.done || !ex.placed.length) return;
   ex.ans = ex.placed.map(id => ex.tiles[id].t);
   Object.assign(ex, diagnose(ex, ex.ans), {done:true, checkedAt: Date.now()});
@@ -1578,10 +1640,9 @@ function chooseSlot(s) {
 }
 function chooseGen(n, g) {
   const ex = cur; if (!ex || ex.kind !== 'rod' || ex.done || tooSoon(ex.createdAt)) return;
-  // Проверяем само слово: «ona» — и «она» (ж. р. ед. ч.), и «они» (ср. р. мн. ч.), строка не важна.
-  Object.assign(ex, {chosen:{n, g}, done:true, ok: PRON[n][g] === PRON[ex.it.n][ex.it.g], checkedAt: Date.now()});
-  say((ex.ok ? 'Верно: ' : 'Неверно. Правильно: ') + disp(PRON[ex.it.n][ex.it.g]));
-  bump(S.gen, lk(ex.it.w), ex.ok); persist(); renderSide(); renderCard(); revealFb();
+  Object.assign(ex, {chosen:{n, g}, done:true, ok: genAns(n, g) === genAns(ex.it.n, ex.it.g), checkedAt: Date.now()});
+  say((ex.ok ? 'Верно: ' : 'Неверно. Правильно: ') + disp(genAns(ex.it.n, ex.it.g)));
+  bump(B('gen'), ex.it.w, ex.ok); persist(); renderSide(); renderCard(); revealFb();
 }
 function next() {
   if (cur && tooSoon(cur.checkedAt)) return;   // двойное касание «Проверить» не проскакивает разбор
@@ -1590,17 +1651,17 @@ function next() {
 }
 
 function setLesson(n) {
-  if (S.lesson === n) return;
+  if (S.lesson === n || !validLesson(n)) return;
   S.lesson = n; pendingFocus = null;
-  if (S.focus && !LESSONS[n - 1].tenses.includes(S.focus.split('.')[0])) S.focus = null;
-  if (S.mode === 'clitic' && !LESSONS[n - 1].clitics) S.mode = 'conj';
+  if (S.focus && !tensesOf(n).includes(S.focus.split('.')[0])) S.focus = null;
+  fixMode(S);
   persist(true); showEx(); renderAll();
 }
 function setMode(m) { if (S.mode === m) return; S.mode = m; pendingFocus = null; persist(true); showEx(); renderAll(); }
 // Фильтр по клетке работает в «Сборке», «Трансформациях» и (для утверждения и отрицания) в «Спряжении».
 // Из другого раздела не переключаем молча — спрашиваем.
 let pendingFocus = null;
-const focusFits = key => !['clitic', 'rod', 'poss'].includes(S.mode) && !(S.mode === 'conj' && !conjOK(...key.split('.')));
+const focusFits = key => ['build', 'transform', 'conj'].includes(S.mode) && !(S.mode === 'conj' && !conjOK(...key.split('.'), {presNeg: true}));
 function applyFocus(key) {
   if (key && !focusFits(key)) { pendingFocus = key; return renderModes(); }
   pendingFocus = null; S.focus = key; persist(true); showEx(); renderAll();
@@ -1620,56 +1681,59 @@ function renderAll() { renderModes(); renderCard(); renderSide(); }
 
 // «[Biti] и прошедшее»: в квадратных скобках — сербское слово.
 const mixHTML = s => s.split(/(\[[^\]]+\])/).map(x => x.startsWith('[') ? sr(x.slice(1, -1)) : esc(x)).join('');
-// Готовность урока — средняя закреплённость всего, что в нём открыто, по всем разделам.
+// Готовность урока — средняя закреплённость того, что открывается именно в нём, по разделам урока.
 function readiness(n) {
-  const L = LESSONS[n - 1], avg = (keys, bucket) => keys.length ? keys.reduce((a, k) => a + (bucket[`${n}.${k}`] ? bucket[`${n}.${k}`].box / 4 : 0), 0) / keys.length : null;
   const parts = readinessParts(n).map(x => x.v);
-  return parts.reduce((a, b) => a + b, 0) / parts.length;
+  return parts.length ? parts.reduce((a, b) => a + b, 0) / parts.length : 0;
 }
+const phrKeysOf = n => PHR.filter(t => t.l === n).map(t => t.key).concat(n === 3 ? NUM_KEYS.map(k => k[0]) : [], n === 4 ? QTY_KEYS : []);
 function readinessParts(n) {
-  const L = LESSONS[n - 1], avg = (keys, bucket) => keys.length ? keys.reduce((a, k) => a + (bucket[`${n}.${k}`] ? bucket[`${n}.${k}`].box / 4 : 0), 0) / keys.length : null;
+  if (LESSONS[n - 1].soon) return [];
+  const avg = (keys, b) => keys.length ? keys.reduce((a, k) => a + (B(b)[k] ? B(b)[k].box / 4 : 0), 0) / keys.length : null;
+  const cells = [...new Set(VERBS.flatMap(v => TENSES.filter(t => !(t === 'fut' && v.noFut) && cellL(t, v) === n).flatMap(t => FORMS.flatMap(f => GROUPS.map(g => `${t}.${f}.${g}@${n}`)))))];
   return [
-    {mode:'build', name:'матрица времён', v: avg(L.tenses.flatMap(t => FORMS.flatMap(f => GROUPS.map(g => `${t}.${f}.${g}`))), S.cells)},
-    {mode:'conj', name:'глаголы урока', v: avg(VERBS.filter(x => x.l <= n).map(x => x.id), S.verbs)},
-    {mode:'clitic', name:'«Энклитики»', v: L.clitics ? avg(CLIT.filter(c => c.l <= n).map(c => c.id), S.clit) : null},
-    {mode:'rod', name:'«Род»', v: avg(GEN.filter(x => nounOpen(x.n, x.g, n)).map(x => x.w), S.gen)},
-    {mode:'poss', name:'«Чей»', v: avg(possCombos(n).map(c => c.k), S.poss)},
-  ].filter(x => x.v !== null);
+    {mode:'build', name:'матрица', v: avg(cells, 'cells')},
+    {mode:'conj', name:'глаголы урока', v: VERBS.filter(v => v.l === n).length > 1 ? avg(VERBS.filter(v => v.l === n).map(v => v.id), 'verbs') : null},   // у урока 1 один глагол — одна ошибка не должна обнулять часть
+    {mode:'clitic', name:'«Энклитики»', v: avg(CLIT.filter(c => c.l === n).map(c => c.id), 'clit')},
+    {mode:'rod', name:'«Род»', v: n === NOUN_L ? avg(GEN.map(x => x.w), 'gen') : null},
+    {mode:'poss', name:'«Чей»', v: n === NOUN_L ? avg(possCombos(n).map(c => c.k), 'poss') : null},
+    {mode:'phr', name:'«Фразы»', v: avg(phrKeysOf(n), 'phr')},
+    {mode:'case', name:'«Падежи»', v: avg(CASE_KEYS.filter(() => n === 4), 'case')},
+  ].filter(x => x.v !== null && LESSONS[n - 1].tabs.includes(x.mode));
 }
 function renderLessons() {
   $('#lessons').innerHTML = LESSONS.map(L =>
-    `<button type="button" data-lesson="${L.n}" aria-current="${S.lesson === L.n}"><span class="ln">Урок ${L.n} · ${Math.round(readiness(L.n) * 100)}%</span><span class="lt">${mixHTML(L.title)}</span></button>`).join('');
+    `<button type="button" data-lesson="${L.n}" aria-current="${S.lesson === L.n}"${L.soon ? ' disabled' : ''}><span class="ln">Урок ${L.n} · ${L.soon ? 'скоро' : Math.round(readiness(L.n) * 100) + '%'}</span><span class="lt">${mixHTML(L.title)}</span></button>`).join('');
+  const b = $(`#lessons [data-lesson="${S.lesson}"]`);   // текущий урок — в видимой части полосы
+  if (b) { const box = $('#lessons'); if (b.offsetLeft < box.scrollLeft || b.offsetLeft + b.offsetWidth > box.scrollLeft + box.clientWidth) box.scrollLeft = b.offsetLeft - 8; }
 }
 function renderModes() {
-  const L = LESSONS[S.lesson - 1];
-  $('#modes').innerHTML = MODES.filter(m => m.id !== 'clitic' || L.clitics)
+  $('#modes').innerHTML = tabsOf(S.lesson).map(id => MODES.find(m => m.id === id))
     .map(m => `<button type="button" role="tab" data-mode="${m.id}" aria-controls="card" aria-selected="${S.mode === m.id}">${m.name}</button>`).join('');
-  const [t, f, g] = (S.focus || '').split('.'), r = readiness(S.lesson);
-  const weakest = readinessParts(S.lesson).filter(x => x.v < .75).sort((a, b) => a.v - b.v)[0];
-  const nextHint = S.lesson < 3 && r >= .75 && readinessParts(S.lesson).every(x => x.v >= .5)
-    ? `<div class="focusbar"><span>Урок ${S.lesson} закреплён на ${Math.round(r * 100)}% — можно переходить дальше.</span><button type="button" class="link" data-lesson="${S.lesson + 1}">К уроку ${S.lesson + 1}</button></div>`
+  const [t, f, g] = (S.focus || '').split('.'), r = readiness(S.lesson), parts = readinessParts(S.lesson);
+  const weakest = parts.filter(x => x.v < .75).sort((a, b) => a.v - b.v)[0], nxt = LESSONS.find(L => L.n > S.lesson && !L.soon);
+  const nextHint = nxt && r >= .75 && parts.every(x => x.v >= .5)
+    ? `<div class="focusbar"><span>Урок ${S.lesson} закреплён на ${Math.round(r * 100)}% — можно переходить дальше.</span><button type="button" class="link" data-lesson="${nxt.n}">К уроку ${nxt.n}</button></div>`
     : weakest && r > 0 && weakest.mode !== S.mode ? `<div class="focusbar"><span>Слабее всего в этом уроке: ${weakest.name} — ${Math.round(weakest.v * 100)}%.</span><button type="button" class="link" data-mode="${weakest.mode}">Потренировать</button></div>` : '';
   const pend = pendingFocus
     ? `<div class="focusbar"><span>Тренировка одной клетки работает в «Сборке» и «Трансформациях».</span><button type="button" class="link" id="gofocus">Перейти в «Сборку»</button><button type="button" class="link" id="nofocus">Отмена</button></div>` : '';
-  $('#focusbar').innerHTML = nextHint + pend + (S.focus && !['clitic', 'rod', 'poss'].includes(S.mode)
+  $('#focusbar').innerHTML = nextHint + pend + (S.focus && ['build', 'transform', 'conj'].includes(S.mode)
     ? `<div class="focusbar"><span class="chip to">Только: ${T_RU[t]} · ${F_RU[f]}${g ? ' · ' + GROUP_RU[g] : ''}</span><button type="button" class="link" id="unfocus">Вся матрица</button></div>` : '');
 }
 
 function renderCard() {
-  const card = $('#card'), mode = MODES.find(m => m.id === S.mode);
-  const fresh = !S.introSeen && ['cells', 'clit', 'gen', 'poss'].every(k => !Object.keys(S[k]).length);
+  const card = $('#card'), kind = cur ? cur.kind : S.mode, mode = MODES.find(m => m.id === kind);
+  const fresh = !S.introSeen && Object.values(S.st).every(b => !Object.keys(b).length);
   const intro = fresh
-    ? `<div class="intro"><p><b>Тренажёр сербского глагола для русскоязычных.</b> Собирайте ответы из плиток — приложение объяснит каждую ошибку и чаще будет давать то, что пока не получается.</p><p>Начните с урока 1 и раздела «Спряжение». Правило к уроку — в шпаргалке.</p><div class="actions"><button type="button" class="btn sm primary" id="intro-ok">Понятно</button><button type="button" class="btn sm" id="rule">Открыть правило</button></div></div>` : '';
+    ? `<div class="intro"><p><b>Тренажёр сербского для русскоязычных.</b> Собирайте ответы из плиток — приложение объяснит каждую ошибку и чаще будет давать то, что пока не получается.</p><p>Начните с урока 1. Правило к уроку — в шпаргалке.</p><div class="actions"><button type="button" class="btn sm primary" id="intro-ok">Понятно</button><button type="button" class="btn sm" id="rule">Открыть правило</button></div></div>` : '';
   const ask = S.gender === null && needsGender(cur)
-    ? `<div class="ask"><p>В прошедшем времени сербский различает род (${sr('radio / radila')}). О себе вы говорите в роде:</p><div class="actions"><button type="button" class="btn sm" data-gender="m">мужском</button><button type="button" class="btn sm" data-gender="f">женском</button></div></div>`
+    ? `<div class="ask"><p>Сербский различает род (${sr(cur.kind === 'phr' ? 'Rus / Ruskinja' : 'radio / radila')}). О себе вы говорите в роде:</p><div class="actions"><button type="button" class="btn sm" data-gender="m">мужском</button><button type="button" class="btn sm" data-gender="f">женском</button></div></div>`
     : '';
-  const scope = ['rod', 'poss'].includes(S.mode)
-    ? [' В уроке 1 — единственное число; множественное — в уроке 2, вместе с прошедшим временем.', ' Средний род множественного числа (' + sr('pisma, sela') + ') — в уроке 3.', ''][S.lesson - 1] : '';
-  const lead = intro + ask + `<div class="leadrow"><p class="lead">${mode.lead}${scope}</p><button type="button" class="link" id="rule">Правило</button></div>`;
-  if (S.mode === 'clitic') return renderClit(card, lead);
-  if (S.mode === 'conj') return renderConj(card, lead);
-  if (S.mode === 'rod') return renderGen(card, lead);
-  if (S.mode === 'poss') return renderPoss(card, lead);
+  const lead = intro + ask + `<div class="leadrow"><p class="lead">${isRev() ? `Повторение · ${mode.name}. ` : ''}${mode.lead}</p><button type="button" class="link" id="rule">Правило</button></div>`;
+  if (kind === 'clitic') return renderClit(card, lead);
+  if (kind === 'conj') return renderConj(card, lead);
+  if (kind === 'rod') return renderGen(card, lead);
+  if (['poss', 'phr', 'case'].includes(kind)) return renderTT(card, lead);
   renderTiles(card, lead);
 }
 
@@ -1717,7 +1781,7 @@ function renderTiles(card, lead) {
 function renderConj(card, lead) {
   const ex = cur, next = ex.target != null ? ex.target : ex.fill.indexOf(null), used = new Set(ex.fill.filter(x => x !== null));
   const who = r => {
-    if (ex.t !== 'past') return esc(disp(r.p === 2 ? 'on, ona, ono' : r.p === 6 ? (S.lesson >= 3 ? 'oni, one, ona' : 'oni, one') : P[r.p]));
+    if (ex.t !== 'past') return esc(disp(r.p === 2 ? 'on, ona, ono' : r.p === 6 ? (S.lesson >= NOUN_L ? 'oni, one, ona' : 'oni') : P[r.p]));
     const mark = r.p <= 1 ? (r.g ? ' (ж)' : ' (м)') : (r.p === 4 || r.p === 5) && r.g === 4 ? ' (ж)' : '';
     return esc(disp(P[r.p])) + mark;
   };
@@ -1745,46 +1809,45 @@ function renderConj(card, lead) {
     grid + (ex.done ? '' : poolHTML(ex, used)) + fb + `<div class="actions">${actions}</div>`;
 }
 
-function renderPoss(card, lead) {
-  const ex = cur;
+// «Чей», «Фразы», «Падежи»: собрать ответ из плиток. frame — фраза с «___», ответ встаёт на его место.
+const TT_CHIP = {poss:'чей', phr:'фраза', case:'падеж'};
+function renderTT(card, lead) {
+  const ex = cur, lowFirst = ex.kind !== 'poss';   // во «Фразах» и «Падежах» регистр задан в данных
+  const inFrame = toks => ex.frame ? ex.frame.replace('___', toks.join(' ')) : toks.join(' ');
   const ans = ex.placed.length
-    ? ex.placed.map((id, i) => placedBtn('data-un', id, i === 0 ? cap(ex.tiles[id].t) : ex.tiles[id].t)).join('')
+    ? ex.placed.map((id, i) => placedBtn('data-un', id, i === 0 && !lowFirst ? cap(ex.tiles[id].t) : ex.tiles[id].t)).join('')
     : HINT;
-  const right = `<span class="sent" lang="${srLang()}">${esc(ex.canon.map(disp).join(' '))}</span>`;
+  const show = toks => esc(disp(ex.kind === 'poss' ? cap(toks.join(' ')) : inFrame(toks)));
+  const right = `<span class="sent" lang="${srLang()}">${show(ex.canon)}</span>`;
   const fb = !ex.done ? '' : ex.ok
-    ? `<div class="fb ok" tabindex="-1">${verdict(true)}${right}</div>`
-    : `<div class="fb bad" tabindex="-1">${verdict(false)}<span><s lang="${srLang()}">${esc(ex.ans.map(disp).join(' '))}</s> → ${right}</span><p class="why">${whyHTML(ex.why)}</p></div>`;
+    ? `<div class="fb ok" tabindex="-1">${verdict(true)}${ex.overridden ? `<span>Засчитано. Основной вариант: ${right}</span>` : right}</div>`
+    : `<div class="fb bad" tabindex="-1">${verdict(false)}<span><s lang="${srLang()}">${show(ex.ans)}</s> → ${right}</span>${ex.why ? `<p class="why">${whyHTML(ex.why)}</p>` : ''}${ttOwn(ex) ? '<span><button type="button" class="link" id="override">Мой ответ тоже верный — засчитать</button></span>' : ''}</div>`;
   const actions = ex.done
     ? `<button type="button" class="btn primary" id="next">Дальше</button>`
     : `<button type="button" class="btn primary" id="check"${ex.placed.length ? '' : ' disabled'}>Проверить</button><button type="button" class="btn" id="clear"${ex.placed.length ? '' : ' disabled'}>Стереть</button>`;
-  card.innerHTML = lead + `<div class="meta"><span class="chip">чей</span></div><p class="prompt" lang="ru">${esc(cap(ex.ru))}</p>` +
+  const stim = (ex.sr ? `<p class="prompt"><span lang="${srLang()}">${esc(disp(ex.sr))}</span></p>` : '') + `<p class="prompt${ex.sr ? ' trn' : ''}" lang="ru">${ex.kind === 'poss' ? esc(cap(ex.ru)) : whyHTML(ex.ru)}</p>` +
+    (ex.frame ? `<p class="frame" lang="${srLang()}">${esc(disp(ex.frame))}</p>` : '');
+  card.innerHTML = lead + `<div class="meta"><span class="chip">${TT_CHIP[ex.kind]}</span></div>${stim}` +
     `<div class="answer${ex.done ? (ex.ok ? ' ok' : ' bad') : ''}" role="group" aria-label="Ваш ответ">${ans}</div>${ex.done ? '' : poolHTML(ex, new Set(ex.placed))}${fb}<div class="actions">${actions}</div>`;
 }
 
 function renderGen(card, lead) {
   const ex = cur, it = ex.it, ch = ex.chosen, G = {m:'мужской', f:'женский', n:'средний'};
   const tile = (n, g) => {
-    const cls = !ex.done ? '' : n === it.n && g === it.g || (ex.ok && ch.n === n && ch.g === g) ? ' right' : ch.n === n && ch.g === g ? ' wrong' : '';
-    return `<button type="button" class="tile gtile${cls}" data-gen="${n}.${g}" lang="${srLang()}" aria-label="${esc(disp(PRON[n][g]))} — ${n === 'sg' ? 'ед. ч.' : 'мн. ч.'}"${ex.done ? ' disabled' : ''}>${esc(disp(PRON[n][g]))}</button>`;
+    const cls = !ex.done ? '' : n === it.n && g === it.g ? ' right' : ch.n === n && ch.g === g ? ' wrong' : '';
+    return `<button type="button" class="tile gtile${cls}" data-gen="${n}.${g}" lang="${srLang()}"${ex.done ? ' disabled' : ''}>${esc(disp(genAns(n, g)))}</button>`;
   };
-  // Показываем только открытое в уроке: в уроке 1 — одна строка, в уроке 2 — без среднего рода мн. ч.
-  const row = (n, label) => {
-    const gs = ['m', 'f', 'n'].filter(g => nounOpen(n, g, S.lesson));
-    return gs.length ? `<div class="grow"><span class="colh">${sr(label)} · ${n === 'sg' ? 'ед. ч.' : 'мн. ч.'}</span><div class="gtiles">${gs.map(g => tile(n, g)).join('')}</div></div>` : '';
-  };
+  const row = (n, label) => `<div class="grow"><span class="colh">${sr(label)} · ${n === 'sg' ? 'ед. ч.' : 'мн. ч.'}</span><div class="gtiles">${['m', 'f', 'n'].map(g => tile(n, g)).join('')}</div></div>`;
   let fb = '';
   if (ex.done) {
-    // Пример согласования в прошедшем — с урока 2, когда уже есть «biti» и прошедшее время.
-    const example = S.lesson >= 2 ? `<span>Например: <span class="sent" lang="${srLang()}">${esc(sentence([PRON[it.n][it.g], it.n === 'sg' ? 'je' : 'su', BITI_L[it.n][it.g], 'ovde'], false))}</span></span>` : '';
+    const pair = `<span class="sent" lang="${srLang()}">${esc(sentence([it.w, it.n === 'sg' ? 'je' : 'su', 'ovde'], false))} → ${esc(sentence([genAns(it.n, it.g), 'ovde'], false))}</span>`;
     const numWrong = ch.n !== it.n;
-    const numMsg = `«${it.w}» — ${it.n === 'pl' ? 'множественное' : 'единственное'} число.`;
-    const why = (numWrong ? numMsg + ' ' : '') + (it.why || `«${it.w}» — ${G[it.g]} род.`);
-    const same = ex.ok && numWrong ? `<p class="why">${whyHTML(`«${PRON[it.n][it.g]}» — это и «она» (ж. р. ед. ч.), и «они» (ср. р. мн. ч.). Здесь — ${it.n === 'pl' ? 'мн. ч.' : 'ед. ч.'}`)}</p>` : '';
+    const why = (numWrong ? `«${it.w}» — ${it.n === 'pl' ? 'множественное' : 'единственное'} число. ` : '') + (it.why || `«${it.w}» — ${G[it.g]} род.`);
     fb = ex.ok
-      ? `<div class="fb ok" tabindex="-1">${verdict(true)}${same}${it.why ? `<p class="why">${whyHTML(it.why)}</p>` : ''}${example}</div>`
-      : `<div class="fb bad" tabindex="-1">${verdict(false)}<p class="why">${whyHTML(why)}</p>${example}</div>`;
+      ? `<div class="fb ok" tabindex="-1">${verdict(true)}${pair}${it.why ? `<p class="why">${whyHTML(it.why)}</p>` : ''}</div>`
+      : `<div class="fb bad" tabindex="-1">${verdict(false)}${pair}<p class="why">${whyHTML(why)}</p></div>`;
   }
-  card.innerHTML = lead + `<div class="meta"><span class="chip">каким местоимением заменить</span></div>` +
+  card.innerHTML = lead + `<div class="meta"><span class="chip">чем заменить слово</span></div>` +
     `<p class="prompt"><span lang="${srLang()}">${esc(disp(it.w))}</span> <span class="trn" lang="ru">— ${esc(it.ru)}</span></p>` +
     `<div class="gpick">${row('sg', 'jednina')}${row('pl', 'množina')}</div>` +
     fb + (ex.done ? `<div class="actions"><button type="button" class="btn primary" id="next">Дальше</button></div>` : '');
@@ -1818,50 +1881,60 @@ function renderClit(card, lead) {
   card.innerHTML = lead + `<div class="meta"><span class="chip">куда поставить</span><span class="chip to" lang="${srLang()}">${esc(disp(k))}</span></div><p class="prompt" lang="ru">${esc(ex.ru)}</p><div class="slots">${row}</div>${fb}${actions ? `<div class="actions">${actions}</div>` : ''}`;
 }
 
-function mastery(t, f) { let s = 0; for (const g of GROUPS) { const r = S.cells[lk(`${t}.${f}.${g}`)]; s += r ? r.box / 4 : 0; } return s / GROUPS.length; }
-const firstLesson = t => LESSONS.find(L => L.tenses.includes(t)).n;
+// Закреплённость клетки матрицы — по всем группам глаголов, открытым к этому уроку.
+function mastery(t, f) {
+  const Ls = [...new Set(VERBS.filter(v => v.l <= S.lesson && !(t === 'fut' && v.noFut)).map(v => cellL(t, v)))].filter(l => l <= S.lesson);
+  let s = 0; for (const g of GROUPS) for (const l of Ls) { const r = B('cells')[`${t}.${f}.${g}@${l}`]; s += r ? r.box / 4 : 0; }
+  return Ls.length ? s / GROUPS.length / Ls.length : 0;
+}
 const heatCell = (m, extra, label) => { const p = Math.round(m * 100); return `<button type="button" class="cell${extra}" style="--p:${p}%" aria-label="${label}: ${p}%"><span class="num">${p}%</span></button>`; };
 function renderSide() {
   renderLessons();   // проценты уроков меняются с каждым ответом
-  const L = LESSONS[S.lesson - 1], mode = S.mode, box = r => r ? r.box / 4 : 0;
+  const mode = isRev() && cur ? cur.kind : S.mode, box = r => r ? r.box / 4 : 0;
   let title = 'Матрица', hint = 'Процент — насколько клетка закреплена в этом уроке. Нажмите на клетку, чтобы тренировать только её.', h = '', weak = [];
   if (mode === 'rod' || mode === 'poss') {
     title = mode === 'rod' ? 'Род: закреплённость' : 'Чей: закреплённость';
     hint = 'По числу и роду слова, только в этом уроке.';
     const items = mode === 'rod' ? GEN.map(x => ({k: x.w, n: x.n, g: x.g, label: `«${x.w}» — ${x.ru}`})) : possCombos(S.lesson).map(c => ({k: c.k, n: c.n, g: c.g, label: `${OWNER_RU[c.o]} + ${G_GEN[c.g].replace('ого', 'ий')} род, ${c.n === 'sg' ? 'ед.' : 'мн.'} ч.`}));
-    const bucket = mode === 'rod' ? S.gen : S.poss;
+    const bucket = B(mode === 'rod' ? 'gen' : 'poss');
     h = `<table class="heat"><thead><tr><th></th><th scope="col">м. р.</th><th scope="col">ж. р.</th><th scope="col">ср. р.</th></tr></thead><tbody>`;
     for (const n of ['sg', 'pl']) {
       h += `<tr><th scope="row">${n === 'sg' ? 'ед. ч.' : 'мн. ч.'}</th>`;
       for (const g of ['m', 'f', 'n']) {
         const its = items.filter(x => x.n === n && x.g === g);
-        if (!nounOpen(n, g, S.lesson) || !its.length) { h += `<td><span class="cell locked">${its.length ? 'урок ' + (n === 'pl' && g === 'n' ? 3 : 2) : '—'}</span></td>`; continue; }
-        h += `<td>${heatCell(its.reduce((a, x) => a + box(bucket[lk(x.k)]), 0) / its.length, ' static', `${n}, ${g}`)}</td>`;
+        if (!its.length) { h += '<td><span class="cell locked">—</span></td>'; continue; }
+        h += `<td>${heatCell(its.reduce((a, x) => a + box(bucket[x.k]), 0) / its.length, ' static', `${n}, ${g}`)}</td>`;
       }
       h += '</tr>';
     }
     h += '</tbody></table>';
-    weak = items.filter(x => nounOpen(x.n, x.g, S.lesson)).map(x => [x.label, bucket[lk(x.k)]]);
+    weak = items.map(x => [x.label, bucket[x.k]]);
   } else if (mode === 'clitic') {
     title = 'Энклитики: закреплённость';
-    const its = CLIT.filter(c => c.l <= S.lesson), done = its.filter(c => box(S.clit[lk(c.id)]) >= .75).length;
-    h = `<p class="pbar-l">Закреплено ${done} из ${its.length} примеров урока</p><div class="pbar"><span style="width:${Math.round(done / its.length * 100)}%"></span></div>`;
+    const its = CLIT.filter(c => c.l <= S.lesson), done = its.filter(c => box(B('clit')[c.id]) >= .75).length;
+    h = `<p class="pbar-l">Закреплено ${done} из ${its.length} примеров</p><div class="pbar"><span style="width:${Math.round(done / its.length * 100)}%"></span></div>`;
     hint = 'Пример закреплён после трёх верных ответов подряд.';
-    weak = its.map(c => [gsel(c.ru), S.clit[lk(c.id)]]);
+    weak = its.map(c => [gsel(c.ru), B('clit')[c.id]]);
+  } else if (mode === 'phr' || mode === 'case') {
+    title = (mode === 'phr' ? 'Фразы' : 'Падежи') + ': закреплённость';
+    const keys = [...new Set(ttPool(mode).map(x => x.key))], done = keys.filter(k => box(B(mode)[k]) >= .75).length;
+    h = `<p class="pbar-l">Закреплено ${done} из ${keys.length}</p><div class="pbar"><span style="width:${keys.length ? Math.round(done / keys.length * 100) : 0}%"></span></div>`;
+    hint = 'У чисел, количества и падежей закрепляется правило: слово каждый раз новое.';
+    const label = k => { const t = PHR.find(x => x.key === k); return t ? gsel(t.ru) : k; };
+    weak = keys.map(k => [label(k), B(mode)[k]]);
   } else {
     h = `<table class="heat"><thead><tr><th></th>${FORMS.map(f => `<th scope="col">${F_SHORT[f]}</th>`).join('')}</tr></thead><tbody>`;
     for (const t of TENSES) {
       h += `<tr><th scope="row">${T_RU[t]}</th>`;
       for (const f of FORMS) {
-        if (!L.tenses.includes(t)) { h += `<td><span class="cell locked" aria-label="откроется в уроке ${firstLesson(t)}">урок ${firstLesson(t)}</span></td>`; continue; }
+        if (!tensesOf(S.lesson).includes(t)) { h += `<td><span class="cell locked" aria-label="откроется в уроке ${TENSE_L[t]}">урок ${TENSE_L[t]}</span></td>`; continue; }
         const sel = !!S.focus && S.focus.startsWith(`${t}.${f}`);
         h += `<td>${heatCell(mastery(t, f), sel ? ' sel' : '', `${T_RU[t]}, ${F_RU[f]}`).replace('<button ', `<button data-focus="${t}.${f}" aria-pressed="${sel}" `)}</td>`;
       }
       h += '</tr>';
     }
     h += '</tbody></table>';
-    const pre = S.lesson + '.';
-    weak = Object.entries(S.cells).filter(([k]) => k.startsWith(pre)).map(([k, r]) => { const [, t, f, g] = k.split('.'); return [`${T_RU[t]} · ${F_RU[f]} · ${GROUP_RU[g]}`, r, `${t}.${f}.${g}`]; });
+    weak = Object.entries(B('cells')).filter(([k]) => +k.split('@')[1] <= S.lesson).map(([k, r]) => { const [t, f, g] = k.split('@')[0].split('.'); return [`${T_RU[t]} · ${F_RU[f]} · ${GROUP_RU[g]}`, r, `${t}.${f}.${g}`]; });
   }
   $('#heatTitle').textContent = title;
   $('#heat').innerHTML = h;
@@ -1874,7 +1947,8 @@ function renderSide() {
       ? `<li><button type="button" data-setfocus="${focus}"><span>${esc(label)}</span><span class="cnt">${errs(r.wrong)}</span></button></li>`
       : `<li class="wrow"><span lang="${srLang()}">${whyHTML(label)}</span><span class="cnt">${errs(r.wrong)}</span></li>`).join('')
     : '<li class="empty">Сейчас слабых мест нет. То, где вы ошибаетесь, появится здесь и будет выпадать чаще.</li>';
-  $('#program').innerHTML = PROGRAM.map((x, i) => `<li${i < 3 ? ' class="here"' : ''}>${mixHTML(x)}${i < 3 ? ' <span class="chip to">в приложении</span>' : ''}</li>`).join('');
+  $('#program').innerHTML = PROGRAM.map((x, i) => { const L = LESSONS[i], app = L && !L.soon;
+    return `<li${i === S.lesson - 1 ? ' class="here"' : ''}>${mixHTML(x)}${app ? ' <span class="chip to">в приложении</span>' : L ? ' <span class="chip">скоро</span>' : ''}</li>`; }).join('');
 
   document.querySelectorAll('[data-gender]').forEach(b => b.setAttribute('aria-pressed', b.dataset.gender === S.gender));
   document.querySelectorAll('[data-script]').forEach(b => b.setAttribute('aria-pressed', b.dataset.script === S.script));
@@ -1887,38 +1961,65 @@ function renderSide() {
 
 // Программа курса: уроки 1–3 — в приложении, остальные — план.
 const PROGRAM = [
-  'Алфавит, настоящее время, род существительных, «чей» ([moj, tvoj, njegov…])', '[Biti] и прошедшее время, энклитики, множественное число и род', '[Hteti] и [hoću da…], будущее время, [imati]',
-  '[Moći, morati, treba da]; вопросительные слова', 'Прилагательные, [ovaj / taj / onaj], [svoj], звательный падеж',
-  'Винительный и местный падежи, [ga / je / ih] и их место: [Video sam ga]', 'Родительный падеж ([kod] = «у»)', 'Числа, время, даты, цены',
-  'Дательный падеж, [sviđa mi se], порядок энклитик', 'Возвратные глаголы, творительный падеж', 'Вид глагола',
-  'Повелительное наклонение, этикет', 'Условное наклонение', 'Придаточные с [da]', '[Koji], сравнительная степень', 'Повторение, иекавский вариант',
+  '[Biti] и знакомство: этикет, вопросительные слова, алфавит', 'Род и «чей»: множественное число, [moj, njegov…]', 'Настоящее время, числа до 1000',
+  'Кафе и магазин: винительный падеж, [imati], [hteti da], количество', 'Где и куда: местный падеж, [moći, morati, treba da], дорога',
+  'Прошедшее время и вид глагола', 'Будущее время, время суток, возраст', 'Местоимения, дательный падеж, [se]', 'Родительный и творительный падежи',
+  'Падежи во множественном числе, числа и глагол', 'Повелительное наклонение, звательный падеж', 'Прилагательные и местоимения во всех падежах, [svoj]',
+  'Вид глагола подробно, будущее II', 'Условное наклонение, придаточные с [da]', '[Koji], сравнение, притяжательные прилагательные', 'Даты, повторение, иекавский вариант',
 ];
+const FF = n => ({1:'život — жизнь, divan — чудесный, stan — квартира, pitati — спрашивать', 2:'ponos — гордость, hitno — срочно, jagoda — клубника, vredan — трудолюбивый, ценный, stolica — стул',
+  3:'kosa — волосы, grad — город, sto — стол и сто, večera — ужин', 4:'čaša — стакан, kolač — пирожное, čas — урок, момент, rok — срок, magazin — журнал (магазин — prodavnica)',
+  6:'pozorište — театр, nedelja — воскресенье и неделя, slovo — буква', 7:'sat — час и часы, vreme — время и погода'})[n];
+// Ложные друзья: «сербское — русское» через запятую; сербская часть — до тире.
+const ffHTML = n => `<p><b>Ложные друзья</b>: ${FF(n).split(', ').map(x => { const [a, ...b] = x.split(' — '); return b.length ? `${sr(a)} — ${esc(b.join(' — '))}` : esc(x); }).join(', ')}.</p>`;
+const tbl = (head, rows) => `<table class="conj"><thead><tr>${head.map(h => `<th>${h ? sr(h) : ''}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr><th>${sr(r[0])}</th>${r.slice(1).map(x => `<td>${sr(x)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
 function sheetHTML() {
-  if (S.lesson === 1) {
-    const rows = [['ja','čitam','radim','pišem'],['ti','čitaš','radiš','pišeš'],['on, ona, ono','čita','radi','piše'],['mi','čitamo','radimo','pišemo'],['vi','čitate','radite','pišete'],['oni, one','čitaju','rade','pišu']];
-    return `<p>Отбросьте <b>${sr('-m')}</b> у формы «${sr('ja')}» — получится основа. Форма «${sr('oni')}» запоминается отдельно.</p>
-      <table class="conj"><thead><tr><th></th><th>${sr('-am')}</th><th>${sr('-im')}</th><th>${sr('-em')}</th></tr></thead><tbody>${rows.map(r => `<tr><th>${sr(r[0])}</th>${r.slice(1).map(x => `<td>${sr(x)}</td>`).join('')}</tr>`).join('')}</tbody></table>
-      <p>Вопрос: ${sr('da li')} + глагол. Отрицание: ${sr('ne')} + глагол, раздельно.</p>
-      <p><b>Род</b> — по окончанию: на согласный обычно мужской (${sr('grad, pas, stan')}), на ${sr('-a')} — женский (${sr('kuća, knjiga')}), на ${sr('-o / -e')} — средний (${sr('selo, pismo, dete')}). Исключения: ${sr('noć, stvar, reč')} — женский; ${sr('auto, radio')} — мужской.</p>
-      <p><b>Род не как в русском</b>: ${sr('kuća')} (дом) — ж., ${sr('pas')} (собака) и ${sr('stan')} (квартира) — м., ${sr('dete')} (ребёнок) — ср., ${sr('reč')} (слово) — ж.</p>
-      <p><b>Чей</b>: ${sr('moj, tvoj, njegov, njen, naš, vaš, njihov')} меняются по роду слова: ${sr('moj stan, moja kuća, moje dete')}. И «его, её, их» тоже: ${sr('njegova kuća')} — его дом.</p>
-      <p><b>Ложные друзья</b>: ${sr('život')} — жизнь, ${sr('divan')} — чудесный, ${sr('stan')} — квартира, ${sr('pitati')} — спрашивать, ${sr('slovo')} — буква (а «слово» — ${sr('reč')}).</p>
-      <p class="muted">Глаголы: ${VERBS.filter(v => v.l === 1).map(v => sr(v.inf)).join(', ')}. Вопросы: ${sr('šta')} — что, ${sr('gde')} — где. Готовые фразы: ${sr('zovem se…')} — меня зовут…, ${sr('izvinite')} — извините, ${sr('koliko košta?')} — сколько стоит?, ${sr('kod kuće')} — дома, ${sr('u Beogradu')} — в Белграде, ${sr('kući')} — домой, ${sr('knjigu')} — книгу. Числа: ${sr('jedan, dva, tri, četiri, pet, šest, sedam, osam, devet, deset')}.</p>`;
-  }
-  if (S.lesson === 2) return `<p><b>${sr('biti')}</b> в настоящем: ${sr('sam, si, je, smo, ste, su')} — энклитики: ${sr('Kod kuće sam')} или ${sr('Ja sam kod kuće')}, но не «${sr('Sam kod kuće')}». Отрицание слитно: ${sr('nisam, nisi, nije, nismo, niste, nisu')}.</p>
-      <p><b>Прошедшее</b> = ${sr('biti')} + форма на ${sr('-o / -la / -lo / -li / -le')}: ${sr('Radio sam.')} · ${sr('Da li si radio?')} · ${sr('Nisam radio.')}</p>
-      <p>Род в прошедшем: ${sr('on je radio, ona je radila, ono je radilo')}. Во множественном: ${sr('-li')} — мужчины или смешанная группа, ${sr('-le')} — только женщины: ${sr('one su radile')}. ${sr('Dete')} — среднего рода: ${sr('dete je radilo')}.</p>
-      <p><b>Энклитики</b> ${sr('sam, si, je, smo, ste, su')} никогда не начинают фразу и встают после первого слова или первого сочетания: ${sr('Juče sam radio')}, ${sr('Da li si radio?')}, ${sr('Kod kuće sam radio')}.</p>
-      <p><b>Множественное число</b>: м. р. — ${sr('-i')} (${sr('prijatelji')}; короткие слова — ${sr('-ovi')}: ${sr('gradovi, stanovi')}), ж. р. — ${sr('-e')} (${sr('knjige, kuće')}), ср. р. — ${sr('-a')} (${sr('pisma, sela')}). Запомнить: ${sr('pas → psi, čovek → ljudi, dete → deca')}.</p>
-      <p>«Чей» во множественном: ${sr('moji prijatelji')} (м.), ${sr('moje knjige')} (ж.).</p>
-      <p><b>Ложные друзья</b>: ${sr('ponos')} — гордость, ${sr('hitno')} — срочно, ${sr('zapravo')} — на самом деле, ${sr('odmor')} — отдых и отпуск.</p>
-      <p class="muted">Новые слова: ${sr('juče')} — вчера, ${sr('bio / bila / bilo')} — был / была / было.</p>`;
-  return `<p><b>${sr('hteti')}</b>: ${sr('hoću, hoćeš, hoće, hoćemo, hoćete, hoće')} → ${sr('neću')} — «не хочу». Что хочу сделать — ${sr('da')} + настоящее время: ${sr('Hoću da radim')}, ${sr('Neću da idem')}. Так чаще, чем с инфинитивом (${sr('hoću raditi')}).</p>
-      <p><b>Будущее</b> — из краткой формы ${sr('hteti')}: ${sr('ću, ćeš, će, ćemo, ćete, će')} + инфинитив. ${sr('Radiću')} — одним словом, если глагол первый; после другого слова — ${sr('Ja ću raditi')}; на ${sr('-ći')} всегда раздельно: ${sr('ići ću')}. Отрицание — ${sr('neću raditi')}: ${sr('neću')} значит и «не хочу», и «не буду».</p>
-      <p><b>${sr('imati')}</b> → ${sr('nemam, nemaš, nema…')} ${sr('Imam psa')} — у меня есть собака.</p>
-      <p>Средний род во множественном: ${sr('pisma, sela')} → ${sr('ona')}: ${sr('naša pisma')}. ${sr('Deca')} (дети) — собирательное: ${sr('moja deca, deca su bila')}.</p>
-      <p><b>Ложные друзья</b>: ${sr('kosa')} — волосы, ${sr('grad')} — город (не «град»), ${sr('sto')} — и «стол», и «сто», ${sr('večera')} — ужин.</p>
-      <p class="muted">Новые слова: ${sr('sutra')} — завтра. Готовые фразы: ${sr('psa')} — собаку, ${sr('vremena')} — времени, ${sr('kafu')} — кофе, ${sr('pivo')} — пиво.</p>`;
+  const n = S.lesson;
+  if (n === 1) return `${tbl(['', 'biti', 'не'], [['ja', 'sam', 'nisam'], ['ti', 'si', 'nisi'], ['on, ona, ono', 'je', 'nije'], ['mi', 'smo', 'nismo'], ['vi', 'ste', 'niste'], ['oni', 'su', 'nisu']])}
+      <p><b>Связка обязательна</b>: «Я дома» — ${sr('Ja sam kod kuće')} или ${sr('Kod kuće sam')}. Но не «${sr('Ja kod kuće')}» и не «${sr('Sam kod kuće')}»: ${sr('sam, si, je…')} с начала фразы не стоят.</p>
+      <p><b>Вопрос</b>: ${sr('Da li si kod kuće?')} · ${sr('Jesi li kod kuće?')} · ${sr('Ti si kod kuće?')} — все верны. Ответ: ${sr('Jesam')} / ${sr('Nisam')}. ${sr('Je li…?')} — только для «он, она, оно»; «${sr('Si li…?')}» не бывает.</p>
+      <p>${sr('Vi')} — и «вы», и вежливо одному человеку.</p>
+      <p><b>Вопросы</b>: ${sr('ko')} — кто, ${sr('šta')} — что, ${sr('gde')} — где, ${sr('kako')} — как, ${sr('odakle')} — откуда, ${sr('kada')} — когда, ${sr('zašto')} — почему, ${sr('koliko')} — сколько.</p>
+      <p><b>Этикет</b>: ${sr('zdravo, ćao')} — привет; ${sr('dobar dan, dobro jutro, dobro veče')}; ${sr('laku noć')}; ${sr('doviđenja, prijatno')} — до свидания; ${sr('hvala')} — спасибо, ${sr('nema na čemu')} — не за что; ${sr('molim')} — пожалуйста; ${sr('izvinite')}; ${sr('izvolite')} — прошу, вот; ${sr('Kako ste? — Dobro sam')}.</p>
+      <p><b>Кто вы</b>: ${sr('Rus / Ruskinja, Srbin / Srpkinja')}; ${sr('lekar / lekarka, programer / programerka, student / studentkinja')}.</p>
+      <p><b>Звуки</b>: ${sr('ć')} — близко к русскому «ч», ${sr('č')} — твёрже; ${sr('đ')} и ${sr('dž')} — их звонкие пары; ${sr('lj')} ≈ «ль», ${sr('nj')} ≈ «нь».</p>
+      ${ffHTML(1)}
+      <p class="muted">Готовые фразы: ${sr('zovem se…')} — меня зовут…, ${sr('drago mi je')} — очень приятно, ${sr('kod kuće')} — дома, ${sr('iz Rusije')} — из России, ${sr('u Beogradu')} — в Белграде, ${sr('ovde')} — здесь. Их правило — позже.</p>`;
+  if (n === 2) return `<p><b>Род</b> — по окончанию: на согласный — мужской (${sr('grad, stan')}), на ${sr('-a')} — женский (${sr('kuća')}), на ${sr('-o / -e')} — средний (${sr('selo, more')}). Исключения: ${sr('posao, auto, radio')} — м.; ${sr('so')} — ж.; ${sr('noć, stvar, reč, jesen')} — ж.; ${sr('tata, deda, kolega')} — м.</p>
+      <p><b>Не как в русском</b>: ${sr('kuća')} (дом), ${sr('banka, prodavnica, pijaca, stolica, godina, karta, supa')} — ж.; ${sr('pas, stan, krevet, prozor, kafić, trg')} — м.; ${sr('selo, pitanje, veče, oko, dete')} — ср. ${sr('Novac, kosa, sat')} — ед. ч. («деньги, волосы, часы»); ${sr('vrata')} — мн. ч. («дверь»).</p>
+      <p>Замена: ${sr('on je, ona je, ono je')} · ${sr('oni su')} — мужчины или смешанная группа, ${sr('one su')} — только женщины, ${sr('ona su')} — ср. р. (${sr('sela, deca')}).</p>
+      <p><b>Множественное</b>: м. р. — ${sr('-i')} (${sr('prijatelji')}), короткие — ${sr('-ovi')} (${sr('gradovi')}), после ${sr('č, ć, dž, đ, j, lj, nj, š, ž, c')} — ${sr('-evi')} (${sr('ključevi')}); ${sr('k → c')}: ${sr('radnici')}; беглое ${sr('a')}: ${sr('pas → psi')}. Ж. р. на ${sr('-a')} — ${sr('-e')} (${sr('knjige')}), на согласный — ${sr('-i')} (${sr('stvari')}). Ср. р. — ${sr('-a')} (${sr('sela')}). ${sr('čovek → ljudi, dete → deca')}.</p>
+      ${tbl(['', 'м.', 'ж.', 'ср.'], [['ja', 'moj', 'moja', 'moje'], ['on', 'njegov', 'njegova', 'njegovo'], ['ona', 'njen', 'njena', 'njeno'], ['oni', 'njihov', 'njihova', 'njihovo'], ['мн. ч.', 'moji', 'moje', 'moja']])}
+      <p><b>Чей</b>: основа — по владельцу, окончание — по слову. «Его, её, их» по-русски не меняются, а ${sr('njegov, njen, njihov')} меняются: ${sr('njegova kuća')} — его дом. ${sr('Čiji je / Čija je / Čije je…?')} · ${sr('Ovo je…')} / ${sr('Ovo su moji prijatelji')}.</p>
+      <p><b>Омонимы</b>: ${sr('ona')} — «она» и «они» о словах ср. р.; ${sr('moja')} — «моя» и «мои» (${sr('moja sela')}). ${sr('Deca')} — как ж. р. ед. ч. по форме, но ${sr('deca su')}, ${sr('ona su')}.</p>
+      <p class="muted">Прилагательное как сказуемое: ${sr('Kuća je nova, stan je nov, selo je novo')}.</p>
+      ${ffHTML(2)}`;
+  if (n === 3) return `${tbl(['', '-am', '-im', '-em'], [['ja', 'čitam', 'radim', 'pišem'], ['ti', 'čitaš', 'radiš', 'pišeš'], ['on, ona, ono', 'čita', 'radi', 'piše'], ['mi', 'čitamo', 'radimo', 'pišemo'], ['vi', 'čitate', 'radite', 'pišete'], ['oni, one', 'čitaju', 'rade', 'pišu']])}
+      <p>Отбросьте ${sr('-m')} у формы «${sr('ja')}» — получится основа. «${sr('oni')}» — отдельно: ${sr('čitaju, znaju · rade, govore, žive, vole, uče · pišu, idu, razumeju')}. С чередованием: ${sr('pisati → pišem, ići → idem')}.</p>
+      <p><b>Отрицание</b>: ${sr('ne')} + глагол раздельно — ${sr('ne znam')}. Слитно только ${sr('nisam, nemam, neću')}.</p>
+      <p><b>Вопрос</b>: ${sr('Da li radiš?')} · ${sr('Radiš li?')} · ${sr('Radiš?')}. Местоимение можно опускать: ${sr('Radim')} и ${sr('Ja radim')}.</p>
+      <p><b>Числа</b>: ${sr('jedanaest… devetnaest')}; ${sr('dvadeset, trideset, četrdeset, pedeset, šezdeset, sedamdeset, osamdeset, devedeset')}; ${sr('sto, dvesta, trista, četiristo, petsto… devetsto')}; ${sr('hiljadu')}. ${sr('347 — trista četrdeset sedam')}.</p>
+      ${ffHTML(3)}
+      <p class="muted">Готовые фразы: ${sr('Koliko košta? — Petsto dinara')}, ${sr('kući')} — домой, ${sr('knjigu')} — книгу, ${sr('srpski')} — по-сербски.</p>`;
+  if (n === 4) return `<p><b>Винительный</b> (кого? что?): ж. р. и м. р. на ${sr('-a')} → ${sr('-u')}: ${sr('Hoću kafu. Volim tatu.')} Живые м. р. → ${sr('-a')}, как «вижу брата»: ${sr('Imam brata, psa')}. Неживые м. р., ср. р. и ж. р. на согласный — не меняются: ${sr('Imam stan. Pijem pivo.')}</p>
+      <p>Вместе со словом меняются и ${sr('ovaj, moj')}, прилагательные: ${sr('Hoću ovu knjigu, crnu kafu, veliko pivo.')} ${sr('Svoj')} — «свой»: ${sr('Ana čita svoju knjigu')}; ${sr('njenu')} — книгу другой женщины.</p>
+      <p><b>У меня есть</b> = ${sr('imam')}; нет — ${sr('nemam')}. «${sr('Kod mene je sestra')}» значит «сестра у меня (в гостях)». В наличии: ${sr('Ima li hleba? — Ima / Nema')}.</p>
+      <p><b>${sr('hteti')}</b>: ${sr('hoću, hoćeš, hoće, hoćemo, hoćete, hoće')}; ${sr('neću')}. ${sr('Hoću da radim')} (чаще) или ${sr('Hoću raditi')}. ${sr('piti')}: ${sr('pijem, piješ… piju')}; ${sr('jesti')}: ${sr('jedem, jedeš… jedu')}.</p>
+      <p><b>Количество</b>: ${sr('jedna kafa, jedan dinar, jedno pivo')} · 2–4: ${sr('dve kafe, dva piva, tri dinara')} · 5–20: ${sr('pet kafa, pet piva, deset dinara')}. ${sr('Dve')} — только с ж. р.</p>
+      <p><b>В кафе</b>: ${sr('Jednu kafu, molim')} или ${sr('Jedna kafa, molim')}; ${sr('Može jedna kafa?')}; ${sr('Račun, molim')}. Вежливее всего — ${sr('Htela bih… / Hteo bih…')}.</p>
+      ${ffHTML(4)}
+      <p class="muted">Готовые фразы: ${sr('nemam vremena')} — нет времени, ${sr('Imam … godina')} — мне … лет (подробно — в уроке 7).</p>`;
+  if (n === 6) return `<p><b>Прошедшее</b> = ${sr('biti')} + форма на ${sr('-o / -la / -lo / -li / -le')}: ${sr('Radio sam.')} · ${sr('Da li si radio?')} · ${sr('Nisam radio.')}</p>
+      <p>Род: ${sr('on je radio, ona je radila, ono je radilo')}; ${sr('-li')} — мужчины или смешанная группа, ${sr('-le')} — только женщины: ${sr('one su radile')}. ${sr('Dete je radilo, deca su bila')}. С вежливым ${sr('Vi')} — мн. ч.: ${sr('Vi ste bili')}.</p>
+      <p><b>Энклитики</b> ${sr('sam, si, je…')} — после первого слова или первой группы: ${sr('Juče sam radio')}, ${sr('Kod kuće sam radio')}, ${sr('Moja sestra je radila')} (книжно — ${sr('Moja je sestra radila')}).</p>
+      <p>Неправильные: ${sr('išao / išla, pio, jeo, hteo, imao')}. Иекавские ${sr('htio, vidio')} — не наш вариант: ${sr('hteo, video')}.</p>
+      ${ffHTML(6)}
+      <p class="muted">Слова: ${sr('juče')} — вчера, ${sr('danas')} — сегодня. Вид глагола — в следующих обновлениях.</p>`;
+  if (n === 7) return `<p><b>Будущее</b> — ${sr('ću, ćeš, će, ćemo, ćete, će')} + инфинитив. Одним словом, если глагол первый: ${sr('Radiću')}; после другого слова — ${sr('Ja ću raditi')}. На ${sr('-ći')} всегда раздельно: ${sr('ići ću, doći ću')}. ${sr('jesti → ješću')}.</p>
+      <p>Отрицание — ${sr('neću raditi')}: ${sr('neću')} — и «не хочу», и «не буду». Вопрос: ${sr('Hoćeš li raditi?')} или ${sr('Da li ćeš raditi?')} — ответ ${sr('Hoću / Neću')}. Можно и ${sr('Ja ću da radim')}.</p>
+      ${ffHTML(7)}
+      <p class="muted">Слова: ${sr('sutra')} — завтра. Время, дни и возраст — в следующих обновлениях.</p>`;
+  return '';
 }
 
 // ---------- события ----------
@@ -1956,7 +2057,7 @@ document.addEventListener('click', e => {
     case 'next': return next();
     case 'override': return override();
     case 'unfocus': return toggleFocus(null);
-    case 'gofocus': { const k = pendingFocus; pendingFocus = null; S.mode = 'build'; S.focus = k; persist(true); showEx(); return renderAll(); }
+    case 'gofocus': { const k = pendingFocus; pendingFocus = null; if (!tabsOf(S.lesson).includes('build')) return renderModes(); S.mode = 'build'; S.focus = k; persist(true); showEx(); return renderAll(); }
     case 'nofocus': pendingFocus = null; return renderModes();
     case 'intro-ok': S.introSeen = true; persist(true); return renderCard();
     case 'rule': { const det = $('#sheet').closest('details'); det.open = true; return det.scrollIntoView({behavior: reduced() ? 'auto' : 'smooth', block: 'start'}); }
@@ -1964,7 +2065,7 @@ document.addEventListener('click', e => {
     case 'reset-no': confirmReset = false; return renderSide();
     case 'reset-yes': {
       // resetAt отсекает старые записи и на других устройствах — иначе слияние вернуло бы их обратно.
-      S = Object.assign(DEFAULT(), settingsOf(S), {owner: S.owner, resetAt: Math.max(Date.now(), S.resetAt + 1)});   // и при отстающих часах
+      S = Object.assign(DEFAULT(), settingsOf(S), {owner: S.owner, imp: S.imp, resetAt: Math.max(Date.now(), S.resetAt + 1)});   // и при отстающих часах
       confirmReset = false; for (const k of Object.keys(exCache)) delete exCache[k]; persist(); showEx(); return renderAll();
     }
   }
@@ -1974,7 +2075,7 @@ document.addEventListener('click', e => {
 const settingsOf = s => ({lesson:s.lesson, mode:s.mode, gender:s.gender, script:s.script, focus:s.focus, introSeen:s.introSeen, settingsAt:s.settingsAt});
 const visible = s => [s.lesson, s.mode, s.gender, s.script, s.focus].join('|');
 // Сравнение по содержимому, а не по часам: у разных устройств часы расходятся. Порядок ключей не важен.
-const statsKey = s => JSON.stringify([s.cells, s.verbs, s.clit, s.gen, s.poss].map(o => Object.keys(o).sort().map(k => [k, o[k].box, o[k].seen, o[k].wrong, o[k].rs]))) + s.resetAt;
+const statsKey = s => JSON.stringify(Object.keys(s.st).filter(b => Object.keys(s.st[b]).length).sort().map(b => [b, Object.keys(s.st[b]).sort().map(k => { const r = s.st[b][k]; return [k, r.box, r.seen, r.wrong, r.rs]; })])) + s.resetAt;
 const sameState = (a, b) => statsKey(a) === statsKey(b) && visible(a) === visible(b) && a.settingsAt === b.settingsAt;
 let persistAsked = false;
 function persist(settings) {
@@ -2001,15 +2102,17 @@ function mergeState(a, b) {
     }
     return out;
   };
-  return Object.assign({}, a, settingsOf(b.settingsAt > a.settingsAt ? b : a), {
-    cells: bucket(a.cells, b.cells), verbs: bucket(a.verbs, b.verbs), clit: bucket(a.clit, b.clit), gen: bucket(a.gen, b.gen), poss: bucket(a.poss, b.poss), resetAt,
-    updatedAt: Math.max(a.updatedAt, b.updatedAt),
+  const st = {};
+  for (const name of new Set([...Object.keys(a.st), ...Object.keys(b.st)])) st[name] = bucket(a.st[name] || {}, b.st[name] || {});
+  return Object.assign({}, a, settingsOf(b.settingsAt > a.settingsAt ? b : a), {st, resetAt,
+    updatedAt: Math.max(a.updatedAt, b.updatedAt), imp: {cloud: Math.max(a.imp.cloud, b.imp.cloud)},
   });
 }
 // Принять слитое состояние. Если сменились урок, режим, род или фокус — текущее упражнение больше не годится.
 function adopt(next) {
   const was = S;
   S = next;
+  if (was.gender !== S.gender) for (const k of Object.keys(exCache)) if (needsGender(exCache[k])) delete exCache[k];   // род сменили на другом устройстве
   if ([was.lesson, was.mode, was.gender, was.focus].join('|') !== [S.lesson, S.mode, S.gender, S.focus].join('|')) { showEx(); renderAll(); }
   else if (was.script !== S.script) renderAll();
   else { renderModes(); renderSide(); }   // подсказка «слабее всего» зависит от ответов
@@ -2030,7 +2133,7 @@ async function flushNow() {
   try {
     const snap = await ref.get();
     const raw = snap.exists ? snap.data() : null;
-    if (raw && raw.v !== 1) return goLocal();   // документ более новой версии приложения — не перезаписываем
+    if (raw && raw.v !== 2) return goLocal();   // документ другой версии приложения — не перезаписываем
     const r = raw ? normalize(raw) : null;
     if (r) { adopt(mergeState(S, r)); saveLocal(); }
     if (r && sameState(S, r)) return;
@@ -2062,7 +2165,7 @@ function subscribe(ref) {
   unsubscribe = ref.onSnapshot(s => {   // ответы и настройки с другого устройства, пока страница открыта
     if (!s.exists || s.metadata.hasPendingWrites) return;
     const raw = s.data();
-    if (!raw || raw.v !== 1) return;
+    if (!raw || raw.v !== 2) return;
     const r = normalize(raw), merged = keepLocal(mergeState(S, r), S);
     if (!sameState(merged, S)) { adopt(merged); saveLocal(); }
     if (!sameState(S, r)) { dirty = true; scheduleRemote(3000); }   // в облаке нет наших ответов — дописать
@@ -2079,14 +2182,16 @@ async function initRemote(attempt = 0) {
     if (!user || !db) return;
     const uid = await user.id();
     if (!uid) return;
-    const ref = db.doc('data/users/' + uid + '/progress');
-    const snap = await ref.get();
-    const raw = snap.exists ? snap.data() : null;
-    if (raw && raw.v !== 1) return;   // документ более новой версии приложения — работаем локально, его не трогаем
+    // Прогресс v2 — в своём документе; документ v1 только читается (его продолжают писать старые страницы).
+    const ref = db.doc('data/users/' + uid + '/progress-v2'), old = db.doc('data/users/' + uid + '/progress');
+    const [snap, snap1] = await Promise.all([ref.get(), old.get().catch(() => null)]);
+    const raw = snap.exists ? snap.data() : null, raw1 = snap1 && snap1.exists ? snap1.data() : null;
+    if (raw && raw.v !== 2) return;   // документ другой версии приложения — работаем локально, его не трогаем
     const switched = !!S.owner && S.owner !== uid;
     let next = switched ? DEFAULT() : S;   // в этом браузере лежит прогресс другого аккаунта
     next = Object.assign({}, next, {owner: uid});
     if (raw) next = mergeState(next, normalize(raw));   // слияние, а не замена: касания до загрузки облака ничего не стирают
+    if (raw1 && raw1.v === 1 && !next.imp.cloud && (!raw1.owner || raw1.owner === uid)) { next = importV1(next, raw1); next.imp = {cloud: Date.now()}; }
     adopt(next);
     if (switched) { for (const k of Object.keys(exCache)) delete exCache[k]; showEx(); renderAll(); }   // экран прежнего аккаунта не должен остаться на месте
     saveLocal();
@@ -2101,6 +2206,8 @@ async function initRemote(attempt = 0) {
 }
 
 if (location.hash === '#selftest') { const r = selfTest(); console.log('selfTest:', r.cells, 'клеток,', r.errors.length, 'ошибок'); r.errors.forEach(x => console.warn(x)); }
+// Перенос из v1 этого браузера — один раз.
+try { if (!localStorage.getItem(V1_DONE)) { const v1 = loadLocal(LS_V1); if (v1) { S = fixMode(importV1(S, v1)); saveLocal(); } localStorage.setItem(V1_DONE, '1'); } } catch (e) {}
 showEx(); renderAll(); initRemote();
 })();
 </script>
